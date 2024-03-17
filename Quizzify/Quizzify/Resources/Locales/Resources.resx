@@ -121,7 +121,7 @@
     <value>Authorization</value>
     <comment>Кнопка "Авторизация"</comment>
   </data>
-  <data name="EmailTextBlockRersources" xml:space="preserve">
+  <data name="EmailTextBlockResources" xml:space="preserve">
     <value>Email</value>
     <comment>TextBlock "Электронная почта"</comment>
   </data>

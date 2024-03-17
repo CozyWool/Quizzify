@@ -72,9 +72,9 @@ namespace Quizzify.Resources.Locales {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Email.
         /// </summary>
-        public static string EmailTextBlockRersources {
+        public static string EmailTextBlockResources {
             get {
-                return ResourceManager.GetString("EmailTextBlockRersources", resourceCulture);
+                return ResourceManager.GetString("EmailTextBlockResources", resourceCulture);
             }
         }
         

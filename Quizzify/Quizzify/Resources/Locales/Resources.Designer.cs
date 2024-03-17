@@ -108,9 +108,9 @@ namespace Quizzify.Resources.Locales {
         /// <summary>
         ///   Ищет локализованную строку, похожую на You will be automatically logged in the app starts until you log in from somewhere else..
         /// </summary>
-        public static string HintToolTipToggleButtonResources {
+        public static string HintToolTipImageResources {
             get {
-                return ResourceManager.GetString("HintToolTipToggleButtonResources", resourceCulture);
+                return ResourceManager.GetString("HintToolTipImageResources", resourceCulture);
             }
         }
         

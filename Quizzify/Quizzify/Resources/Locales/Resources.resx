@@ -137,7 +137,7 @@
     <value>Help Me</value>
     <comment>TextBlock в подменю настроек - "Помогите мне"</comment>
   </data>
-  <data name="HintToolTipToggleButtonResources" xml:space="preserve">
+  <data name="HintToolTipImageResources" xml:space="preserve">
     <value>You will be automatically logged in the app starts until you log in from somewhere else.</value>
     <comment>Тест, который высвечивается при наведении на значок "i"(информация)</comment>
   </data>

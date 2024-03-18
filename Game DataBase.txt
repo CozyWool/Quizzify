@@ -1,24 +1,24 @@
-CREATE TABLE roles
+CREATE TABLE Roles
 (
-	id SERIAL PRIMARY KEY NOT NULL,
-	name VARCHAR(50) NOT NULL UNIQUE
+	role_id_pk SERIAL PRIMARY KEY,
+	role_name VARCHAR(50) NOT NULL UNIQUE
 );
 
-CREATE TABLE sessions
+CREATE TABLE Sessions
 (
-	id SERIAL PRIMARY KEY NOT NULL,
-	date_creation TIMESTAMPTZ NOT NULL,
-	package_questions_id INT NOT NULL,
-	FOREIGN KEY(package_questions_id) REFERENCES package_questions(id)
+	session_id_pk SERIAL PRIMARY KEY,
+	date_creation DATE NOT NULL DEFAULT(CURRENT_DATE),
+	package_fk INT NOT NULL,
+	CONSTRAINT package_id_fk FOREIGN KEY(package_fk) REFERENCES Packages(package_id_pk) ON DELETE CASCADE
 );
 
-CREATE TABLE players_in_sessions
+CREATE TABLE SessionPlayers
 (
-	id SERIAL PRIMARY KEY NOT NULL,
-	player_id INT NOT NULL,
-	session_id INT NOT NULL,
-	roles_id INT NOT NULL,
-	FOREIGN KEY(player_id) REFERENCES players(id),
-	FOREIGN KEY(session_id) REFERENCES sessions(id),
-	FOREIGN KEY(roles_id) REFERENCES roles(id)
+	id_sessionPlayer_pk SERIAL PRIMARY KEY,
+	player_fk INT NOT NULL,
+	session_fk INT NOT NULL,
+	roles_fk INT NOT NULL,
+	CONSTRAINT player_id_fk FOREIGN KEY(player_fk) REFERENCES Players(player_id_pk) ON DELETE CASCADE,
+	CONSTRAINT session_id_fk FOREIGN KEY(session_fk) REFERENCES Sessions(session_id_pk) ON DELETE CASCADE,
+	CONSTRAINT roles_id_fk FOREIGN KEY(roles_fk) REFERENCES Roles(role_id_pk) ON DELETE CASCADE
 );

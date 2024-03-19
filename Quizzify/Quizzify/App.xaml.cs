@@ -19,17 +19,6 @@ public partial class App : Application
             var userDirectory = Path.Combine(userProfileDirectory, "AppData", "Local", projectName, "Locales");
             var filePath = Path.Combine(userDirectory, "appsettings.json");
 
-
-            /*
-             * Код с директорией временный. В будущем это переедет во viewmodel по смене языка. Но если самостоятельно создать appsettings.json с таким содержими:
-             * {
-             *  "Language": {
-             *      "Code": "en-US"
-             *   }
-             * }
-             * меняя значение на ru-RU - локаль приложения будет меняться на русский. Меняя обратно на en-US - локаль будет возвращена на английский.
-            */
-
             if (!Directory.Exists(userDirectory))
             {
                 Directory.CreateDirectory(userDirectory);

@@ -7,33 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
-        <Grid Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Text="{x:Static resource:Resources.AuthorizationButtonResources}"/>
-            <TextBlock Grid.Row="1" Text="{x:Static resource:Resources.EnterAccountTextBlockResources}"/>
-            <TextBlock Grid.Row="2" Text="{x:Static resource:Resources.LanguageTextBlockResources}"/>
-            <TextBlock Grid.Row="3" Text="{x:Static resource:Resources.LoginTextBlockResources}"/>
-            <TextBlock Grid.Row="4" Text="{x:Static resource:Resources.RegisterOnTextBlockResources}"/>
-        </Grid>
-
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <ToggleButton Grid.Row="0" Width="100" Height="20" Margin="5" Content="Русский"/>
-            <ToggleButton Grid.Row="1" Width="100" Height="20" Margin="5" Content="English"/>
-        </Grid>
+        
     </Grid>
 </Window>

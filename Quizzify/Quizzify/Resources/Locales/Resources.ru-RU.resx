@@ -165,12 +165,12 @@
     <value>Зарегистрироваться</value>
     <comment>Кнопка "Зарегистрироваться"</comment>
   </data>
+  <data name="RememberMeTextBlockResource" xml:space="preserve">
+    <value>Запомнить мой аккаунт</value>
+    <comment>TextBlock "Оставаться в сети"</comment>
+  </data>
   <data name="SettingsTextBlockResources" xml:space="preserve">
     <value>Настройки</value>
     <comment>TextBlock в подменю настроек - "Настройки"</comment>
-  </data>
-  <data name="StayOnlineTextBlockResources" xml:space="preserve">
-    <value>Оставаться в сети</value>
-    <comment>TextBlock "Оставаться в сети"</comment>
   </data>
 </root>

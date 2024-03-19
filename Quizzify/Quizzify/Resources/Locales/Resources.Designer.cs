@@ -169,20 +169,20 @@ namespace Quizzify.Resources.Locales {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Keep me logged in.
+        /// </summary>
+        public static string RememberMeTextBlockResource {
+            get {
+                return ResourceManager.GetString("RememberMeTextBlockResource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Settings.
         /// </summary>
         public static string SettingsTextBlockResources {
             get {
                 return ResourceManager.GetString("SettingsTextBlockResources", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Keep me logged in.
-        /// </summary>
-        public static string StayOnlineTextBlockResources {
-            get {
-                return ResourceManager.GetString("StayOnlineTextBlockResources", resourceCulture);
             }
         }
     }

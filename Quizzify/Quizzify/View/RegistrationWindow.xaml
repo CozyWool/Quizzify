@@ -1,0 +1,33 @@
+﻿<Window x:Class="Quizzify.View.RegistrationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Quizzify.View"
+        mc:Ignorable="d"
+        Title="RegistrationWindow" Height="600" Width="350" WindowStartupLocation="CenterScreen">
+    <Grid Background="White">
+        <Border Margin="5" Padding="15">
+            <StackPanel>
+                <TextBlock x:Name="RegisterHeaderTextBlockResources" FontSize="30" FontWeight="Bold" Margin="0,0,0,20" Text="Register"/>
+
+                <TextBlock x:Name="LoginTextBlockResources" Text="Login" Height="30"/>
+                <TextBox x:Name="LoginTextBox" Height="30"/>
+
+                <TextBlock x:Name="PasswordTextBlockResources" Text="Password" Height="30"/>
+                <PasswordBox x:Name="PasswordBox" Height="30"/>
+
+                <TextBlock x:Name="EmailTextBlockResources" Text="E-mail" Height="30"/>
+                <TextBox x:Name="EmailTextBox" Height="30"/>
+
+                <TextBlock x:Name="SecretQuestionTextBlockResources" Text="Secret question" Height="30"/>
+                <ComboBox x:Name="SecretQuestionComboBox" Height="30" />
+                <TextBox x:Name="AnswerSecretQuestionTextBox" Height="30"/>
+
+                <Button x:Name="RegistrationButtonResources" Content="Registration" Margin="0,20"/>
+
+                <TextBlock x:Name="ExistingAccountTextBlockResources" Text="Existing Account?" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

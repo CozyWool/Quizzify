@@ -118,8 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AuthorizationButtonResources" xml:space="preserve">
-    <value>Authorization</value>
+    <value>Sign in</value>
     <comment>Кнопка "Авторизация"</comment>
+  </data>
+  <data name="AuthorizationHeaderTextBlockResources" xml:space="preserve">
+    <value>Authorization</value>
+    <comment>TextBlock заголовок "Вход" в форме авторизации</comment>
   </data>
   <data name="EmailTextBlockResources" xml:space="preserve">
     <value>Email</value>
@@ -157,6 +161,10 @@
     <value>Password</value>
     <comment>TextBlock "Пароль"</comment>
   </data>
+  <data name="RegisterHeaderTextBlockResources" xml:space="preserve">
+    <value>Register</value>
+    <comment>TextBlock заголовок "Регистрация" в форме регистрации</comment>
+  </data>
   <data name="RegisterOnTextBlockResources" xml:space="preserve">
     <value>Create Account</value>
     <comment>TextBlock "Создать аккаунт"</comment>
@@ -168,6 +176,10 @@
   <data name="RememberMeTextBlockResource" xml:space="preserve">
     <value>Keep me logged in</value>
     <comment>TextBlock "Оставаться в сети"</comment>
+  </data>
+  <data name="SecretQuestionTextBlockResources" xml:space="preserve">
+    <value>Secret question</value>
+    <comment>TextBlock "Секретный вопрос" для формы регистрации</comment>
   </data>
   <data name="SettingsTextBlockResources" xml:space="preserve">
     <value>Settings</value>

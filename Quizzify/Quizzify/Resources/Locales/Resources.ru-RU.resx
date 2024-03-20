@@ -118,8 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AuthorizationButtonResources" xml:space="preserve">
-    <value>Авторизация</value>
-    <comment>Кнопка "Авторизация"</comment>
+    <value>Войти</value>
+    <comment>Кнопка "Войти"</comment>
+  </data>
+  <data name="AuthorizationHeaderTextBlockResources" xml:space="preserve">
+    <value>Вход</value>
+    <comment>TextBlock заголовок "Вход" в окне авторизации</comment>
   </data>
   <data name="EmailTextBlockResources" xml:space="preserve">
     <value>Эл. почта</value>
@@ -157,6 +161,10 @@
     <value>Пароль</value>
     <comment>TextBlock "Пароль"</comment>
   </data>
+  <data name="RegisterHeaderTextBlockResources" xml:space="preserve">
+    <value>Регистрация</value>
+    <comment>TextBlock заголовок "Регистрация" в окне регистрации</comment>
+  </data>
   <data name="RegisterOnTextBlockResources" xml:space="preserve">
     <value>Зарегистрируйтесь</value>
     <comment>TextBlock "Создать аккаунт"</comment>
@@ -168,6 +176,10 @@
   <data name="RememberMeTextBlockResource" xml:space="preserve">
     <value>Запомнить мой аккаунт</value>
     <comment>TextBlock "Оставаться в сети"</comment>
+  </data>
+  <data name="SecretQuestionTextBlockResources" xml:space="preserve">
+    <value>Секретный вопрос</value>
+    <comment>TextBlock "Секретный вопрос"</comment>
   </data>
   <data name="SettingsTextBlockResources" xml:space="preserve">
     <value>Настройки</value>

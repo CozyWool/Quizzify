@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Quizzify.Settings;
+namespace Quizzify.Settings.Language;
 public class LanguageSettings
 {
     [JsonProperty("Code")]

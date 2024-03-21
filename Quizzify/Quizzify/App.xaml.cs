@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using Quizzify.Settings;
+using Quizzify.Settings.Language;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -13,40 +13,49 @@ public partial class App : Application
     {
         try
         {
-            var userProfileDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            var projectName = Assembly.GetExecutingAssembly().GetName().Name;
+            var filePath = GetLocalizationFilePath();
 
-            var userDirectory = Path.Combine(userProfileDirectory, "AppData", "Local", projectName, "Locales");
-            var filePath = Path.Combine(userDirectory, "appsettings.json");
-
-            if (!Directory.Exists(userDirectory))
+            if (!string.IsNullOrEmpty(filePath))
             {
-                Directory.CreateDirectory(userDirectory);
-            }
-
-            else if (File.Exists(filePath))
-            {
-                var jsonData = File.ReadAllText(filePath);
-                var mainSettings = JsonConvert.DeserializeObject<MainSettings>(jsonData);
-
-                string languageCode = mainSettings?.languageSettings.LangCode;
-
-                if (!string.IsNullOrEmpty(languageCode))
+                var mainSettings = LoadMainSettings(filePath);
+                if (mainSettings != null)
                 {
-                    SetApplicationLanguage(languageCode);
+                    var languageCode = mainSettings?.languageSettings.LangCode;
+
+                    if (languageCode != null)
+                    {
+                        SetApplicationLanguage(languageCode);
+                        return;
+                    }
+                    ShowMessage("В файле локализации нет информации о языке");
                 }
             }
-            else
-            {
-                ShowMessage("Файл локализации не найден.");
-            }
-
-        }
+            else ShowMessage("Файл локализации не найден.");
+        } 
         catch (Exception ex)
         {
             ShowMessage($"Произошла ошибка при загрузке настроек: {ex.Message}");
         }
         base.OnStartup(e);
+    }
+
+    private string GetLocalizationFilePath()
+    {
+        var userProfileDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        var projectName = Assembly.GetExecutingAssembly().GetName().Name;
+        var userDirectory = Path.Combine(userProfileDirectory, "AppData", "Local", projectName, "Locales");
+        var filePath = Path.Combine(userDirectory, "appsettings.json");
+
+        return File.Exists(filePath) ? filePath : null;
+    }
+
+    private MainSettings LoadMainSettings(string filePath)
+    {
+        string jsonData;
+        using var reader = new StreamReader(filePath);
+        jsonData = reader.ReadToEnd();
+
+        return JsonConvert.DeserializeObject<MainSettings>(jsonData);
     }
 
     private void SetApplicationLanguage(string languageCode)
@@ -55,8 +64,5 @@ public partial class App : Application
         Thread.CurrentThread.CurrentUICulture = new CultureInfo(languageCode);
     }
 
-    private void ShowMessage(string message)
-    {
-        MessageBox.Show(message);
-    }
+    private void ShowMessage(string message) => MessageBox.Show(message);
 }

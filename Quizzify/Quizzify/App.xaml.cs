@@ -17,31 +17,22 @@ public partial class App : Application
 
     private void ApplyCultureFromSettingsFile()
     {
-        try
+        var filePath = GetLocalizationFilePath();
+        if (!string.IsNullOrEmpty(filePath))
         {
-            var filePath = GetLocalizationFilePath();
-
-            if (!string.IsNullOrEmpty(filePath))
+            var mainSettings = LoadMainSettings(filePath);
+            if (!MainSettings.IsNullOrEmpty(mainSettings))
             {
-                var mainSettings = LoadMainSettings(filePath);
-                if (!MainSettings.IsNullOrEmpty(mainSettings))
+                var languageCode = mainSettings?.languageSettings.LangCode;
+                if (!string.IsNullOrEmpty(languageCode))
                 {
-                    var languageCode = mainSettings?.languageSettings.LangCode;
-
-                    if (!string.IsNullOrEmpty(languageCode))
-                    {
-                        SetApplicationLanguage(languageCode);
-                        return;
-                    }
-                    ShowMessage("В файле локализации нет информации о языке");
+                    SetApplicationLanguage(languageCode);
+                    return;
                 }
+                ShowMessage("В файле локализации нет информации о языке");
             }
-            else ShowMessage("Файл локализации не найден.");
         }
-        catch (Exception ex)
-        {
-            ShowMessage($"Произошла ошибка при загрузке настроек: {ex.Message}");
-        }
+        else ShowMessage("Файл локализации не найден.");
     }
 
     private string GetLocalizationFilePath()
@@ -56,11 +47,25 @@ public partial class App : Application
 
     private MainSettings LoadMainSettings(string filePath)
     {
-        string jsonData;
-        using var reader = new StreamReader(filePath);
-        jsonData = reader.ReadToEnd();
+        try
+        {
+            string jsonData;
+            using var reader = new StreamReader(filePath);
+            jsonData = reader.ReadToEnd();
 
-        return JsonConvert.DeserializeObject<MainSettings>(jsonData);
+            if (!string.IsNullOrEmpty(jsonData))
+            {
+                return JsonConvert.DeserializeObject<MainSettings>(jsonData);
+            }
+
+            ShowMessage(HandleException(new Exception(), "Файл настроек локализации пуст"));
+            return null;
+        }
+        catch(Exception ex)
+        {
+            ShowMessage(HandleException(ex, "Произошла ошибка при загрузке файла с настройками: "));
+            return null;
+        }
     }
 
     private void SetApplicationLanguage(string languageCode)
@@ -70,4 +75,6 @@ public partial class App : Application
     }
 
     private void ShowMessage(string message) => MessageBox.Show(message);
+
+    private string HandleException(Exception ex, string message) => $"{message} {ex.Message}";
 }

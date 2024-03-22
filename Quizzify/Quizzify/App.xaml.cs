@@ -28,7 +28,7 @@ public partial class App : Application
                 {
                     var languageCode = mainSettings?.languageSettings.LangCode;
 
-                    if (languageCode != null)
+                    if (!string.IsNullOrEmpty(languageCode))
                     {
                         SetApplicationLanguage(languageCode);
                         return;

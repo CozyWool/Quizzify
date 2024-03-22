@@ -11,6 +11,12 @@ public partial class App : Application
 {
     protected override void OnStartup(StartupEventArgs e)
     {
+        ApplyCultureFromSettingsFile();
+        base.OnStartup(e);
+    }
+
+    private void ApplyCultureFromSettingsFile()
+    {
         try
         {
             var filePath = GetLocalizationFilePath();
@@ -31,12 +37,11 @@ public partial class App : Application
                 }
             }
             else ShowMessage("Файл локализации не найден.");
-        } 
+        }
         catch (Exception ex)
         {
             ShowMessage($"Произошла ошибка при загрузке настроек: {ex.Message}");
         }
-        base.OnStartup(e);
     }
 
     private string GetLocalizationFilePath()

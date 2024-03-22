@@ -24,7 +24,7 @@ public partial class App : Application
             if (!string.IsNullOrEmpty(filePath))
             {
                 var mainSettings = LoadMainSettings(filePath);
-                if (mainSettings != null)
+                if (!MainSettings.IsNullOrEmpty(mainSettings))
                 {
                     var languageCode = mainSettings?.languageSettings.LangCode;
 

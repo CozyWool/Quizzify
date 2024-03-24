@@ -9,6 +9,11 @@ namespace Quizzify;
 
 public partial class App : Application
 {
+    private const string appDataFolder = "AppData";
+    private const string localFolder = "Local";
+    private const string settingsFile = "appsettings.json";
+    private const string localesFolder = "Locales";
+
     protected override void OnStartup(StartupEventArgs e)
     {
         ApplyCultureFromSettingsFile();
@@ -35,12 +40,13 @@ public partial class App : Application
         else ShowMessage("Файл локализации не найден.");
     }
 
+
     private string GetLocalizationFilePath()
     {
         var userProfileDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         var projectName = Assembly.GetExecutingAssembly().GetName().Name;
-        var userDirectory = Path.Combine(userProfileDirectory, "AppData", "Local", projectName, "Locales");
-        var filePath = Path.Combine(userDirectory, "appsettings.json");
+        var localizationFolderPath = Path.Combine(userProfileDirectory, appDataFolder, localFolder, projectName, localesFolder);
+        var filePath = Path.Combine(localizationFolderPath, settingsFile);
 
         return File.Exists(filePath) ? filePath : null;
     }

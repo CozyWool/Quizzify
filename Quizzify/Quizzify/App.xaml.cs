@@ -48,6 +48,23 @@ public partial class App : Application
         var localizationFolderPath = Path.Combine(userProfileDirectory, appDataFolder, localFolder, projectName, localesFolder);
         var filePath = Path.Combine(localizationFolderPath, settingsFile);
 
+
+        if (!Directory.Exists(localizationFolderPath))
+        {
+            Directory.CreateDirectory(localizationFolderPath);
+        }
+
+        if (!File.Exists(filePath))
+        {
+            var settings = new MainSettings
+            {
+                languageSettings = new LanguageSettings { LangCode = "ru-RU" }
+            };
+
+            string json = JsonConvert.SerializeObject(settings, Formatting.Indented);
+            File.WriteAllText(filePath, json);
+        }
+
         return File.Exists(filePath) ? filePath : null;
     }
 

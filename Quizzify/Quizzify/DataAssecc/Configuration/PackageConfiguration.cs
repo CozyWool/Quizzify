@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Quizzify.DataContext;
+using Quizzify.DataAssecc.Entities;
 
-namespace EntityFrameworkExample.DataAccess.Configurations;
+namespace Quizzify.DataAssecc.Configuration;
 
-public class PackageModelConfiguration : IEntityTypeConfiguration<Package>
+public class PackageConfiguration : IEntityTypeConfiguration<Package>
 {
     void IEntityTypeConfiguration<Package>.Configure(EntityTypeBuilder<Package> builder)
     {

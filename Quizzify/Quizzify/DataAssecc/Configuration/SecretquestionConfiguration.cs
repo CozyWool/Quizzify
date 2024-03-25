@@ -1,15 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Quizzify.DataContext;
+using Quizzify.DataAssecc.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Quizzify.Configuration
+namespace Quizzify.DataAssecc.Configuration
 {
-    internal class SecretquestionModelConfiguration : IEntityTypeConfiguration<Secretquestion>
+    internal class SecretquestionConfiguration : IEntityTypeConfiguration<Secretquestion>
     {
         void IEntityTypeConfiguration<Secretquestion>.Configure(EntityTypeBuilder<Secretquestion> builder)
         {

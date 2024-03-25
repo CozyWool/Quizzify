@@ -41,8 +41,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Models\" />
-      <Folder Include="Contexts\" />
+      <Folder Include="DataAssecc\Entities\" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Quizzify.DataContext;
+namespace Quizzify.DataAssecc.Entities;
 
 public class Package
 {

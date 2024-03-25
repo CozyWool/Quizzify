@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Quizzify.DataAccess;
+using Quizzify.DataAssecc.Contexts;
 
 #nullable disable
 
 namespace Quizzify.Migrations
 {
-    [DbContext(typeof(DbquizzifyContext))]
-    [Migration("20240324145509_initial")]
-    partial class initial
+    [DbContext(typeof(DbQuizzifyContext))]
+    [Migration("20240325221921_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace Quizzify.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Quizzify.DataContext.Package", b =>
+            modelBuilder.Entity("Quizzify.DataAssecc.Entities.Package", b =>
                 {
                     b.Property<int>("PackageId")
                         .ValueGeneratedOnAdd()
@@ -56,7 +56,7 @@ namespace Quizzify.Migrations
                     b.ToTable("packages", (string)null);
                 });
 
-            modelBuilder.Entity("Quizzify.DataContext.Player", b =>
+            modelBuilder.Entity("Quizzify.DataAssecc.Entities.Player", b =>
                 {
                     b.Property<int>("PlayerId")
                         .ValueGeneratedOnAdd()
@@ -92,7 +92,7 @@ namespace Quizzify.Migrations
                     b.ToTable("players", (string)null);
                 });
 
-            modelBuilder.Entity("Quizzify.DataContext.Question", b =>
+            modelBuilder.Entity("Quizzify.DataAssecc.Entities.Question", b =>
                 {
                     b.Property<int>("QuestionId")
                         .ValueGeneratedOnAdd()
@@ -142,7 +142,7 @@ namespace Quizzify.Migrations
                     b.ToTable("questions", (string)null);
                 });
 
-            modelBuilder.Entity("Quizzify.DataContext.Round", b =>
+            modelBuilder.Entity("Quizzify.DataAssecc.Entities.Round", b =>
                 {
                     b.Property<int>("RoundId")
                         .ValueGeneratedOnAdd()
@@ -175,7 +175,7 @@ namespace Quizzify.Migrations
                     b.ToTable("rounds", (string)null);
                 });
 
-            modelBuilder.Entity("Quizzify.DataContext.Secretquestion", b =>
+            modelBuilder.Entity("Quizzify.DataAssecc.Entities.Secretquestion", b =>
                 {
                     b.Property<int>("SecretQId")
                         .ValueGeneratedOnAdd()
@@ -195,7 +195,7 @@ namespace Quizzify.Migrations
                     b.ToTable("secretquestions", (string)null);
                 });
 
-            modelBuilder.Entity("Quizzify.DataContext.User", b =>
+            modelBuilder.Entity("Quizzify.DataAssecc.Entities.User", b =>
                 {
                     b.Property<Guid>("UserId")
                         .ValueGeneratedOnAdd()
@@ -253,11 +253,11 @@ namespace Quizzify.Migrations
                     b.ToTable("users", (string)null);
                 });
 
-            modelBuilder.Entity("Quizzify.DataContext.Player", b =>
+            modelBuilder.Entity("Quizzify.DataAssecc.Entities.Player", b =>
                 {
-                    b.HasOne("Quizzify.DataContext.User", "User")
+                    b.HasOne("Quizzify.DataAssecc.Entities.User", "User")
                         .WithOne("Player")
-                        .HasForeignKey("Quizzify.DataContext.Player", "UserId")
+                        .HasForeignKey("Quizzify.DataAssecc.Entities.Player", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("user_id_fk");
@@ -265,9 +265,9 @@ namespace Quizzify.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Quizzify.DataContext.Question", b =>
+            modelBuilder.Entity("Quizzify.DataAssecc.Entities.Question", b =>
                 {
-                    b.HasOne("Quizzify.DataContext.Round", "Round")
+                    b.HasOne("Quizzify.DataAssecc.Entities.Round", "Round")
                         .WithMany("Questions")
                         .HasForeignKey("RoundId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -277,9 +277,9 @@ namespace Quizzify.Migrations
                     b.Navigation("Round");
                 });
 
-            modelBuilder.Entity("Quizzify.DataContext.Round", b =>
+            modelBuilder.Entity("Quizzify.DataAssecc.Entities.Round", b =>
                 {
-                    b.HasOne("Quizzify.DataContext.Package", "Package")
+                    b.HasOne("Quizzify.DataAssecc.Entities.Package", "Package")
                         .WithMany("Rounds")
                         .HasForeignKey("PackageId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -289,9 +289,9 @@ namespace Quizzify.Migrations
                     b.Navigation("Package");
                 });
 
-            modelBuilder.Entity("Quizzify.DataContext.User", b =>
+            modelBuilder.Entity("Quizzify.DataAssecc.Entities.User", b =>
                 {
-                    b.HasOne("Quizzify.DataContext.Secretquestion", "SelectedSecretQuestion")
+                    b.HasOne("Quizzify.DataAssecc.Entities.Secretquestion", "SelectedSecretQuestion")
                         .WithMany("Users")
                         .HasForeignKey("SelectedSecretQuestionId")
                         .OnDelete(DeleteBehavior.SetNull)
@@ -300,22 +300,22 @@ namespace Quizzify.Migrations
                     b.Navigation("SelectedSecretQuestion");
                 });
 
-            modelBuilder.Entity("Quizzify.DataContext.Package", b =>
+            modelBuilder.Entity("Quizzify.DataAssecc.Entities.Package", b =>
                 {
                     b.Navigation("Rounds");
                 });
 
-            modelBuilder.Entity("Quizzify.DataContext.Round", b =>
+            modelBuilder.Entity("Quizzify.DataAssecc.Entities.Round", b =>
                 {
                     b.Navigation("Questions");
                 });
 
-            modelBuilder.Entity("Quizzify.DataContext.Secretquestion", b =>
+            modelBuilder.Entity("Quizzify.DataAssecc.Entities.Secretquestion", b =>
                 {
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("Quizzify.DataContext.User", b =>
+            modelBuilder.Entity("Quizzify.DataAssecc.Entities.User", b =>
                 {
                     b.Navigation("Player");
                 });

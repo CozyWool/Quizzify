@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Quizzify.DataAccess;
+using Quizzify.DataAssecc.Contexts;
 using System.IO;
 using System.Windows;
 
@@ -12,7 +12,7 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         _configuration = GetConnectionString();
-        new DbquizzifyContext(_configuration);
+        new DbQuizzifyContext(_configuration);
     }
     private IConfiguration GetConnectionString()
     {

@@ -16,11 +16,18 @@ namespace SerializeTest
 
         public async Task QFSerialize(PackEntity _packEntity)
         {
+            try
+            {
+
             string jsonSerialized = JsonConvert.SerializeObject(_packEntity).ToString();
             var saveFile = new SaveFileDialog();
             if (saveFile.ShowDialog() == true)
             {
                 await File.WriteAllTextAsync(saveFile.FileName + ".txt", jsonSerialized, Encoding.UTF8);
+            }
+            }catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 

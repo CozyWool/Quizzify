@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Quizzify.DataAssecc.Entities;
 
-public class Player
+public class PlayerEntity
 {
     public int PlayerId { get; set; }
 

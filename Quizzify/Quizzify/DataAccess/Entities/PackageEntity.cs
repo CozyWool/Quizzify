@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Quizzify.DataAssecc.Entities;
 
-public class Package
+public class PackageEntity
 {
     public int PackageId { get; set; }
 

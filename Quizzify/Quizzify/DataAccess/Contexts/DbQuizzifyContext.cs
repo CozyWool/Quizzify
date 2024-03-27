@@ -17,15 +17,15 @@ public partial class DbQuizzifyContext : DbContext
         : base(options)
     {
     }
-    public virtual DbSet<Package> Packages { get; set; }
+    public virtual DbSet<PackageEntity> Packages { get; set; }
 
-    public virtual DbSet<Player> Players { get; set; }
+    public virtual DbSet<PlayerEntity> Players { get; set; }
 
-    public virtual DbSet<Question> Questions { get; set; }
+    public virtual DbSet<QuestionEntity> Questions { get; set; }
 
     public virtual DbSet<Round> Rounds { get; set; }
 
-    public virtual DbSet<Secretquestion> Secretquestions { get; set; }
+    public virtual DbSet<SecretQuestion> Secretquestions { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
@@ -45,7 +45,7 @@ public partial class DbQuizzifyContext : DbContext
 
         modelBuilder.ApplyConfiguration(new RoundConfiguration());
 
-        modelBuilder.ApplyConfiguration(new SecretquestionConfiguration());
+        modelBuilder.ApplyConfiguration(new SecretQuestionConfiguration());
 
         modelBuilder.ApplyConfiguration(new UserConfiguration());
     }

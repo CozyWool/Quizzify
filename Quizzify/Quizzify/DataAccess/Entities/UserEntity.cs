@@ -21,7 +21,7 @@ public class User
 
     public byte[] GoogleAuthorization { get; set; }
 
-    public virtual Player Player { get; set; }
+    public virtual PlayerEntity Player { get; set; }
 
-    public virtual Secretquestion SelectedSecretQuestion { get; set; }
+    public virtual SecretQuestion SelectedSecretQuestion { get; set; }
 }

@@ -4,22 +4,38 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Quizzify.View"
+                xmlns:res="clr-namespace:Quizzify.Resources.Locales"
         mc:Ignorable="d"
         Title="AuthorizationWindow" Height="500" Width="350" WindowStartupLocation="CenterScreen">
     <Grid Background="White">
         <Border Margin="5" Padding="15">
             <StackPanel>
-                <TextBlock x:Name="AuthorizationHeaderTextBlockResources" FontSize="30" FontWeight="Bold" Margin="0,0,0,20" Text="Authorization"/>
+                <!-- Заголовок "Вход" -->
+                <TextBlock FontSize="30" FontWeight="Bold" Margin="0,0,0,20" Text="{x:Static res:Resources.AuthorizationHeaderTextBlockResources}"/>
 
-                <TextBlock x:Name="LoginTextBlockResources" Text="Login" Height="30"/>
+                <!-- Меню настроек. Вместо "О" будет иконка шестерни -->
+                <Menu x:Name="SettingsMenu" HorizontalAlignment="Right">
+                    <MenuItem Header="O">
+                        <MenuItem Header="{x:Static res:Resources.LanguageTextBlockResources}">
+                            <MenuItem x:Name="LanguageEngSubMenu" Header="English"/>
+                            <MenuItem x:Name="LanguageRusSubMenu" Header="Русский"/>
+                        </MenuItem>
+                    </MenuItem>
+                </Menu>
+
+                <!-- Блок с логином -->
+                <TextBlock Text="{x:Static res:Resources.LoginTextBlockResources}" Height="30"/>
                 <TextBox x:Name="LoginTextBox" Height="30"/>
 
-                <TextBlock x:Name="PasswordTextBlockResources" Text="Password" Height="30"/>
+                <!-- Блок с паролем -->
+                <TextBlock Text="{x:Static res:Resources.PasswordTextBlockResources}" Height="30"/>
                 <PasswordBox x:Name="PasswordBox" Height="30"/>
 
-                <Button x:Name="AuthorizationButtonResources" Content="Sign in" Margin="0,20"/>
+                <!-- Кнопка "Войти" -->
+                <Button Content="{x:Static res:Resources.AuthorizationButtonResources}" Margin="0,20"/>
 
-                <TextBlock x:Name="ExistingAccountTextBlockResources" Text="No Account?" HorizontalAlignment="Center"/>
+                <!-- Текстблок "Нет аккаунта?" -->
+                <TextBlock Text="{x:Static res:Resources.NoAccountTextBlockResources}" HorizontalAlignment="Center"/>
             </StackPanel>
         </Border>
     </Grid>

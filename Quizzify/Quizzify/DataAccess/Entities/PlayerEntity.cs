@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Quizzify.DataAssecc.Entities;
+﻿namespace Quizzify.DataAccess.Entities;
 
 public class PlayerEntity
 {

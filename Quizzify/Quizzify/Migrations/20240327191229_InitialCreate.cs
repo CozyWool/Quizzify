@@ -13,7 +13,7 @@ namespace Quizzify.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "packages",
+                name: "Packages",
                 columns: table => new
                 {
                     package_id = table.Column<int>(type: "integer", nullable: false)
@@ -28,7 +28,7 @@ namespace Quizzify.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "secretquestions",
+                name: "SecretQuestions",
                 columns: table => new
                 {
                     secret_q_id = table.Column<int>(type: "integer", nullable: false)
@@ -41,7 +41,7 @@ namespace Quizzify.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "rounds",
+                name: "Rounds",
                 columns: table => new
                 {
                     round_id = table.Column<int>(type: "integer", nullable: false)
@@ -56,13 +56,13 @@ namespace Quizzify.Migrations
                     table.ForeignKey(
                         name: "rounds_package_id_fk",
                         column: x => x.package_id,
-                        principalTable: "packages",
+                        principalTable: "Packages",
                         principalColumn: "package_id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "users",
+                name: "Users",
                 columns: table => new
                 {
                     user_id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "uuid_generate_v4()"),
@@ -80,13 +80,13 @@ namespace Quizzify.Migrations
                     table.ForeignKey(
                         name: "secret_question_fk",
                         column: x => x.selected_secret_question_id,
-                        principalTable: "secretquestions",
+                        principalTable: "SecretQuestions",
                         principalColumn: "secret_q_id",
                         onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
-                name: "questions",
+                name: "Questions",
                 columns: table => new
                 {
                     question_id = table.Column<int>(type: "integer", nullable: false)
@@ -106,13 +106,13 @@ namespace Quizzify.Migrations
                     table.ForeignKey(
                         name: "questions_round_id_fk",
                         column: x => x.round_id,
-                        principalTable: "rounds",
+                        principalTable: "Rounds",
                         principalColumn: "round_id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "players",
+                name: "Players",
                 columns: table => new
                 {
                     player_id = table.Column<int>(type: "integer", nullable: false)
@@ -128,41 +128,41 @@ namespace Quizzify.Migrations
                     table.ForeignKey(
                         name: "user_id_fk",
                         column: x => x.user_id,
-                        principalTable: "users",
+                        principalTable: "Users",
                         principalColumn: "user_id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "players_user_id_key",
-                table: "players",
+                table: "Players",
                 column: "user_id",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_questions_round_id",
-                table: "questions",
+                name: "IX_Questions_round_id",
+                table: "Questions",
                 column: "round_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_rounds_package_id",
-                table: "rounds",
+                name: "IX_Rounds_package_id",
+                table: "Rounds",
                 column: "package_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_users_selected_secret_question_id",
-                table: "users",
+                name: "IX_Users_selected_secret_question_id",
+                table: "Users",
                 column: "selected_secret_question_id");
 
             migrationBuilder.CreateIndex(
                 name: "users_email_key",
-                table: "users",
+                table: "Users",
                 column: "email",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "users_login_key",
-                table: "users",
+                table: "Users",
                 column: "login",
                 unique: true);
         }
@@ -171,22 +171,22 @@ namespace Quizzify.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "players");
+                name: "Players");
 
             migrationBuilder.DropTable(
-                name: "questions");
+                name: "Questions");
 
             migrationBuilder.DropTable(
-                name: "users");
+                name: "Users");
 
             migrationBuilder.DropTable(
-                name: "rounds");
+                name: "Rounds");
 
             migrationBuilder.DropTable(
-                name: "secretquestions");
+                name: "SecretQuestions");
 
             migrationBuilder.DropTable(
-                name: "packages");
+                name: "Packages");
         }
     }
 }

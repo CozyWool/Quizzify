@@ -1,19 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Quizzify.DataAssecc.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Quizzify.DataAccess.Entities;
 
-internal class RoundConfiguration : IEntityTypeConfiguration<RoundEntity>
+namespace Quizzify.DataAccess.Configuration;
+
+public class RoundConfiguration : IEntityTypeConfiguration<RoundEntity>
 {
     void IEntityTypeConfiguration<RoundEntity>.Configure(EntityTypeBuilder<RoundEntity> builder)
     {
         builder.HasKey(e => e.RoundId).HasName("rounds_pkey");
 
-        builder.ToTable("rounds");
+        builder.ToTable("Rounds");
 
         builder.Property(e => e.RoundId).HasColumnName("round_id");
         builder.Property(e => e.Name)

@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Quizzify.DataAssecc.Configuration;
-using Quizzify.DataAssecc.Entities;
+using Quizzify.DataAccess.Configuration;
+using Quizzify.DataAccess.Entities;
 
-namespace Quizzify.DataAssecc.Contexts;
+namespace Quizzify.DataAccess.Contexts;
 
 public partial class DbQuizzifyContext : DbContext
 {

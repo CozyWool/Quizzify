@@ -1,26 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Quizzify.DataAssecc.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Quizzify.DataAccess.Entities;
 
-namespace Quizzify.DataAssecc.Configuration
+namespace Quizzify.DataAccess.Configuration;
+
+public class SecretQuestionConfiguration : IEntityTypeConfiguration<SecretQuestionEntity>
 {
-    internal class SecretQuestionConfiguration : IEntityTypeConfiguration<SecretQuestionEntity>
+    void IEntityTypeConfiguration<SecretQuestionEntity>.Configure(EntityTypeBuilder<SecretQuestionEntity> builder)
     {
-        void IEntityTypeConfiguration<SecretQuestionEntity>.Configure(EntityTypeBuilder<SecretQuestionEntity> builder)
-        {
-            builder.HasKey(e => e.SecretQId).HasName("secretquestions_pkey");
+        builder.HasKey(e => e.SecretQId).HasName("secretquestions_pkey");
 
-            builder.ToTable("secretquestions");
+        builder.ToTable("SecretQuestions");
 
-            builder.Property(e => e.SecretQId).HasColumnName("secret_q_id");
-            builder.Property(e => e.QuestionText)
-                .IsRequired()
-                .HasColumnName("question_text");
-        }
+        builder.Property(e => e.SecretQId).HasColumnName("secret_q_id");
+        builder.Property(e => e.QuestionText)
+            .IsRequired()
+            .HasColumnName("question_text");
     }
 }

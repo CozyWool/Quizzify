@@ -61,11 +61,20 @@ namespace Quizzify.Resources.Locales {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Authorization.
+        ///   Ищет локализованную строку, похожую на Sign in.
         /// </summary>
         public static string AuthorizationButtonResources {
             get {
                 return ResourceManager.GetString("AuthorizationButtonResources", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Authorization.
+        /// </summary>
+        public static string AuthorizationHeaderTextBlockResources {
+            get {
+                return ResourceManager.GetString("AuthorizationHeaderTextBlockResources", resourceCulture);
             }
         }
         
@@ -151,6 +160,15 @@ namespace Quizzify.Resources.Locales {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Register.
+        /// </summary>
+        public static string RegisterHeaderTextBlockResources {
+            get {
+                return ResourceManager.GetString("RegisterHeaderTextBlockResources", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Create Account.
         /// </summary>
         public static string RegisterOnTextBlockResources {
@@ -174,6 +192,15 @@ namespace Quizzify.Resources.Locales {
         public static string RememberMeTextBlockResource {
             get {
                 return ResourceManager.GetString("RememberMeTextBlockResource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Secret question.
+        /// </summary>
+        public static string SecretQuestionTextBlockResources {
+            get {
+                return ResourceManager.GetString("SecretQuestionTextBlockResources", resourceCulture);
             }
         }
         

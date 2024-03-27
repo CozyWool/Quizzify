@@ -1,0 +1,51 @@
+﻿<Window x:Class="Quizzify.View.RegistrationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Quizzify.View"
+                xmlns:res="clr-namespace:Quizzify.Resources.Locales"
+        mc:Ignorable="d"
+        Title="RegistrationWindow" Height="600" Width="350" WindowStartupLocation="CenterScreen">
+    <Grid Background="White">
+        <Border Margin="5" Padding="15">
+            <StackPanel>
+                <!-- Заголовок "Регистрация" -->
+                <TextBlock FontSize="30" FontWeight="Bold" Margin="0,0,0,20" Text="{x:Static res:Resources.RegisterHeaderTextBlockResources}"/>
+
+                <!-- Меню настроек. Вместо "О" будет иконка шестерни -->
+                <Menu x:Name="SettingsMenu" HorizontalAlignment="Right">
+                    <MenuItem Header="O">
+                        <MenuItem Header="{x:Static res:Resources.LanguageTextBlockResources}">
+                            <MenuItem x:Name="LanguageEngSubMenu" Header="English"/>
+                            <MenuItem x:Name="LanguageRusSubMenu" Header="Русский"/>
+                        </MenuItem>
+                    </MenuItem>
+                </Menu>
+
+                <!-- Блок с логином -->
+                <TextBlock Text="{x:Static res:Resources.LoginTextBlockResources}" Height="30"/>
+                <TextBox x:Name="LoginTextBox" Height="30"/>
+
+                <!-- Блок с паролем -->
+                <TextBlock Text="{x:Static res:Resources.PasswordTextBlockResources}" Height="30"/>
+                <PasswordBox x:Name="PasswordBox" Height="30"/>
+
+                <!-- Блок с электронной почтой -->
+                <TextBlock Text="{x:Static res:Resources.EmailTextBlockResources}" Height="30"/>
+                <TextBox x:Name="EmailTextBox" Height="30"/>
+
+                <!-- Блок с секретным вопросом -->
+                <TextBlock Text="{x:Static res:Resources.SecretQuestionTextBlockResources}" Height="30"/>
+                <ComboBox x:Name="SecretQuestionComboBox" Height="30" />
+                <TextBox x:Name="AnswerSecretQuestionTextBox" Height="30"/>
+
+                <!-- Кнопка "Зарегистрироваться" -->
+                <Button Content="{x:Static res:Resources.RegistrationButtonResources}" Margin="0,20"/>
+
+                <!-- Текстблок кликабельный "Существует аккаунт?" -->
+                <TextBlock Text="{x:Static res:Resources.ExistingAccountTextBlockResources}" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

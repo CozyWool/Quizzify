@@ -1,11 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Quizzify.DataAssecc.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Quizzify.DataAccess.Entities;
+
+namespace Quizzify.DataAccess.Configuration;
 
 public class PlayerConfiguration : IEntityTypeConfiguration<PlayerEntity>
 {
@@ -13,7 +10,7 @@ public class PlayerConfiguration : IEntityTypeConfiguration<PlayerEntity>
     {
         builder.HasKey(e => e.PlayerId).HasName("players_pkey");
 
-        builder.ToTable("players");
+        builder.ToTable("Players");
 
         builder.HasIndex(e => e.UserId, "players_user_id_key").IsUnique();
 

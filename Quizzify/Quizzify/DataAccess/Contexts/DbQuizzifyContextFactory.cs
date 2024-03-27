@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Quizzify.DataAssecc.Contexts;
+
+namespace Quizzify.DataAccess.Contexts;
+
 public class DbQuizzifyContextFactory : IDesignTimeDbContextFactory<DbQuizzifyContext>
 {
     public DbQuizzifyContext CreateDbContext(string[] args)

@@ -1,19 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Quizzify.DataAssecc.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Quizzify.DataAccess.Entities;
 
-internal class QuestionConfiguration : IEntityTypeConfiguration<QuestionEntity>
+namespace Quizzify.DataAccess.Configuration;
+
+public class QuestionConfiguration : IEntityTypeConfiguration<QuestionEntity>
 {
     void IEntityTypeConfiguration<QuestionEntity>.Configure(EntityTypeBuilder<QuestionEntity> builder)
     {
         builder.HasKey(e => e.QuestionId).HasName("questions_pkey");
 
-        builder.ToTable("questions");
+        builder.ToTable("Questions");
 
         builder.Property(e => e.QuestionId).HasColumnName("question_id");
         builder.Property(e => e.AnswerImageUrl).HasColumnName("answer_image_url");

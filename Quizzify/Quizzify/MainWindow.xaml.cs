@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Quizzify.DataAssecc.Contexts;
 using System.IO;
 using System.Windows;
+using Quizzify.DataAccess.Contexts;
 
 namespace Quizzify;
 

@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Quizzify.DataAssecc.Entities;
+using Quizzify.DataAccess.Entities;
 
-namespace Quizzify.DataAssecc.Configuration;
+namespace Quizzify.DataAccess.Configuration;
 
 public class PackageConfiguration : IEntityTypeConfiguration<PackageEntity>
 {
@@ -10,7 +10,7 @@ public class PackageConfiguration : IEntityTypeConfiguration<PackageEntity>
     {
         builder.HasKey(e => e.PackageId).HasName("packages_pkey");
 
-        builder.ToTable("packages");
+        builder.ToTable("Packages");
 
         builder.Property(e => e.PackageId).HasColumnName("package_id");
 

@@ -14,17 +14,14 @@ public partial class MainWindow : Window
         InitializeComponent();
         _configuration = GetConnectionString();
         var db = new DbQuizzifyContext(_configuration);
-        db.Database.Migrate();  // миграция
+        db.Database.Migrate();
     }
 
     private IConfiguration GetConnectionString()
     {
         var builder = new ConfigurationBuilder();
-        // установка пути к текущему каталогу
         builder.SetBasePath(Directory.GetCurrentDirectory());
-        // получаем конфигурацию из файла appsettings.json
         builder.AddJsonFile("appsettings.json");
-        // создаем конфигурацию
         return builder.Build();
     }
 

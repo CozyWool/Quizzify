@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Quizzify.DataAssecc.Configuration
 {
-    internal class UserConfiguration : IEntityTypeConfiguration<User>
+    internal class UserConfiguration : IEntityTypeConfiguration<UserEntity>
     {
-        void IEntityTypeConfiguration<User>.Configure(EntityTypeBuilder<User> builder)
+        void IEntityTypeConfiguration<UserEntity>.Configure(EntityTypeBuilder<UserEntity> builder)
         {
             builder.HasKey(e => e.UserId).HasName("users_pkey");
 

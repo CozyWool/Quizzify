@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Quizzify.DataAssecc.Contexts;
 using System.IO;
 using System.Windows;
@@ -12,7 +13,8 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         _configuration = GetConnectionString();
-        new DbQuizzifyContext(_configuration);
+        var db = new DbQuizzifyContext(_configuration);
+        db.Database.Migrate();  // миграция
     }
     private IConfiguration GetConnectionString()
     {

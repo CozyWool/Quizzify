@@ -16,6 +16,7 @@ public partial class MainWindow : Window
         var db = new DbQuizzifyContext(_configuration);
         db.Database.Migrate();  // миграция
     }
+
     private IConfiguration GetConnectionString()
     {
         var builder = new ConfigurationBuilder();

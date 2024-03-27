@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Quizzify.DataAssecc.Entities;
 
-public class Round
+public class RoundEntity
 {
     public int RoundId { get; set; }
 

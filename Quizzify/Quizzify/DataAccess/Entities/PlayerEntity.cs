@@ -15,5 +15,5 @@ public class PlayerEntity
 
     public string About { get; set; }
 
-    public virtual User User { get; set; }
+    public virtual UserEntity User { get; set; }
 }

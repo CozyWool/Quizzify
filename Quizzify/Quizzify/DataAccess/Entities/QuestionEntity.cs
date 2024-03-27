@@ -23,5 +23,5 @@ public class QuestionEntity
 
     public byte[] AnswerImageUrl { get; set; }
 
-    public virtual Round Round { get; set; }
+    public virtual RoundEntity Round { get; set; }
 }

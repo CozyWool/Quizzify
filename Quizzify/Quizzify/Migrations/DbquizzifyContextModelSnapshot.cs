@@ -139,7 +139,7 @@ namespace Quizzify.Migrations
                     b.ToTable("questions", (string)null);
                 });
 
-            modelBuilder.Entity("Quizzify.DataAssecc.Entities.Round", b =>
+            modelBuilder.Entity("Quizzify.DataAssecc.Entities.RoundEntity", b =>
                 {
                     b.Property<int>("RoundId")
                         .ValueGeneratedOnAdd()
@@ -172,7 +172,7 @@ namespace Quizzify.Migrations
                     b.ToTable("rounds", (string)null);
                 });
 
-            modelBuilder.Entity("Quizzify.DataAssecc.Entities.SecretQuestion", b =>
+            modelBuilder.Entity("Quizzify.DataAssecc.Entities.SecretQuestionEntity", b =>
                 {
                     b.Property<int>("SecretQId")
                         .ValueGeneratedOnAdd()
@@ -192,7 +192,7 @@ namespace Quizzify.Migrations
                     b.ToTable("secretquestions", (string)null);
                 });
 
-            modelBuilder.Entity("Quizzify.DataAssecc.Entities.User", b =>
+            modelBuilder.Entity("Quizzify.DataAssecc.Entities.UserEntity", b =>
                 {
                     b.Property<Guid>("UserId")
                         .ValueGeneratedOnAdd()
@@ -252,7 +252,7 @@ namespace Quizzify.Migrations
 
             modelBuilder.Entity("Quizzify.DataAssecc.Entities.PlayerEntity", b =>
                 {
-                    b.HasOne("Quizzify.DataAssecc.Entities.User", "User")
+                    b.HasOne("Quizzify.DataAssecc.Entities.UserEntity", "User")
                         .WithOne("Player")
                         .HasForeignKey("Quizzify.DataAssecc.Entities.PlayerEntity", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -264,7 +264,7 @@ namespace Quizzify.Migrations
 
             modelBuilder.Entity("Quizzify.DataAssecc.Entities.QuestionEntity", b =>
                 {
-                    b.HasOne("Quizzify.DataAssecc.Entities.Round", "Round")
+                    b.HasOne("Quizzify.DataAssecc.Entities.RoundEntity", "Round")
                         .WithMany("Questions")
                         .HasForeignKey("RoundId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -274,7 +274,7 @@ namespace Quizzify.Migrations
                     b.Navigation("Round");
                 });
 
-            modelBuilder.Entity("Quizzify.DataAssecc.Entities.Round", b =>
+            modelBuilder.Entity("Quizzify.DataAssecc.Entities.RoundEntity", b =>
                 {
                     b.HasOne("Quizzify.DataAssecc.Entities.PackageEntity", "Package")
                         .WithMany("Rounds")
@@ -286,9 +286,9 @@ namespace Quizzify.Migrations
                     b.Navigation("Package");
                 });
 
-            modelBuilder.Entity("Quizzify.DataAssecc.Entities.User", b =>
+            modelBuilder.Entity("Quizzify.DataAssecc.Entities.UserEntity", b =>
                 {
-                    b.HasOne("Quizzify.DataAssecc.Entities.SecretQuestion", "SelectedSecretQuestion")
+                    b.HasOne("Quizzify.DataAssecc.Entities.SecretQuestionEntity", "SelectedSecretQuestion")
                         .WithMany("Users")
                         .HasForeignKey("SelectedSecretQuestionId")
                         .OnDelete(DeleteBehavior.SetNull)
@@ -302,17 +302,17 @@ namespace Quizzify.Migrations
                     b.Navigation("Rounds");
                 });
 
-            modelBuilder.Entity("Quizzify.DataAssecc.Entities.Round", b =>
+            modelBuilder.Entity("Quizzify.DataAssecc.Entities.RoundEntity", b =>
                 {
                     b.Navigation("Questions");
                 });
 
-            modelBuilder.Entity("Quizzify.DataAssecc.Entities.SecretQuestion", b =>
+            modelBuilder.Entity("Quizzify.DataAssecc.Entities.SecretQuestionEntity", b =>
                 {
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("Quizzify.DataAssecc.Entities.User", b =>
+            modelBuilder.Entity("Quizzify.DataAssecc.Entities.UserEntity", b =>
                 {
                     b.Navigation("Player");
                 });

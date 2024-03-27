@@ -13,5 +13,5 @@ public class PackageEntity
 
     public int Difficulty { get; set; }
 
-    public virtual ICollection<Round> Rounds { get; set; } = new List<Round>();
+    public virtual ICollection<RoundEntity> Rounds { get; set; } = new List<RoundEntity>();
 }

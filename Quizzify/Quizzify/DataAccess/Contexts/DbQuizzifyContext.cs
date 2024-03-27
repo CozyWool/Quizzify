@@ -23,11 +23,11 @@ public partial class DbQuizzifyContext : DbContext
 
     public virtual DbSet<QuestionEntity> Questions { get; set; }
 
-    public virtual DbSet<Round> Rounds { get; set; }
+    public virtual DbSet<RoundEntity> Rounds { get; set; }
 
-    public virtual DbSet<SecretQuestion> Secretquestions { get; set; }
+    public virtual DbSet<SecretQuestionEntity> Secretquestions { get; set; }
 
-    public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<UserEntity> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Quizzify.DataAssecc.Configuration
 {
-    internal class SecretQuestionConfiguration : IEntityTypeConfiguration<SecretQuestion>
+    internal class SecretQuestionConfiguration : IEntityTypeConfiguration<SecretQuestionEntity>
     {
-        void IEntityTypeConfiguration<SecretQuestion>.Configure(EntityTypeBuilder<SecretQuestion> builder)
+        void IEntityTypeConfiguration<SecretQuestionEntity>.Configure(EntityTypeBuilder<SecretQuestionEntity> builder)
         {
             builder.HasKey(e => e.SecretQId).HasName("secretquestions_pkey");
 

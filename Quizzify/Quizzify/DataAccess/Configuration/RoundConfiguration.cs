@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-internal class RoundConfiguration : IEntityTypeConfiguration<Round>
+internal class RoundConfiguration : IEntityTypeConfiguration<RoundEntity>
 {
-    void IEntityTypeConfiguration<Round>.Configure(EntityTypeBuilder<Round> builder)
+    void IEntityTypeConfiguration<RoundEntity>.Configure(EntityTypeBuilder<RoundEntity> builder)
     {
         builder.HasKey(e => e.RoundId).HasName("rounds_pkey");
 

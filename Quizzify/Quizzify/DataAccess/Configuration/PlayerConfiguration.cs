@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class PlayerConfiguration : IEntityTypeConfiguration<Player>
+public class PlayerConfiguration : IEntityTypeConfiguration<PlayerEntity>
 {
-    void IEntityTypeConfiguration<Player>.Configure(EntityTypeBuilder<Player> builder)
+    void IEntityTypeConfiguration<PlayerEntity>.Configure(EntityTypeBuilder<PlayerEntity> builder)
     {
         builder.HasKey(e => e.PlayerId).HasName("players_pkey");
 
@@ -27,7 +27,7 @@ public class PlayerConfiguration : IEntityTypeConfiguration<Player>
         builder.Property(e => e.UserProfilePicture).HasColumnName("user_profile_picture");
 
         builder.HasOne(d => d.User).WithOne(p => p.Player)
-            .HasForeignKey<Player>(d => d.UserId)
+            .HasForeignKey<PlayerEntity>(d => d.UserId)
             .HasConstraintName("user_id_fk");
     }
 }

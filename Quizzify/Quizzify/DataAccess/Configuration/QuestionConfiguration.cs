@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-internal class QuestionConfiguration : IEntityTypeConfiguration<Question>
+internal class QuestionConfiguration : IEntityTypeConfiguration<QuestionEntity>
 {
-    void IEntityTypeConfiguration<Question>.Configure(EntityTypeBuilder<Question> builder)
+    void IEntityTypeConfiguration<QuestionEntity>.Configure(EntityTypeBuilder<QuestionEntity> builder)
     {
         builder.HasKey(e => e.QuestionId).HasName("questions_pkey");
 

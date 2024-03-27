@@ -4,9 +4,9 @@ using Quizzify.DataAssecc.Entities;
 
 namespace Quizzify.DataAssecc.Configuration;
 
-public class PackageConfiguration : IEntityTypeConfiguration<Package>
+public class PackageConfiguration : IEntityTypeConfiguration<PackageEntity>
 {
-    void IEntityTypeConfiguration<Package>.Configure(EntityTypeBuilder<Package> builder)
+    void IEntityTypeConfiguration<PackageEntity>.Configure(EntityTypeBuilder<PackageEntity> builder)
     {
         builder.HasKey(e => e.PackageId).HasName("packages_pkey");
 

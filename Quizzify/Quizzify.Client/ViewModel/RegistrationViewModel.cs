@@ -85,7 +85,7 @@ public class RegistrationViewModel : INotifyPropertyChanged
     public RegistrationViewModel(IConfiguration configuration)
     {
         this.configuration = configuration;
-        RegistrationUserCommand = new DelegateCommand(RegistrationUser, _ => true);
+        RegistrationUserCommand = new GenericCommand<object>(RegistrationUser);
     }
 
     private void RegistrationUser(object obj)

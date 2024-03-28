@@ -109,6 +109,7 @@ namespace Quizzify.Client.ViewModel;
 
         var newUser = new RegistrationModel()
         {
+            UserId = guid,
             Login = UserLogin,
             Password = encryptedPassword,
             Email = UserEmail,
@@ -141,3 +142,4 @@ namespace Quizzify.Client.ViewModel;
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
+//генерируется

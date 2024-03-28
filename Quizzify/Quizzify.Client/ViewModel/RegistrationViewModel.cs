@@ -7,13 +7,12 @@ using System.Windows.Input;
 
 namespace Quizzify.Client.ViewModel;
 
-	public class RegistrationViewModel : INotifyPropertyChanged
+public class RegistrationViewModel : INotifyPropertyChanged
 {
     private readonly IConfiguration configuration;
     public ICommand RegistrationUserCommand { get; }
 
     private string _userLogin;
-
     public string UserLogin
     {
         get => _userLogin;
@@ -42,7 +41,6 @@ namespace Quizzify.Client.ViewModel;
     }
 
     private string _userEmail;
-
     public string UserEmail
     {
         get => _userEmail;
@@ -57,7 +55,6 @@ namespace Quizzify.Client.ViewModel;
     }
 
     private int _userSelectedSecretQuestionId;
-
     public int UserSelectedSecretQuestionId
     {
         get => _userSelectedSecretQuestionId;
@@ -72,7 +69,6 @@ namespace Quizzify.Client.ViewModel;
     }
 
     private string _userSecretAnswer;
-
     public string UserSecretAnswer
     {
         get => _userSecretAnswer;
@@ -86,15 +82,10 @@ namespace Quizzify.Client.ViewModel;
         }
     }
 
-    public RegistrationViewModel()
+    public RegistrationViewModel(IConfiguration configuration)
     {
-        configuration = BuildConfiguration();
+        this.configuration = configuration;
         RegistrationUserCommand = new DelegateCommand(RegistrationUser, _ => true);
-    }
-
-    private IConfiguration BuildConfiguration()
-    {
-        return new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory).AddJsonFile("appsettings.json").Build();
     }
 
     private void RegistrationUser(object obj)
@@ -142,4 +133,3 @@ namespace Quizzify.Client.ViewModel;
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
-//генерируется

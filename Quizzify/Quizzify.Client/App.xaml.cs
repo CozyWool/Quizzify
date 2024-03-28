@@ -6,11 +6,14 @@ using System.Windows;
 using Quizzify.Client.Settings.Language;
 using Quizzify.Client.View;
 using Quizzify.Client.ViewModel;
+using Microsoft.Extensions.Configuration;
 
 namespace Quizzify.Client;
 
 public partial class App : Application
 {
+    private IConfiguration configuration;
+
     private const string AppDataFolder = "AppData";
     private const string LocalFolder = "Local";
     private const string SettingsFile = "appsettings.json";
@@ -19,11 +22,17 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         ApplyCultureFromSettingsFile();
+        configuration = BuildConfiguration();
         base.OnStartup(e);
         
-        var registrationViewModel = new RegistrationViewModel();
+        var registrationViewModel = new RegistrationViewModel(configuration);
         var registrationView = new RegistrationView(registrationViewModel);
         registrationView.Show();
+    }
+
+    private IConfiguration BuildConfiguration()
+    {
+        return new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory).AddJsonFile("appsettings.json").Build();
     }
 
     private void ApplyCultureFromSettingsFile()

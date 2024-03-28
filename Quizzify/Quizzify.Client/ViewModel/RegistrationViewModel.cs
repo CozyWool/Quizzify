@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace Quizzify.Client.ViewModel;
 
-public class RegistrationViewModel : INotifyPropertyChanged
+	public class RegistrationViewModel : INotifyPropertyChanged
 {
     private readonly IConfiguration configuration;
     public ICommand RegistrationUserCommand { get; }
@@ -63,7 +63,7 @@ public class RegistrationViewModel : INotifyPropertyChanged
         get => _userSelectedSecretQuestionId;
         set
         {
-            if (_userSelectedSecretQuestionId != value)
+            if(_userSelectedSecretQuestionId != value)
             {
                 _userSelectedSecretQuestionId = value;
                 OnPropertyChanged(nameof(UserSelectedSecretQuestionId));
@@ -112,10 +112,10 @@ public class RegistrationViewModel : INotifyPropertyChanged
             Login = UserLogin,
             Password = encryptedPassword,
             Email = UserEmail,
-            SelectedSecretQuestionId = 2,
-            SecretAnswer = "Ответ"
+            SelectedSecretQuestionId = UserSelectedSecretQuestionId,
+            SecretAnswer = UserSecretAnswer
         };
-
+        
         var userEntity = ConvertToUserEntity(newUser);
         using var context = new DbQuizzifyContext(configuration);
         context.AddUser(userEntity);

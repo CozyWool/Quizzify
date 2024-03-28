@@ -32,16 +32,15 @@ public partial class App : Application
         if (!string.IsNullOrEmpty(filePath))
         {
             var mainSettings = LoadMainSettings(filePath);
-            if (!MainSettings.IsNullOrEmpty(mainSettings))
+            if (MainSettings.IsNullOrEmpty(mainSettings)) return;
+            
+            var languageCode = mainSettings?.LanguageSettings.LanguageCode;
+            if (!string.IsNullOrEmpty(languageCode))
             {
-                var languageCode = mainSettings?.LanguageSettings.LanguageCode;
-                if (!string.IsNullOrEmpty(languageCode))
-                {
-                    SetApplicationLanguage(languageCode);
-                    return;
-                }
-                ShowMessage("В файле локализации нет информации о языке");
+                SetApplicationLanguage(languageCode);
+                return;
             }
+            ShowMessage("В файле локализации нет информации о языке");
         }
         else ShowMessage("Файл локализации не найден.");
     }
@@ -60,16 +59,15 @@ public partial class App : Application
             Directory.CreateDirectory(localizationFolderPath);
         }
 
-        if (!File.Exists(filePath))
+        if (File.Exists(filePath)) return File.Exists(filePath) ? filePath : null;
+        
+        var settings = new MainSettings
         {
-            var settings = new MainSettings
-            {
-                LanguageSettings = new LanguageSettings { LanguageCode = "ru-RU" }
-            };
+            LanguageSettings = new LanguageSettings { LanguageCode = "ru-RU" }
+        };
 
-            string json = JsonConvert.SerializeObject(settings, Formatting.Indented);
-            File.WriteAllText(filePath, json);
-        }
+        var json = JsonConvert.SerializeObject(settings, Formatting.Indented);
+        File.WriteAllText(filePath, json);
 
         return File.Exists(filePath) ? filePath : null;
     }
@@ -78,9 +76,8 @@ public partial class App : Application
     {
         try
         {
-            string jsonData;
             using var reader = new StreamReader(filePath);
-            jsonData = reader.ReadToEnd();
+            var jsonData = reader.ReadToEnd();
 
             if (!string.IsNullOrEmpty(jsonData))
             {

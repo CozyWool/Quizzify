@@ -34,7 +34,6 @@ public partial class DbQuizzifyContext : DbContext
         optionsBuilder.UseNpgsql(_configuration.GetConnectionString("DefaultConnection"));
     }
 
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new PackageConfiguration());

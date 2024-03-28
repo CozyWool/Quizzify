@@ -26,15 +26,15 @@
 
                 <!-- Блок с логином -->
                 <TextBlock Text="{x:Static res:Resources.LoginTextBlockResources}" Height="30" />
-                <TextBox x:Name="LoginTextBox" Height="30" />
+                <TextBox x:Name="LoginTextBox" Height="30"  Text="{Binding UserLogin, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <!-- Блок с паролем -->
                 <TextBlock Text="{x:Static res:Resources.PasswordTextBlockResources}" Height="30" />
-                <PasswordBox x:Name="PasswordBox" Height="30" />
+                <TextBox x:Name="PasswordBox" Height="30" Text="{Binding UserPassword, UpdateSourceTrigger=PropertyChanged}" />
 
                 <!-- Блок с электронной почтой -->
                 <TextBlock Text="{x:Static res:Resources.EmailTextBlockResources}" Height="30" />
-                <TextBox x:Name="EmailTextBox" Height="30" />
+                <TextBox x:Name="EmailTextBox" Height="30" Text="{Binding UserEmail, UpdateSourceTrigger=PropertyChanged}" />
 
                 <!-- Блок с секретным вопросом -->
                 <TextBlock Text="{x:Static res:Resources.SecretQuestionTextBlockResources}" Height="30" />
@@ -42,7 +42,7 @@
                 <TextBox x:Name="AnswerSecretQuestionTextBox" Height="30" />
 
                 <!-- Кнопка "Зарегистрироваться" -->
-                <Button Content="{x:Static res:Resources.RegistrationButtonResources}" Margin="0,20" />
+                <Button Content="{x:Static res:Resources.RegistrationButtonResources}" Margin="0,20" Command="{Binding RegistrationUserCommand}" />
 
                 <!-- Текстблок кликабельный "Существует аккаунт?" -->
                 <TextBlock Text="{x:Static res:Resources.ExistingAccountTextBlockResources}"

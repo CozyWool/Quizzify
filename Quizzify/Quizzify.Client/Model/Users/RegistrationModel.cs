@@ -3,6 +3,8 @@
 namespace Quizzify.Client.Model.Users;
 public class RegistrationModel
 {
+    public Guid UserId { get; set; }
+
     [Required(ErrorMessage = "Логин обязателен")]
     public string Login { get; set; }
 

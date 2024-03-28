@@ -29,6 +29,7 @@ namespace Command_
         {
             OnCanExecuteChanged(EventArgs.Empty);
         }
+        private static readonly Func<object, bool> DefaultCanExecute = _ => true;
 
         public event EventHandler? CanExecuteChanged;
     }

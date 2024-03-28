@@ -7,6 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-
+        <StackPanel Margin="5">
+            <TextBlock Text="Введите порт:" />
+            <TextBox Name="PortTextBox" />
+            <Button Content="Подключиться" Click="ButtonBase_OnClick"/>
+        </StackPanel>
     </Grid>
 </Window>

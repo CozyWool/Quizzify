@@ -21,9 +21,14 @@ public partial class App : Application
         ApplyCultureFromSettingsFile();
         base.OnStartup(e);
         
-        var registrationViewModel = new RegistrationViewModel();
-        var registrationView = new RegistrationView(registrationViewModel);
-        registrationView.Show();
+        // var registrationViewModel = new RegistrationViewModel();
+        // var registrationView = new RegistrationView(registrationViewModel);
+        // registrationView.Show();
+
+        //TODO:Убрать это
+        var viewModel = new MainViewModel();
+        var view = new MainView(viewModel);
+        view.Show();
     }
 
     private void ApplyCultureFromSettingsFile()

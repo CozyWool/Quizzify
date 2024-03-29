@@ -6,6 +6,8 @@ using Quizzify.DataAccess.Contexts;
 using Quizzify.DataAccess.Entities;
 using System.ComponentModel;
 using System.Windows.Input;
+using Quizzify.Client.Command;
+using Quizzify.Client.Security;
 
 namespace Quizzify.Client.ViewModel;
 

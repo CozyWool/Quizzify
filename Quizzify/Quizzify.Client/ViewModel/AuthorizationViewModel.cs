@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
+using Quizzify.Client.Model.Users;
 using Quizzify.Client.Services;
+using Quizzify.Client.View;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
@@ -36,25 +38,39 @@ public class AuthorizationViewModel: INotifyPropertyChanged
         }
     }
 
-    private async void RegistrationUser(object obj)
+    private async void AuthorizeUser(object obj)
     {
-        HubConnection connection = App.MainHubConnectionConfiguration();
+        var user=new AuthorizationModel() { LoginOrEmail = UserLogin, Password = UserPassword };
 
+        HubConnection connection = App.MainHubConnectionConfiguration();
         SignalRService signal = new SignalRService(connection);
+        int waitingTime = 10;
+
         await signal.Connect();
-        await signal.SendAuthorizeMessage(UserLogin, UserPassword);
+        await signal.SendAuthorizeMessage(user);
         signal.ReceiveAuthorizeMessage();
+
         Stopwatch stopwatch = Stopwatch.StartNew();
         while (true)
         {
-            if (signal.IsAuthorized != null || stopwatch.Elapsed.TotalSeconds >= 10) break;
+            if (signal.IsAuthorized != null || stopwatch.Elapsed.TotalSeconds >= waitingTime) break;
             Task.Delay(100).Wait();
         }
         stopwatch.Stop();
 
-        if (signal.IsAuthorized == null) MessageBox.Show("Превышено время ожидания");
-        else if (signal.IsAuthorized == true) MessageBox.Show("Пользователь зарегистрирован!");
-        else MessageBox.Show("Ошибка");
+        if (signal.IsAuthorized == null)
+        {
+            MessageBox.Show("Превышено время ожидания");
+        }
+        else if (signal.IsAuthorized == true)
+        {
+            var window = new MainView(new MainViewModel());
+            window.Show();
+        }
+        else
+        {
+            MessageBox.Show("Ошибка");
+        }
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

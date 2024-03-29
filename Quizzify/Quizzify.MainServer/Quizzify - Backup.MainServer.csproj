@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.16" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Quizzify.DataAccess\Quizzify.DataAccess.csproj" />
     </ItemGroup>
 

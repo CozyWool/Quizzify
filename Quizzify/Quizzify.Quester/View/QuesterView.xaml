@@ -1,0 +1,314 @@
+﻿<Window x:Class="Quizzify.Quester.View.QuesterView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Quizzify.Quester.View"
+        xmlns:res="clr-namespace:Quizzify.Quester.Resources.Locales"
+        mc:Ignorable="d"
+        Title="QuesterWindow" Height="700" Width="1200" WindowStartupLocation="CenterScreen">
+    
+    <Border Margin="10,5,10,10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="1.5*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Блок верхней панели с кнопками Новый файл, Открыть, Сохранить, Опубликовать и меню Настройки -->
+            <StackPanel 
+                Grid.Row="0" 
+                Orientation="Horizontal">
+                <Button 
+                    Content="{x:Static res:Resources.CreateNewFileButtonResources}" 
+                    Margin="0,0,0,10"/>
+                <Button 
+                    Content="{x:Static res:Resources.OpenFileButtonResources}" 
+                    Margin="5,0,0,10"/>
+                <Button 
+                    Content="{x:Static res:Resources.SaveFileButtonResources}" 
+                    Margin="5,0,0,10"/>
+                <Button 
+                    Content="{x:Static res:Resources.ShareFileButtonResources}" 
+                    Margin="5,0,0,10"/>
+                
+                <Menu x:Name="SettingsMenu" Margin="5,0,0,10">
+                    <MenuItem Header="{x:Static res:Resources.SettingsTextBlockResources}">
+                        <MenuItem Header="{x:Static res:Resources.LanguageTextBlockResources}">
+                            <MenuItem x:Name="LanguageEngSubMenu" Header="English"/>
+                            <MenuItem x:Name="LanguageRusSubMenu" Header="Русский"/>
+                        </MenuItem>
+                    </MenuItem>
+                </Menu>
+            </StackPanel>
+
+            <!-- Блок с названием пакета, его сложностью и тегом -->
+            <Grid 
+                Grid.Row="1" 
+                Grid.ColumnSpan="2" 
+                Margin="10,5,10,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="200"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock 
+                    Text="{x:Static res:Resources.PackageNameTextBlockResources}" 
+                    Grid.Column="0" 
+                    Margin="5"/>
+                
+                <TextBox
+                    Grid.Column="1" 
+                    Margin="5"/>
+                
+                <TextBlock 
+                    Text="{x:Static res:Resources.DifficultyTextBlockResources}" 
+                    Grid.Column="2" 
+                    Margin="5"/>
+                
+                <Slider 
+                    IsSnapToTickEnabled="True" 
+                    Maximum="10" 
+                    TickPlacement="BottomRight"
+                    AutoToolTipPlacement="BottomRight" 
+                    AutoToolTipPrecision="1" 
+                    Grid.Column="3" 
+                    Margin="5"/>
+                
+                <TextBlock 
+                    Text="{x:Static res:Resources.TagTextBlockResources}" 
+                    Grid.Column="4" 
+                    Margin="5"/>
+                
+                <ComboBox 
+                    Grid.Column="5" 
+                    Margin="5"/>
+            </Grid>
+
+            <!-- Дерево для списка раундов, тем и вопросов -->
+            <TreeView 
+                x:Name="treeView" 
+                Grid.Column="0" 
+                Grid.Row="2" 
+                VerticalAlignment="Stretch">
+                <!--<TreeView.Items>
+                    <TreeViewItem Header="Раунд">
+                        <TreeViewItem Header="Тема">
+                            <TreeViewItem Header="Вопрос"/>
+                        </TreeViewItem>
+                    </TreeViewItem>
+                </TreeView.Items>-->
+            </TreeView>
+
+            <!-- Кнопка Удалить выбранный раунд, тему или вопрос-->
+            <Button 
+                Grid.Column="0" 
+                Grid.Row="3" 
+                Content="{x:Static res:Resources.DeleteButtonResources}"
+                HorizontalAlignment="Right" 
+                Margin="0,5,0,5"/>
+
+            <!-- Блок со всем нужным для раунда, темы, вопроса и ответа-->
+            <Grid 
+                Grid.Column="1" 
+                Grid.Row="2" 
+                Margin="10,5,10,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="200"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Блок Раунд-->
+                <TextBlock 
+                    Text="{x:Static res:Resources.RoundTextBlockResources}" 
+                    Grid.Column="0" 
+                    Grid.Row="0"
+                    Margin="0,5,0,0" 
+                    Foreground="#FF626262"/>
+
+                <Button 
+                    x:Name="AddNewRoundButton" 
+                    Content="+" 
+                    Grid.Column="0"
+                    Grid.Row="1" 
+                    Margin="5"/>
+                
+                <TextBlock
+                    Text="{x:Static res:Resources.RoundNameTextBlockResources}" 
+                    Grid.Column="1" 
+                    Grid.Row="1"
+                    Margin="5" 
+                    HorizontalAlignment="Center"/>
+                
+                <TextBox 
+                    Grid.Column="2"
+                    Grid.Row="1"
+                    Margin="5"/>
+                
+                <TextBlock 
+                    Text="{x:Static res:Resources.TypeRoundTextBlockResources}" 
+                    Grid.Column="3" 
+                    Grid.Row="1" 
+                    Margin="5" 
+                    HorizontalAlignment="Center"/>
+                
+                <ComboBox 
+                    Grid.Column="4"
+                    Grid.Row="1" 
+                    Margin="5"/>
+
+                <!-- Блок Тема-->
+                <TextBlock 
+                    Text="{x:Static res:Resources.ThemeTextBlockResources}" 
+                    Grid.Column="0"
+                    Grid.Row="2" 
+                    Margin="0,5,0,0"
+                    Foreground="#FF626262"/>
+
+                <Button 
+                    x:Name="AddNewThemeButton" 
+                    Content="+" 
+                    Grid.Column="0"
+                    Grid.Row="3" 
+                    Margin="5"/>
+                
+                <TextBlock 
+                    Text="{x:Static res:Resources.ThemeNameTextBlockResources}" 
+                    Grid.Column="1"
+                    Grid.Row="3" 
+                    Margin="5" 
+                    HorizontalAlignment="Center"/>
+                
+                <TextBox 
+                    Grid.Column="2"
+                    Grid.Row="3" 
+                    Margin="5"/>
+
+                <!-- Блок Вопрос-->
+                <TextBlock 
+                    Text="{x:Static res:Resources.QuestionTextBlockResources}" 
+                    Grid.Column="0"
+                    Grid.Row="4" 
+                    Margin="0,5,0,0" 
+                    Foreground="#FF626262"/>
+
+                <Button 
+                    x:Name="AddNewQuestionButton" 
+                    Content="+" 
+                    Grid.Column="0"
+                    Grid.Row="5" 
+                    Margin="5"/>
+                
+                <TextBlock 
+                    Text="{x:Static res:Resources.QuestionPriceTextBlockResources}" 
+                    Grid.Column="1" 
+                    Grid.Row="5" 
+                    Margin="5" 
+                    HorizontalAlignment="Center"/>
+                
+                <TextBox
+                    Grid.Column="2" 
+                    Grid.Row="5" 
+                    Margin="5"/>
+                
+                <TextBlock 
+                    Text="{x:Static res:Resources.TypeQuestionTextBlockResources}"
+                    Grid.Column="3"
+                    Grid.Row="5" 
+                    Margin="5" 
+                    HorizontalAlignment="Center"/>
+                
+                <ComboBox 
+                    Grid.Column="4"
+                    Grid.Row="5" 
+                    Margin="5"/>
+
+                <TextBox 
+                    Grid.ColumnSpan="5" 
+                    Grid.Row="6" 
+                    Height="200" 
+                    Margin="5"/>
+
+                <TextBlock 
+                    Text="{x:Static res:Resources.UploadMediaTextBlockResources}"
+                    Grid.Column="1" 
+                    Grid.Row="7" 
+                    Margin="5"/>
+                
+                <TextBox 
+                    Grid.Column="2" 
+                    Grid.ColumnSpan="2" 
+                    Grid.Row="7"
+                    Margin="5"/>
+                
+                <Button 
+                    Content="{x:Static res:Resources.UploadButtonResources}" 
+                    Grid.Column="5"
+                    Grid.Row="7" 
+                    HorizontalAlignment="Left" 
+                    Margin="5"/>
+
+                <!-- Блок Ответ-->
+                <TextBlock 
+                    Text="{x:Static res:Resources.AnswerTextBlockResources}"
+                    Grid.Column="0" 
+                    Grid.Row="8" 
+                    Margin="0,5,0,5" 
+                    Foreground="#FF626262"/>
+
+                <TextBox 
+                    Grid.Column="0" 
+                    Grid.ColumnSpan="5" 
+                    Grid.Row="9"
+                    Height="50" 
+                    Margin="5"/>
+
+                <TextBlock 
+                    Text="{x:Static res:Resources.UploadMediaTextBlockResources}" 
+                    Grid.Column="1" 
+                    Grid.Row="10" 
+                    Margin="5"/>
+                
+                <TextBox 
+                    Grid.Column="2" 
+                    Grid.ColumnSpan="2" 
+                    Grid.Row="10" 
+                    Margin="5"/>
+                
+                <Button 
+                    Content="{x:Static res:Resources.UploadButtonResources}" 
+                    Grid.Column="5" 
+                    Grid.Row="10" 
+                    HorizontalAlignment="Left" 
+                    Margin="5"/>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>
+

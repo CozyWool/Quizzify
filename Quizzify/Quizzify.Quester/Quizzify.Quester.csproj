@@ -20,7 +20,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Resources\Locales\" />
+      <EmbeddedResource Update="Resources\Locales\Resources.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Locales\Resources.ru-RU.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>

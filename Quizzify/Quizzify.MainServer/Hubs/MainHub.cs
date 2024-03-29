@@ -4,6 +4,7 @@ using Quizzify.DataAccess.Entities;
 using Quizzify.MainServer.Models.Users;
 using AutoMapper;
 using Quizzify.MainServer.Mappers;
+using System.Runtime.Intrinsics.Arm;
 
 namespace Quizzify.MainServer.Hubs
 {
@@ -34,9 +35,14 @@ namespace Quizzify.MainServer.Hubs
             var context = new DbQuizzifyContext(configuration);
             foreach (var userItem in context.Users)
             {
-                if (userItem.Email==user.LoginOrEmail || userItem.Login==user.LoginOrEmail)
+                if (userItem.Email==user.LoginOrEmail)
                 {
-                    if (userItem.PasswordHash ==user.Password) return true;//Тут наверное надо как расшифровывать/зашифровать
+                    Aes aes = new AESManager();
+                    string decryptedPassword = aes.Decrypt(userItem.PasswordHash);
+                    if (decryptedPassword == user.Password)
+                    {
+                        return true;
+                    }
                     break;
                 }
             }

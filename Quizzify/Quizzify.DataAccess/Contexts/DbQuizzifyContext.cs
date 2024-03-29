@@ -34,6 +34,11 @@ public partial class DbQuizzifyContext : DbContext
         optionsBuilder.UseNpgsql(_configuration.GetConnectionString("DefaultConnection"));
     }
 
+    public void AddUser(UserEntity newUser)
+    {
+        Users.Add(newUser);
+        SaveChanges();
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

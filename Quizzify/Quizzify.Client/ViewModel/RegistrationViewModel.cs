@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using AutoMapper;
+using Microsoft.Extensions.Configuration;
+using Quizzify.Client.Mappers;
 using Quizzify.Client.Model.Users;
 using Quizzify.DataAccess.Contexts;
 using Quizzify.DataAccess.Entities;
@@ -10,6 +12,7 @@ namespace Quizzify.Client.ViewModel;
 public class RegistrationViewModel : INotifyPropertyChanged
 {
     private readonly IConfiguration configuration;
+    private readonly IMapper _mapper;
     public ICommand RegistrationUserCommand { get; }
 
     private string _userLogin;
@@ -84,6 +87,8 @@ public class RegistrationViewModel : INotifyPropertyChanged
 
     public RegistrationViewModel(IConfiguration configuration)
     {
+        var config = new MapperConfiguration(cfg => cfg.AddProfile<MappingUser>());
+        _mapper = config.CreateMapper();
         this.configuration = configuration;
         RegistrationUserCommand = new GenericCommand<object>(RegistrationUser);
     }
@@ -107,23 +112,10 @@ public class RegistrationViewModel : INotifyPropertyChanged
             SelectedSecretQuestionId = UserSelectedSecretQuestionId,
             SecretAnswer = UserSecretAnswer
         };
-        
-        var userEntity = ConvertToUserEntity(newUser);
+
+        var userEntity = _mapper.Map<UserEntity>(newUser);
         using var context = new DbQuizzifyContext(configuration);
         context.AddUser(userEntity);
-    }
-
-    private UserEntity ConvertToUserEntity(RegistrationModel registrationModel)
-    {
-        return new UserEntity
-        {
-            UserId = registrationModel.UserId,
-            Login = registrationModel.Login,
-            PasswordHash = registrationModel.Password,
-            Email = registrationModel.Email,
-            SelectedSecretQuestionId = registrationModel.SelectedSecretQuestionId,
-            SecretAnswerHash = registrationModel.SecretAnswer
-        };
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

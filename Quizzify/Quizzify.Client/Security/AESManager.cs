@@ -19,7 +19,7 @@ public class AESManager
 
             using (MemoryStream msEncrypt = new MemoryStream())
             {
-                byte[] saltBytes = Convert.FromBase64String(salt);
+                byte[] saltBytes = Encoding.UTF8.GetBytes(salt);
                 msEncrypt.Write(saltBytes, 0, saltBytes.Length);
 
                 using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
@@ -29,9 +29,9 @@ public class AESManager
                 }
 
                 byte[] encryptedBytes = msEncrypt.ToArray();
-                string encryptedText = Convert.ToBase64String(encryptedBytes);
+                string encryptedData = Convert.ToBase64String(encryptedBytes);
 
-                return encryptedText;
+                return encryptedData;
             }
         }
     }

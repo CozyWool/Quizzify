@@ -1,13 +1,15 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Quizzify.Client.Mappers;
-using Quizzify.Client.Model.Users;
-using Quizzify.DataAccess.Contexts;
-using Quizzify.DataAccess.Entities;
+using Quizzify.Client.Command;
 using System.ComponentModel;
 using System.Windows.Input;
-using Quizzify.Client.Command;
+
 using Quizzify.Client.Security;
+using Microsoft.AspNetCore.SignalR.Client;
+using System.Diagnostics;
+using System.Windows;
+using Quizzify.Client.Services;
 
 namespace Quizzify.Client.ViewModel;
 
@@ -95,29 +97,25 @@ public class RegistrationViewModel : INotifyPropertyChanged
         RegistrationUserCommand = new GenericCommand<object>(RegistrationUser);
     }
 
-    private void RegistrationUser(object obj)
+    private async void RegistrationUser(object obj)
     {
-        var aes = new AESManager();
-        Guid guid = Guid.NewGuid();
+        HubConnection connection = App.MainHubConnectionConfiguration();
 
-        byte[] saltBytes = guid.ToByteArray();
-        string salt = Convert.ToBase64String(saltBytes);
-
-        string encryptedPassword = aes.Encrypt(UserPassword, salt);
-
-        var newUser = new RegistrationModel()
+        SignalRService signal = new SignalRService(connection);
+        await signal.Connect();
+        await signal.SendRegistrationMessage(UserLogin, UserPassword,UserEmail, UserSelectedSecretQuestionId, UserSecretAnswer);
+        signal.ReceiveRegistrationMessage();
+        Stopwatch stopwatch = Stopwatch.StartNew();
+        while (true)
         {
-            UserId = guid,
-            Login = UserLogin,
-            Password = encryptedPassword,
-            Email = UserEmail,
-            SelectedSecretQuestionId = UserSelectedSecretQuestionId,
-            SecretAnswer = UserSecretAnswer
-        };
+            if (signal.IsRegistered != null || stopwatch.Elapsed.TotalSeconds >= 10) break;
+            Task.Delay(100).Wait();
+        }
+        stopwatch.Stop();
 
-        var userEntity = _mapper.Map<UserEntity>(newUser);
-        using var context = new DbQuizzifyContext(configuration);
-        context.AddUser(userEntity);
+        if (signal.IsRegistered == null) MessageBox.Show("Превышено время ожидания");
+        else if (signal.IsRegistered == true) MessageBox.Show("Пользователь зарегистрирован!");
+        else MessageBox.Show("Ошибка");
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

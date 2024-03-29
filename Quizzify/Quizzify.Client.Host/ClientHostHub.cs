@@ -1,43 +1,85 @@
+using AutoMapper;
 using Microsoft.AspNetCore.SignalR;
+using Quizzify.Client.Host.Enums;
+using Quizzify.Client.Host.Mappers;
+using Quizzify.Client.Host.Model;
 using Quizzify.DataAccess.Entities;
+
+namespace Quizzify.Client.Host;
 
 public class ClientHostHub : Hub
 {
     private string _masterConnectionId;
-    public List<PlayerEntity> Players { get; set; }
+    private string _selectingPlayerConnectionId;
+    private readonly IMapper _mapper;
+    public List<PlayerModel> Players { get; set; }
     public PackageEntity SelectedPackage { get; set; }
+    public int CurrentRoundIndex { get; set; }
     private SessionState _sessionState;
 
     public ClientHostHub()
     {
-        Players = new List<PlayerEntity>();
+        var config = new MapperConfiguration(cfg => cfg.AddProfile<MappingPlayer>());
+        _mapper = config.CreateMapper();
+        Players = new List<PlayerModel>();
         SelectedPackage = new PackageEntity();
+        CurrentRoundIndex = -1;
         _sessionState = SessionState.InLobby;
     }
 
-    public Task RecievePackage(PackageEntity package)
+    public async Task RecievePackage(PackageEntity package)
     {
-        if (Context.ConnectionId != _masterConnectionId) return Task.CompletedTask;
-
+        if (Context.ConnectionId != _masterConnectionId) throw new Exception("Только ведущий может менять пакет с вопросами!");
+        if (package.Rounds.Count == 0) throw new Exception("В пакете не может быть 0 раундов!");
+        
         SelectedPackage = package;
-        return Task.CompletedTask;
     }
 
     public async Task RecievePlayer(PlayerEntity player)
     {
-        if (Players.Contains(player)) return;
+        var playerModel = _mapper.Map<PlayerModel>(player);
+        playerModel.ConnectionId = Context.ConnectionId;
+        if (Players.Contains(playerModel)) throw new Exception("Такой игрок уже существует!");
 
-        Players.Add(player);
+        Players.Add(playerModel);
         if (Players.Count == 0)
-            _masterConnectionId = Context.ConnectionId;
-        await Clients.Others.SendAsync("RecieveNewPlayer", player);
+            _masterConnectionId = playerModel.ConnectionId;
+        await Clients.Others.SendAsync("RecieveNewPlayer", playerModel);
     }
+
+    public async Task RecieveSessionState(SessionState sessionState)
+    {
+        if (Context.ConnectionId != _masterConnectionId) throw new Exception("Только ведущий может менять состояние сессии!");
+        
+        _sessionState = sessionState;
+        await Clients.All.SendAsync("RecieveSessionState", sessionState);
+    }
+    public async Task RecieveSelectedPlayer(string connectionId)
+    {
+        if (Context.ConnectionId != _masterConnectionId) throw new Exception("Только ведущий может менять состояние сессии!");
+        
+        var playerModel = Players.Find(p => p.ConnectionId == connectionId) ?? throw new Exception($"Игрок с connectionId {connectionId} не найден!");
+        _selectingPlayerConnectionId = playerModel.ConnectionId;
+        await Clients.All.SendAsync("RecieveSelectedPlayer", playerModel);
+    }
+    public async Task RecieveSelectedQuestion(QuestionEntity questionEntity)
+    {
+        //TODO:Доделать
+        if (Context.ConnectionId != _selectingPlayerConnectionId) throw new Exception("Только выбранный игрок может выбирать вопрос!");
+        if (SelectedPackage.Rounds)
+        {
+            
+        }
+        _selectingPlayerConnectionId = playerModel.ConnectionId;
+        await Clients.All.SendAsync("RecieveSelectedPlayer", playerModel);
+    }
+    
 
     public async Task StartGame()
     {
-        if (Players.Count < 2) return;
-
-        await Clients.Others.SendAsync("RecievePackage", SelectedPackage, Players, _sessionState);
+        if (Players.Count < 2) throw new Exception("Недостаточно игроков! Необходимо минимум 2 игрока.");
+        CurrentRoundIndex = 0;
+        await Clients.All.SendAsync("RecievePackage", SelectedPackage, Players, _sessionState);
         _sessionState = SessionState.InGame;
     }
 
@@ -59,15 +101,4 @@ public class ClientHostHub : Hub
                 $"[LEAVE] {context.Connection.RemoteIpAddress?.ToString()} left with connection id: {Context.ConnectionId}");
         await base.OnDisconnectedAsync(ex);
     }
-}
-
-public enum SessionState
-{
-    InLobby,
-    InGame,
-    ChoosePlayer,
-    ChooseQuestion,
-    WaitingAnswers,
-    CheckAnswer,
-    ShowingCorrectAnswer,
 }

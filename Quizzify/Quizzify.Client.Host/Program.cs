@@ -1,3 +1,5 @@
+using Quizzify.Client.Host;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSignalR().AddHubOptions<ClientHostHub>(options =>
 {

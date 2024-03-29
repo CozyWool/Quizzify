@@ -1,4 +1,4 @@
-using Quizzify.MainServer;
+namespace Quizzify.MainServer;
 
 public class Program
 {

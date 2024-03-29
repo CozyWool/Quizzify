@@ -39,9 +39,9 @@ namespace Quizzify.Client.Services
             });
         }
 
-        public async Task SendAuthorizeMessage(string userLoginOrEmail, string userPassword)
+        public async Task SendAuthorizeMessage(AuthorizationModel user)
         {
-            await connection.SendAsync("SendAuthorize", userLoginOrEmail, userPassword);
+            await connection.SendAsync("SendAuthorize", user);
         }
 
         public async Task SendRegistrationMessage(RegistrationModel newUser)

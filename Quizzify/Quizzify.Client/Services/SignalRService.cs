@@ -6,8 +6,8 @@ namespace Quizzify.Client.Services
     {
         private readonly HubConnection connection;
 
-        private bool? isAutorized = null!;
-        public bool? IsAutorized => isAutorized;
+        private bool? isAuthorized = null!;
+        public bool? IsAuthorized => isAuthorized;
 
         private bool? isRegistered = null!;
         public bool? IsRegistered => isRegistered;
@@ -22,11 +22,11 @@ namespace Quizzify.Client.Services
             await connection.StartAsync();
         }
 
-        public void ReceiveAutorizeMessage()
+        public void ReceiveAuthorizeMessage()
         {
-            connection.On<bool>("ReceiveAutorize", (isAuthorized) =>
+            connection.On<bool>("ReceiveAuthorize", (isAuthorized) =>
             {
-                this.isAutorized = isAuthorized;
+                this.isAuthorized = isAuthorized;
             });
         }
 
@@ -38,9 +38,9 @@ namespace Quizzify.Client.Services
             });
         }
 
-        public async Task SendAutorizeMessage(string name, string password)
+        public async Task SendAuthorizeMessage(string userLoginOrEmail, string userPassword)
         {
-            await connection.SendAsync("SendAutorize", name, password);
+            await connection.SendAsync("SendAuthorize", userLoginOrEmail, userPassword);
         }
 
         public async Task SendRegistrationMessage(string userLogin, string userPassword, string userEmail, int userSelectedSecretQuestionId, string userSecretAnswer)

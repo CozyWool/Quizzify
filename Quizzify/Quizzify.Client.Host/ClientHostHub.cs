@@ -27,11 +27,14 @@ public class ClientHostHub : Hub
         _sessionState = SessionState.InLobby;
     }
 
+    //TODO:Подумать оставлять ли async
     public async Task RecievePackage(PackageEntity package)
     {
-        if (Context.ConnectionId != _masterConnectionId) throw new Exception("Только ведущий может менять пакет с вопросами!");
+        if (Context.ConnectionId != _masterConnectionId)
+            throw new Exception("Только ведущий может менять пакет с вопросами!");
+        //TODO:Подумать оставлять ли условие
         if (package.Rounds.Count == 0) throw new Exception("В пакете не может быть 0 раундов!");
-        
+
         SelectedPackage = package;
     }
 
@@ -49,40 +52,49 @@ public class ClientHostHub : Hub
 
     public async Task RecieveSessionState(SessionState sessionState)
     {
-        if (Context.ConnectionId != _masterConnectionId) throw new Exception("Только ведущий может менять состояние сессии!");
-        
+        if (Context.ConnectionId != _masterConnectionId)
+            throw new Exception("Только ведущий может менять состояние сессии!");
+
         _sessionState = sessionState;
         await Clients.All.SendAsync("RecieveSessionState", sessionState);
     }
+
     public async Task RecieveSelectedPlayer(string connectionId)
     {
-        if (Context.ConnectionId != _masterConnectionId) throw new Exception("Только ведущий может менять состояние сессии!");
-        
-        var playerModel = Players.Find(p => p.ConnectionId == connectionId) ?? throw new Exception($"Игрок с connectionId {connectionId} не найден!");
+        if (Context.ConnectionId != _masterConnectionId)
+            throw new Exception("Только ведущий может менять состояние сессии!");
+
+        var playerModel = Players.Find(p => p.ConnectionId == connectionId) ??
+                          throw new Exception($"Игрок с connectionId {connectionId} не найден!");
         _selectingPlayerConnectionId = playerModel.ConnectionId;
         await Clients.All.SendAsync("RecieveSelectedPlayer", playerModel);
     }
+
+    //TODO:Доделать
     public async Task RecieveSelectedQuestion(QuestionEntity questionEntity)
     {
-        //TODO:Доделать
-        if (Context.ConnectionId != _selectingPlayerConnectionId) throw new Exception("Только выбранный игрок может выбирать вопрос!");
+        //TODO:Получать id вопроса, а не целиком весь вопрос
+        if (Context.ConnectionId != _selectingPlayerConnectionId)
+            throw new Exception("Только выбранный игрок может выбирать вопрос!");
         if (SelectedPackage.Rounds)
         {
-            
         }
+
         _selectingPlayerConnectionId = playerModel.ConnectionId;
         await Clients.All.SendAsync("RecieveSelectedPlayer", playerModel);
     }
-    
+
 
     public async Task StartGame()
     {
         if (Players.Count < 2) throw new Exception("Недостаточно игроков! Необходимо минимум 2 игрока.");
         CurrentRoundIndex = 0;
+        //TODO: Передавать номер раунда и сделать переключение раундов в целом
         await Clients.All.SendAsync("RecievePackage", SelectedPackage, Players, _sessionState);
         _sessionState = SessionState.InGame;
     }
 
+    //TODO: Сделать функцию получения всех игроков
     public override async Task OnConnectedAsync()
     {
         var context = Context.GetHttpContext();

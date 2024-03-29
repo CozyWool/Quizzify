@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 using System.Diagnostics;
 using System.Windows;
 using Quizzify.Client.Services;
+using Quizzify.Client.Model.Users;
 
 namespace Quizzify.Client.ViewModel;
 
@@ -99,16 +100,36 @@ public class RegistrationViewModel : INotifyPropertyChanged
 
     private async void RegistrationUser(object obj)
     {
-        HubConnection connection = App.MainHubConnectionConfiguration();
+        var aes = new AESManager();
+        Guid guid = Guid.NewGuid();
 
+        byte[] saltBytes = guid.ToByteArray();
+        string salt = Convert.ToBase64String(saltBytes);
+
+        string encryptedPassword = aes.Encrypt(UserPassword, salt);
+
+        var newUser = new RegistrationModel()
+        {
+            UserId = guid,
+            Login = UserLogin,
+            Password = encryptedPassword,
+            Email = UserEmail,
+            SelectedSecretQuestionId = UserSelectedSecretQuestionId,
+            SecretAnswer = UserSecretAnswer
+        };
+
+        HubConnection connection = App.MainHubConnectionConfiguration();
         SignalRService signal = new SignalRService(connection);
+        int waitingTime = 10;
+
         await signal.Connect();
-        await signal.SendRegistrationMessage(UserLogin, UserPassword,UserEmail, UserSelectedSecretQuestionId, UserSecretAnswer);
+        await signal.SendRegistrationMessage(newUser);
         signal.ReceiveRegistrationMessage();
+
         Stopwatch stopwatch = Stopwatch.StartNew();
         while (true)
         {
-            if (signal.IsRegistered != null || stopwatch.Elapsed.TotalSeconds >= 10) break;
+            if (signal.IsRegistered != null || stopwatch.Elapsed.TotalSeconds >= waitingTime) break;
             Task.Delay(100).Wait();
         }
         stopwatch.Stop();

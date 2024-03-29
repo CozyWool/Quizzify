@@ -19,50 +19,32 @@ namespace Quizzify.MainServer.Hubs
             configuration= new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory).AddJsonFile("appsettings.json").Build();
         }
 
-        public async Task SendAuthorize(string userLoginOrEmail, string userPassword)
+        public async Task SendAuthorize(AuthorizationModel user)
         {
-            await Clients.Caller.SendAsync("ReceiveAuthorize", LoginVerification(userLoginOrEmail, userPassword));
+            await Clients.Caller.SendAsync("ReceiveAuthorize", LoginVerification(user));
         }
 
-        public async Task SendRegistration(string userLogin, string userPassword, string userEmail, int userSelectedSecretQuestionId, string userSecretAnswer)
+        public async Task SendRegistration(RegistrationModel newUser)
         {
-            await Clients.Caller.SendAsync("ReceiveRegistration", RegistrationVerification(userLogin, userPassword, userEmail, userSelectedSecretQuestionId, userSecretAnswer));
+            await Clients.Caller.SendAsync("ReceiveRegistration", RegistrationVerification(newUser));
         }
 
-        private bool LoginVerification(string userLoginOrEmail, string userPassword)
+        private bool LoginVerification(AuthorizationModel user)
         {
             var context = new DbQuizzifyContext(configuration);
-            foreach (var user in context.Users)
+            foreach (var userItem in context.Users)
             {
-                if (user.Login == userLoginOrEmail || user.Email==userLoginOrEmail)
+                if (userItem.Email==user.LoginOrEmail || userItem.Login==user.LoginOrEmail)
                 {
-                    if (user.PasswordHash == userPassword) return true;//Тут наверное надо как расшифровывать
+                    if (userItem.PasswordHash ==user.Password) return true;//Тут наверное надо как расшифровывать/зашифровать
                     break;
                 }
             }
             return false;
         }
 
-        private bool RegistrationVerification(string userLogin, string userPassword, string userEmail, int userSelectedSecretQuestionId, string userSecretAnswer)
+        private bool RegistrationVerification(RegistrationModel newUser)
         {
-            var aes = new AESManager();
-            Guid guid = Guid.NewGuid();
-
-            byte[] saltBytes = guid.ToByteArray();
-            string salt = Convert.ToBase64String(saltBytes);
-
-            string encryptedPassword = aes.Encrypt(userPassword, salt);
-
-            var newUser = new RegistrationModel()
-            {
-                UserId = guid,
-                Login = userLogin,
-                Password = encryptedPassword,
-                Email = userEmail,
-                SelectedSecretQuestionId = userSelectedSecretQuestionId,
-                SecretAnswer = userSecretAnswer
-            };
-
             var userEntity = _mapper.Map<UserEntity>(newUser);
             using var context = new DbQuizzifyContext(configuration);
             context.AddUser(userEntity);

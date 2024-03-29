@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
+using Quizzify.Client.Model.Users;
 
 namespace Quizzify.Client.Services
 {
@@ -43,9 +44,9 @@ namespace Quizzify.Client.Services
             await connection.SendAsync("SendAuthorize", userLoginOrEmail, userPassword);
         }
 
-        public async Task SendRegistrationMessage(string userLogin, string userPassword, string userEmail, int userSelectedSecretQuestionId, string userSecretAnswer)
+        public async Task SendRegistrationMessage(RegistrationModel newUser)
         {
-            await connection.SendAsync("SendRegistration", userLogin, userPassword, userEmail, userSelectedSecretQuestionId, userSecretAnswer);
+            await connection.SendAsync("SendRegistration", newUser);
         }
     }
 }

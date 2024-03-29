@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Quizzify.DataAccess.Contexts;
 using Quizzify.DataAccess.Entities;
+using Quizzify.MainServer.Models.Users;
 using AutoMapper;
+using Quizzify.MainServer.Mappers;
 
 namespace Quizzify.MainServer.Hubs
 {
@@ -17,9 +19,9 @@ namespace Quizzify.MainServer.Hubs
             configuration= new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory).AddJsonFile("appsettings.json").Build();
         }
 
-        public async Task SendAutorize(string name, string password)
+        public async Task SendAuthorize(string userLoginOrEmail, string userPassword)
         {
-            await Clients.Caller.SendAsync("ReceiveAutorize", LoginVerification(name, password));
+            await Clients.Caller.SendAsync("ReceiveAuthorize", LoginVerification(userLoginOrEmail, userPassword));
         }
 
         public async Task SendRegistration(string userLogin, string userPassword, string userEmail, int userSelectedSecretQuestionId, string userSecretAnswer)
@@ -27,10 +29,18 @@ namespace Quizzify.MainServer.Hubs
             await Clients.Caller.SendAsync("ReceiveRegistration", RegistrationVerification(userLogin, userPassword, userEmail, userSelectedSecretQuestionId, userSecretAnswer));
         }
 
-        private bool LoginVerification(string name, string password)
+        private bool LoginVerification(string userLoginOrEmail, string userPassword)
         {
-            //взаимодействие с бд
-            return true;
+            var context = new DbQuizzifyContext(configuration);
+            foreach (var user in context.Users)
+            {
+                if (user.Login == userLoginOrEmail || user.Email==userLoginOrEmail)
+                {
+                    if (user.PasswordHash == userPassword) return true;//Тут наверное надо как расшифровывать
+                    break;
+                }
+            }
+            return false;
         }
 
         private bool RegistrationVerification(string userLogin, string userPassword, string userEmail, int userSelectedSecretQuestionId, string userSecretAnswer)

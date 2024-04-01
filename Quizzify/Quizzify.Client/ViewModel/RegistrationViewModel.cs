@@ -18,6 +18,7 @@ public class RegistrationViewModel : INotifyPropertyChanged
 {
     private readonly IConfiguration configuration;
     private readonly IMapper _mapper;
+    private bool? isRegistered = null!;
     public ICommand RegistrationUserCommand { get; }
 
     private string _userLogin;
@@ -98,6 +99,11 @@ public class RegistrationViewModel : INotifyPropertyChanged
         RegistrationUserCommand = new GenericCommand<object>(RegistrationUser);
     }
 
+    private void SetRegistration(bool? b)
+    {
+        isRegistered = b;
+    }
+
     private async void RegistrationUser(object obj)
     {
         var aes = new AESManager();
@@ -119,24 +125,26 @@ public class RegistrationViewModel : INotifyPropertyChanged
         };
 
         HubConnection connection = App.MainHubConnectionConfiguration();
-        SignalRService signal = new SignalRService(connection);
+        MainHubService signal = new MainHubService(connection);
         int waitingTime = 10;
 
         await signal.Connect();
         await signal.SendRegistrationMessage(newUser);
         signal.ReceiveRegistrationMessage();
+        signal.RegistartionResponseArrived += SetRegistration;
 
         Stopwatch stopwatch = Stopwatch.StartNew();
         while (true)
         {
-            if (signal.IsRegistered != null || stopwatch.Elapsed.TotalSeconds >= waitingTime) break;
+            if (isRegistered != null || stopwatch.Elapsed.TotalSeconds >= waitingTime) break;
             Task.Delay(100).Wait();
         }
         stopwatch.Stop();
 
-        if (signal.IsRegistered == null) MessageBox.Show("Превышено время ожидания");
-        else if (signal.IsRegistered == true) MessageBox.Show("Пользователь зарегистрирован!");
+        if (isRegistered == null) MessageBox.Show("Превышено время ожидания");
+        else if (isRegistered == true) MessageBox.Show("Пользователь зарегистрирован!");
         else MessageBox.Show("Ошибка");
+        signal.RegistartionResponseArrived -= SetRegistration;
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

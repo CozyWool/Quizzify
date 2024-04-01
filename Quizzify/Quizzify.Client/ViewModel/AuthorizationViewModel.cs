@@ -10,6 +10,8 @@ namespace Quizzify.Client.ViewModel;
 
 public class AuthorizationViewModel: INotifyPropertyChanged
 {
+    private bool? isAuthorized = null!;
+
     private string _userLogin;
     public string UserLogin
     {
@@ -38,39 +40,45 @@ public class AuthorizationViewModel: INotifyPropertyChanged
         }
     }
 
+    private void SetAuthorization(bool? b)
+    {
+        isAuthorized = b;
+    }
+
     private async void AuthorizeUser(object obj)
     {
-        var user=new AuthorizationModel() { LoginOrEmail = UserLogin, Password = UserPassword };
-
+        AuthorizationModel user =new AuthorizationModel() { LoginOrEmail = UserLogin, Password = UserPassword };
         HubConnection connection = App.MainHubConnectionConfiguration();
-        SignalRService signal = new SignalRService(connection);
+        MainHubService signal = new MainHubService(connection);
         int waitingTime = 10;
 
         await signal.Connect();
         await signal.SendAuthorizeMessage(user);
         signal.ReceiveAuthorizeMessage();
+        signal.AuthorizationResponseArrived += SetAuthorization;
 
         Stopwatch stopwatch = Stopwatch.StartNew();
         while (true)
         {
-            if (signal.IsAuthorized != null || stopwatch.Elapsed.TotalSeconds >= waitingTime) break;
+            if (isAuthorized != null || stopwatch.Elapsed.TotalSeconds >= waitingTime) break;
             Task.Delay(100).Wait();
         }
         stopwatch.Stop();
-
-        if (signal.IsAuthorized == null)
+        //TODO ответом от сервера должен приходить игрок
+        if (isAuthorized == null)
         {
             MessageBox.Show("Превышено время ожидания");
         }
-        else if (signal.IsAuthorized == true)
+        else if (isAuthorized == true)
         {
-            var window = new MainView(new MainViewModel());
+            var window = new MainView(new MainViewModel(new PlayerModel()));
             window.Show();
         }
         else
         {
             MessageBox.Show("Ошибка");
         }
+        signal.AuthorizationResponseArrived -= SetAuthorization;
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

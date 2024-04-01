@@ -20,11 +20,16 @@ public partial class App : Application
     private const string SettingsFile = "appsettings.json";
     private const string LocalesFolder = "Locales";
 
-    public static HubConnection MainHubConnectionConfiguration()
+    public static HubConnection HubConnectionConfiguration(string ip, int port, string route)
     {
         return new HubConnectionBuilder()
-        .WithUrl("http://localhost:5234/mainhub")
+        .WithUrl($"http://{ip}:{port}/{route}")
         .Build();
+    }
+
+    public static HubConnection MainHubConnectionConfiguration()
+    {
+        return HubConnectionConfiguration("localhost", 5234, "mainhub");   
     }
 
     protected override void OnStartup(StartupEventArgs e)

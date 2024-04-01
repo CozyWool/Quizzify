@@ -48,7 +48,7 @@ public class ClientHostHub : Hub
         Players.Add(playerModel);
         if (Players.Count == 0)
             _masterConnectionId = playerModel.ConnectionId;
-        await Clients.Others.SendAsync("RecieveNewPlayer", playerModel);
+        await SendPlayerInfo(playerModel);
     }
 
     public async Task RecieveSessionState(SessionState sessionState)
@@ -86,6 +86,14 @@ public class ClientHostHub : Hub
         await Clients.All.SendAsync("RecieveSelectedQuestionText", questionText);
     }
 
+    public async Task SendPlayersInfo()
+    {
+        for (int i = 0; i < Players.Count; i++)
+        {
+            if (Players[i] != null) continue;
+            await Clients.Caller.SendAsync("ReceivePlayerInfo", Players[i]);
+        }
+    }
 
     public async Task StartGame()
     {
@@ -114,5 +122,11 @@ public class ClientHostHub : Hub
             Console.WriteLine(
                 $"[LEAVE] {context.Connection.RemoteIpAddress?.ToString()} left with connection id: {Context.ConnectionId}");
         await base.OnDisconnectedAsync(ex);
+    }
+
+    private async Task SendPlayerInfo(PlayerModel player)
+    {
+        if (player != null) return;
+        await Clients.All.SendAsync("ReceivePlayerInfo", player);
     }
 }

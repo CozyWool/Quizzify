@@ -3,17 +3,13 @@ using Quizzify.Client.Model.Users;
 
 namespace Quizzify.Client.Services
 {
-    public class SignalRService
+    public class MainHubService
     {
+        public event Action<bool?> AuthorizationResponseArrived;
+        public event Action<bool?> RegistartionResponseArrived;
         private readonly HubConnection connection;
 
-        private bool? isAuthorized = null!;
-        public bool? IsAuthorized => isAuthorized;
-
-        private bool? isRegistered = null!;
-        public bool? IsRegistered => isRegistered;
-
-        public SignalRService(HubConnection connection)
+        public MainHubService(HubConnection connection)
         {
             this.connection = connection;
         }
@@ -27,7 +23,7 @@ namespace Quizzify.Client.Services
         {
             connection.On<bool>("ReceiveAuthorize", (isAuthorized) =>
             {
-                this.isAuthorized = isAuthorized;
+                AuthorizationResponseArrived?.Invoke(isAuthorized);
             });
         }
 
@@ -35,7 +31,7 @@ namespace Quizzify.Client.Services
         {
             connection.On<bool>("ReceiveRegistration", (isRegistered) =>
             {
-                this.isRegistered = isRegistered;
+                RegistartionResponseArrived.Invoke(isRegistered);
             });
         }
 

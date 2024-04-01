@@ -8,9 +8,11 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <StackPanel Margin="5">
+            <TextBlock Text="Введите IP:" />
+            <TextBox Text="{Binding IP}"/>
             <TextBlock Text="Введите порт:" />
-            <TextBox Name="PortTextBox" />
-            <Button Content="Подключиться" Click="ButtonBase_OnClick"/>
+            <TextBox Text="{Binding Port}"/>
+            <Button Content="Подключиться" Command="{Binding ConnectToGameCommand}"/>
         </StackPanel>
     </Grid>
 </Window>

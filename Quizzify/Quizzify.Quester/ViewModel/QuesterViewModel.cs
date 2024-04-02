@@ -8,21 +8,41 @@ using System.Windows;
 using Quizzify.Quester.Model.Package.ViewModels;
 using AutoMapper;
 using Quizzify.Quester.Mappers;
-
+using System.Windows.Controls;
+using System.ComponentModel;
 
 namespace Quizzify.Quester.ViewModel;
 
-public class QuesterViewModel
+public class QuesterViewModel : INotifyPropertyChanged
 {
+    private List<PackageTreeViewModel> packageTreeViews = new List<PackageTreeViewModel>();
     private readonly IMapper _mapper;
 
     public ICommand SaveToFileSerializedCommand { get; }
     public ICommand UploadFileDeserializeCommand { get; }
 
+
+    private TreeView treeView;
+
+    public TreeView TreeView
+    {
+        get { return treeView; }
+        set
+        {
+            if(treeView != null)
+            {
+                treeView = value;
+                OnPropertyChanged(nameof(treeView));
+            }
+        }
+    }
+
+
     public QuesterViewModel()
     {
         SaveToFileSerializedCommand = new GenericCommand<PackageModel>(async (model) => await SaveToFile(model));
         UploadFileDeserializeCommand = new GenericCommand<PackageModel>(async (model) => await UploadFile(model));
+
         var config = new MapperConfiguration(cfg => cfg.AddProfile<MappingPackage>());
         _mapper = config.CreateMapper();
     }
@@ -52,6 +72,9 @@ public class QuesterViewModel
                 try
                 {
                     var packageTreeView = _mapper.Map<PackageTreeViewModel>(package);
+                    packageTreeViews.Add(packageTreeView);
+
+                    TreeView.ItemsSource = packageTreeViews;
                 }
                 catch (Exception ex)
                 {
@@ -67,5 +90,31 @@ public class QuesterViewModel
                 MessageBox.Show($"Ошибка при загрузке файла: {ex.Message}");
             }
         }
+    }
+
+    //TODO:  Это дерево переедет во View Quster. Оно тут временно
+    //    <TreeView x:Name="TreeView">
+    //    <TreeView.ItemTemplate>
+    //        <HierarchicalDataTemplate ItemsSource = "{Binding Rounds}" >
+    //            < TextBlock Text="{Binding PackageName}"/>
+    //            <HierarchicalDataTemplate.ItemTemplate>
+    //                <HierarchicalDataTemplate ItemsSource = "{Binding Questions}" >
+    //                    < TextBlock Text="{Binding RoundName}"/>
+    //                    <HierarchicalDataTemplate.ItemTemplate>
+    //                        <DataTemplate>
+    //                            <TextBlock Text = "{Binding QuestionText}" />
+    //                        </ DataTemplate >
+    //                    </ HierarchicalDataTemplate.ItemTemplate >
+    //                </ HierarchicalDataTemplate >
+    //            </ HierarchicalDataTemplate.ItemTemplate >
+    //        </ HierarchicalDataTemplate >
+    //    </ TreeView.ItemTemplate >
+    //</ TreeView >
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    protected virtual void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

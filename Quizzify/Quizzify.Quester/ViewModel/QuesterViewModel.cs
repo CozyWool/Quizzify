@@ -21,8 +21,8 @@ public class QuesterViewModel
 
     public QuesterViewModel()
     {
-        SaveToFileSerializedCommand = new GenericCommand<PackageModel>(SaveToFile);
-        UploadFileDeserializeCommand = new GenericCommand<PackageModel>(UploadFile);
+        SaveToFileSerializedCommand = new GenericCommand<PackageModel>(async (model) => await SaveToFile(model));
+        UploadFileDeserializeCommand = new GenericCommand<PackageModel>(async (model) => await UploadFile(model));
         var config = new MapperConfiguration(cfg => cfg.AddProfile<MappingPackage>());
         _mapper = config.CreateMapper();
     }

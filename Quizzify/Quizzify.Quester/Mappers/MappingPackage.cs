@@ -9,7 +9,7 @@ public class MappingPackage : Profile
     public MappingPackage()
     {
         CreateMap<PackageTreeViewModel, PackageModel>()
-            .ForMember(dest => dest.PackageName, opt => opt.MapFrom(src => src.Name))
+            .ForMember(dest => dest.PackageName, opt => opt.MapFrom(src => src.PackageName))
             .ForMember(dest => dest.Rounds, opt => opt.MapFrom(src => src.Rounds));
 
         CreateMap<RoundTreeViewModel, RoundModel>();

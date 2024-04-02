@@ -13,6 +13,7 @@ public class MappingPackage : Profile
             .ForMember(dest => dest.Rounds, opt => opt.MapFrom(src => src.Rounds));
 
         CreateMap<RoundTreeViewModel, RoundModel>();
-        CreateMap<QuestionTreeViewModel, QuestionModel>();
+        CreateMap<QuestionTreeViewModel, QuestionModel>()
+            .ForMember(dest => dest.QuestionText, opt => opt.MapFrom(src => src.QuestionText));
     }
 }

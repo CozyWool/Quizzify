@@ -94,7 +94,7 @@ public class QuesterViewModel : INotifyPropertyChanged
 
     //TODO:  Это дерево переедет во View Quster. Оно тут временно
     //    <TreeView x:Name="TreeView">
-    //    <TreeView.ItemTemplate>
+    //      <TreeView.ItemTemplate>
     //        <HierarchicalDataTemplate ItemsSource = "{Binding Rounds}" >
     //            < TextBlock Text="{Binding PackageName}"/>
     //            <HierarchicalDataTemplate.ItemTemplate>
@@ -102,7 +102,7 @@ public class QuesterViewModel : INotifyPropertyChanged
     //                    < TextBlock Text="{Binding RoundName}"/>
     //                    <HierarchicalDataTemplate.ItemTemplate>
     //                        <DataTemplate>
-    //                            <TextBlock Text = "{Binding QuestionText}" />
+    //                            <TextBlock Text = "{Binding QuestionText}"     />
     //                        </ DataTemplate >
     //                    </ HierarchicalDataTemplate.ItemTemplate >
     //                </ HierarchicalDataTemplate >

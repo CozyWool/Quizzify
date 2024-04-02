@@ -35,4 +35,33 @@ public class AESManager
             }
         }
     }
+
+    public string Decrypt(string hash)
+    {
+        byte[] encryptedData = Convert.FromBase64String(hash);
+
+        using (Aes aes = Aes.Create())
+        {
+            aes.Key = Key;
+            aes.IV = IV;
+
+            ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+
+            using (MemoryStream msDecrypt = new MemoryStream(encryptedData))
+            {
+                const ushort SaltBuffer = 36;
+                byte[] saltBytes = new byte[SaltBuffer];
+                msDecrypt.Read(saltBytes, 0, saltBytes.Length);
+
+                using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                {
+                    using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+                    {
+                        string decryptedData = srDecrypt.ReadToEnd();
+                        return decryptedData;
+                    }
+                }
+            }
+        }
+    }
 }

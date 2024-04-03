@@ -9,6 +9,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Quizzify.DataAccess\Quizzify.DataAccess.csproj" />
+      <ProjectReference Include="..\Quizzify.Infrastructure.WPF\Quizzify.Infrastructure.WPF.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -24,6 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="13.0.1" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>
 

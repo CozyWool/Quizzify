@@ -6,7 +6,6 @@ public class QuestionModel
 {
     public int QuestionId { get; set; }
     public string QuestionText { get; set; }
-    public string QuestionTheme { get; set; }
     public byte[] QuestionImageUrl { get; set; }
 
     [Required(ErrorMessage = "Стоимость вопроса обязательна")]

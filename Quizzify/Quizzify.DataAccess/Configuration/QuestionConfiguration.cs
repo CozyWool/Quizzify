@@ -19,13 +19,10 @@ public class QuestionConfiguration : IEntityTypeConfiguration<QuestionEntity>
         builder.Property(e => e.QuestionCost).HasColumnName("question_cost");
         builder.Property(e => e.QuestionImageUrl).HasColumnName("question_image_url");
         builder.Property(e => e.QuestionText).HasColumnName("question_text");
-        builder.Property(e => e.QuestionTheme)
-            .HasMaxLength(15)
-            .HasColumnName("question_theme");
-        builder.Property(e => e.RoundId).HasColumnName("round_id");
+        builder.Property(e => e.ThemeId).HasColumnName("theme_id");
 
-        builder.HasOne(d => d.Round).WithMany(p => p.Questions)
-            .HasForeignKey(d => d.RoundId)
-            .HasConstraintName("questions_round_id_fk");
+        builder.HasOne(d => d.Theme).WithMany(p => p.Questions)
+            .HasForeignKey(d => d.ThemeId)
+            .HasConstraintName("questions_theme_id_fk");
     }
 }

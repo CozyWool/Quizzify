@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Quizzify.DataAccess.Contexts;
@@ -12,20 +11,18 @@ using Quizzify.DataAccess.Contexts;
 namespace Quizzify.Client.Migrations
 {
     [DbContext(typeof(DbQuizzifyContext))]
-    [Migration("20240327191229_InitialCreate")]
-    partial class InitialCreate
+    partial class DbQuizzifyContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("ProductVersion", "8.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Quizzify.Client.Quizzify.Client.DataAccess.Entities.PackageEntity", b =>
+            modelBuilder.Entity("Quizzify.DataAccess.Entities.PackageEntity", b =>
                 {
                     b.Property<int>("PackageId")
                         .ValueGeneratedOnAdd()
@@ -56,7 +53,7 @@ namespace Quizzify.Client.Migrations
                     b.ToTable("Packages", (string)null);
                 });
 
-            modelBuilder.Entity("Quizzify.Client.Quizzify.Client.DataAccess.Entities.PlayerEntity", b =>
+            modelBuilder.Entity("Quizzify.DataAccess.Entities.PlayerEntity", b =>
                 {
                     b.Property<int>("PlayerId")
                         .ValueGeneratedOnAdd()
@@ -66,6 +63,7 @@ namespace Quizzify.Client.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("PlayerId"));
 
                     b.Property<string>("About")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("about");
 
@@ -80,6 +78,7 @@ namespace Quizzify.Client.Migrations
                         .HasColumnName("user_id");
 
                     b.Property<byte[]>("UserProfilePicture")
+                        .IsRequired()
                         .HasColumnType("bytea")
                         .HasColumnName("user_profile_picture");
 
@@ -92,7 +91,7 @@ namespace Quizzify.Client.Migrations
                     b.ToTable("Players", (string)null);
                 });
 
-            modelBuilder.Entity("Quizzify.Client.Quizzify.Client.DataAccess.Entities.QuestionEntity", b =>
+            modelBuilder.Entity("Quizzify.DataAccess.Entities.QuestionEntity", b =>
                 {
                     b.Property<int>("QuestionId")
                         .ValueGeneratedOnAdd()
@@ -102,14 +101,17 @@ namespace Quizzify.Client.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("QuestionId"));
 
                     b.Property<byte[]>("AnswerImageUrl")
+                        .IsRequired()
                         .HasColumnType("bytea")
                         .HasColumnName("answer_image_url");
 
                     b.Property<string>("AnswerText")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("answer_text");
 
                     b.Property<string>("QuestionComment")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("question_comment");
 
@@ -118,31 +120,28 @@ namespace Quizzify.Client.Migrations
                         .HasColumnName("question_cost");
 
                     b.Property<byte[]>("QuestionImageUrl")
+                        .IsRequired()
                         .HasColumnType("bytea")
                         .HasColumnName("question_image_url");
 
                     b.Property<string>("QuestionText")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("question_text");
 
-                    b.Property<string>("QuestionTheme")
-                        .HasMaxLength(15)
-                        .HasColumnType("character varying(15)")
-                        .HasColumnName("question_theme");
-
-                    b.Property<int>("RoundId")
+                    b.Property<int>("ThemeId")
                         .HasColumnType("integer")
-                        .HasColumnName("round_id");
+                        .HasColumnName("theme_id");
 
                     b.HasKey("QuestionId")
                         .HasName("questions_pkey");
 
-                    b.HasIndex("RoundId");
+                    b.HasIndex("ThemeId");
 
                     b.ToTable("Questions", (string)null);
                 });
 
-            modelBuilder.Entity("Quizzify.Client.Quizzify.Client.DataAccess.Entities.RoundEntity", b =>
+            modelBuilder.Entity("Quizzify.DataAccess.Entities.RoundEntity", b =>
                 {
                     b.Property<int>("RoundId")
                         .ValueGeneratedOnAdd()
@@ -175,7 +174,7 @@ namespace Quizzify.Client.Migrations
                     b.ToTable("Rounds", (string)null);
                 });
 
-            modelBuilder.Entity("Quizzify.Client.Quizzify.Client.DataAccess.Entities.SecretQuestionEntity", b =>
+            modelBuilder.Entity("Quizzify.DataAccess.Entities.SecretQuestionEntity", b =>
                 {
                     b.Property<int>("SecretQId")
                         .ValueGeneratedOnAdd()
@@ -195,7 +194,33 @@ namespace Quizzify.Client.Migrations
                     b.ToTable("SecretQuestions", (string)null);
                 });
 
-            modelBuilder.Entity("Quizzify.Client.Quizzify.Client.DataAccess.Entities.UserEntity", b =>
+            modelBuilder.Entity("Quizzify.DataAccess.Entities.ThemeEntity", b =>
+                {
+                    b.Property<int>("ThemeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("theme_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ThemeId"));
+
+                    b.Property<int>("RoundId")
+                        .HasColumnType("integer")
+                        .HasColumnName("round_id");
+
+                    b.Property<string>("ThemeName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("theme_name");
+
+                    b.HasKey("ThemeId")
+                        .HasName("themes_pkey");
+
+                    b.HasIndex("RoundId");
+
+                    b.ToTable("Themes", (string)null);
+                });
+
+            modelBuilder.Entity("Quizzify.DataAccess.Entities.UserEntity", b =>
                 {
                     b.Property<Guid>("UserId")
                         .ValueGeneratedOnAdd()
@@ -210,6 +235,7 @@ namespace Quizzify.Client.Migrations
                         .HasColumnName("email");
 
                     b.Property<byte[]>("GoogleAuthorization")
+                        .IsRequired()
                         .HasColumnType("bytea")
                         .HasColumnName("google_authorization");
 
@@ -236,6 +262,7 @@ namespace Quizzify.Client.Migrations
                         .HasColumnName("selected_secret_question_id");
 
                     b.Property<string>("TwofaAuthMethod")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("twofa_auth_method");
 
@@ -253,11 +280,11 @@ namespace Quizzify.Client.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("Quizzify.Client.Quizzify.Client.DataAccess.Entities.PlayerEntity", b =>
+            modelBuilder.Entity("Quizzify.DataAccess.Entities.PlayerEntity", b =>
                 {
-                    b.HasOne("Quizzify.Client.Quizzify.Client.DataAccess.Entities.UserEntity", "User")
+                    b.HasOne("Quizzify.DataAccess.Entities.UserEntity", "User")
                         .WithOne("Player")
-                        .HasForeignKey("Quizzify.Client.Quizzify.Client.DataAccess.Entities.PlayerEntity", "UserId")
+                        .HasForeignKey("Quizzify.DataAccess.Entities.PlayerEntity", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("user_id_fk");
@@ -265,21 +292,21 @@ namespace Quizzify.Client.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Quizzify.Client.Quizzify.Client.DataAccess.Entities.QuestionEntity", b =>
+            modelBuilder.Entity("Quizzify.DataAccess.Entities.QuestionEntity", b =>
                 {
-                    b.HasOne("Quizzify.Client.Quizzify.Client.DataAccess.Entities.RoundEntity", "Round")
+                    b.HasOne("Quizzify.DataAccess.Entities.ThemeEntity", "Theme")
                         .WithMany("Questions")
-                        .HasForeignKey("RoundId")
+                        .HasForeignKey("ThemeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("questions_round_id_fk");
+                        .HasConstraintName("questions_theme_id_fk");
 
-                    b.Navigation("Round");
+                    b.Navigation("Theme");
                 });
 
-            modelBuilder.Entity("Quizzify.Client.Quizzify.Client.DataAccess.Entities.RoundEntity", b =>
+            modelBuilder.Entity("Quizzify.DataAccess.Entities.RoundEntity", b =>
                 {
-                    b.HasOne("Quizzify.Client.Quizzify.Client.DataAccess.Entities.PackageEntity", "Package")
+                    b.HasOne("Quizzify.DataAccess.Entities.PackageEntity", "Package")
                         .WithMany("Rounds")
                         .HasForeignKey("PackageId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -289,9 +316,21 @@ namespace Quizzify.Client.Migrations
                     b.Navigation("Package");
                 });
 
-            modelBuilder.Entity("Quizzify.Client.Quizzify.Client.DataAccess.Entities.UserEntity", b =>
+            modelBuilder.Entity("Quizzify.DataAccess.Entities.ThemeEntity", b =>
                 {
-                    b.HasOne("Quizzify.Client.Quizzify.Client.DataAccess.Entities.SecretQuestionEntity", "SelectedSecretQuestion")
+                    b.HasOne("Quizzify.DataAccess.Entities.RoundEntity", "Round")
+                        .WithMany("Themes")
+                        .HasForeignKey("RoundId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("themes_round_id_fk");
+
+                    b.Navigation("Round");
+                });
+
+            modelBuilder.Entity("Quizzify.DataAccess.Entities.UserEntity", b =>
+                {
+                    b.HasOne("Quizzify.DataAccess.Entities.SecretQuestionEntity", "SelectedSecretQuestion")
                         .WithMany("Users")
                         .HasForeignKey("SelectedSecretQuestionId")
                         .OnDelete(DeleteBehavior.SetNull)
@@ -300,24 +339,30 @@ namespace Quizzify.Client.Migrations
                     b.Navigation("SelectedSecretQuestion");
                 });
 
-            modelBuilder.Entity("Quizzify.Client.Quizzify.Client.DataAccess.Entities.PackageEntity", b =>
+            modelBuilder.Entity("Quizzify.DataAccess.Entities.PackageEntity", b =>
                 {
                     b.Navigation("Rounds");
                 });
 
-            modelBuilder.Entity("Quizzify.Client.Quizzify.Client.DataAccess.Entities.RoundEntity", b =>
+            modelBuilder.Entity("Quizzify.DataAccess.Entities.RoundEntity", b =>
                 {
-                    b.Navigation("Questions");
+                    b.Navigation("Themes");
                 });
 
-            modelBuilder.Entity("Quizzify.Client.Quizzify.Client.DataAccess.Entities.SecretQuestionEntity", b =>
+            modelBuilder.Entity("Quizzify.DataAccess.Entities.SecretQuestionEntity", b =>
                 {
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("Quizzify.Client.Quizzify.Client.DataAccess.Entities.UserEntity", b =>
+            modelBuilder.Entity("Quizzify.DataAccess.Entities.ThemeEntity", b =>
                 {
-                    b.Navigation("Player");
+                    b.Navigation("Questions");
+                });
+
+            modelBuilder.Entity("Quizzify.DataAccess.Entities.UserEntity", b =>
+                {
+                    b.Navigation("Player")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Quizzify.DataAccess.Contexts;
 
-namespace Quizzify.DataAccess.Contexts;
+namespace Quizzify.Migrations;
 
 public class DbQuizzifyContextFactory : IDesignTimeDbContextFactory<DbQuizzifyContext>
 {
@@ -10,7 +11,7 @@ public class DbQuizzifyContextFactory : IDesignTimeDbContextFactory<DbQuizzifyCo
         var optionsBuilder = new DbContextOptionsBuilder<DbQuizzifyContext>();
         optionsBuilder.UseNpgsql(builder =>
         {
-            builder.MigrationsAssembly(typeof(DbQuizzifyContext).Assembly.FullName);
+            builder.MigrationsAssembly(typeof(DbQuizzifyContextFactory).Assembly.FullName);
         });
         return new DbQuizzifyContext(optionsBuilder.Options);
     }

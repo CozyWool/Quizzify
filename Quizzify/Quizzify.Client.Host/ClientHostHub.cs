@@ -4,7 +4,6 @@ using Quizzify.Client.Host.Enums;
 using Quizzify.Client.Host.Mappers;
 using Quizzify.Client.Host.Model;
 using Quizzify.DataAccess.Entities;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Quizzify.Client.Host;
 

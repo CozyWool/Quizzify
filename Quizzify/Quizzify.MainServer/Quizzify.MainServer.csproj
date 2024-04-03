@@ -13,6 +13,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Quizzify.DataAccess\Quizzify.DataAccess.csproj" />
+      <ProjectReference Include="..\Quizzify.Infrastructure\Quizzify.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

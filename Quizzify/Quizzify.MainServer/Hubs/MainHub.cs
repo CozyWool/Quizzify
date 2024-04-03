@@ -5,6 +5,7 @@ using Quizzify.MainServer.Models.Users;
 using AutoMapper;
 using Quizzify.MainServer.Mappers;
 using System.Runtime.Intrinsics.Arm;
+using Quizzify.Infrastructure.Security;
 
 namespace Quizzify.MainServer.Hubs
 {
@@ -37,8 +38,8 @@ namespace Quizzify.MainServer.Hubs
             {
                 if (userItem.Email==user.LoginOrEmail)
                 {
-                    Aes aes = new AESManager();
-                    string decryptedPassword = aes.Decrypt(userItem.PasswordHash);
+                    var aes = new AESManager();
+                    var decryptedPassword = aes.Decrypt(userItem.PasswordHash);
                     if (decryptedPassword == user.Password)
                     {
                         return true;

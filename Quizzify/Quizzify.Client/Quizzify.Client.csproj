@@ -44,6 +44,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Quizzify.DataAccess\Quizzify.DataAccess.csproj" />
+      <ProjectReference Include="..\Quizzify.Infrastructure.WPF\Quizzify.Infrastructure.WPF.csproj" />
+      <ProjectReference Include="..\Quizzify.Infrastructure\Quizzify.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>

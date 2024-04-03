@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quizzify.Client.Host", "Qui
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quizzify.Migrations", "Quizzify.Migrations\Quizzify.Migrations.csproj", "{A257CE96-FEDF-4B81-87DD-D44CEEE5D384}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quizzify.Infrastructure", "Quizzify.Infrastructure\Quizzify.Infrastructure.csproj", "{8F5A157D-A995-46A4-A928-787B696C13E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quizzify.Infrastructure.WPF", "Quizzify.Infrastructure.WPF\Quizzify.Infrastructure.WPF.csproj", "{2D77E4A9-B443-4326-812E-1FE4BB767984}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{A257CE96-FEDF-4B81-87DD-D44CEEE5D384}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A257CE96-FEDF-4B81-87DD-D44CEEE5D384}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A257CE96-FEDF-4B81-87DD-D44CEEE5D384}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F5A157D-A995-46A4-A928-787B696C13E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F5A157D-A995-46A4-A928-787B696C13E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F5A157D-A995-46A4-A928-787B696C13E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F5A157D-A995-46A4-A928-787B696C13E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D77E4A9-B443-4326-812E-1FE4BB767984}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D77E4A9-B443-4326-812E-1FE4BB767984}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D77E4A9-B443-4326-812E-1FE4BB767984}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D77E4A9-B443-4326-812E-1FE4BB767984}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace Quizzify.Client.Command;
+namespace Quizzify.Infrastructure.WPF.Command;
 public abstract class CommandBase : ICommand
 {
     public event EventHandler CanExecuteChanged

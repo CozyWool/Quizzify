@@ -22,9 +22,7 @@ public class QuesterViewModel : INotifyPropertyChanged
     public ICommand SaveToFileSerializedCommand { get; }
     public ICommand UploadFileDeserializeCommand { get; }
 
-
     private TreeView treeView;
-
     public TreeView TreeView
     {
         get { return treeView; }
@@ -37,7 +35,6 @@ public class QuesterViewModel : INotifyPropertyChanged
             }
         }
     }
-
 
     public QuesterViewModel()
     {

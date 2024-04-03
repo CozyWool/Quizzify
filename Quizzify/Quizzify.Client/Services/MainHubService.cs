@@ -7,21 +7,21 @@ namespace Quizzify.Client.Services
     {
         public event Action<bool?> AuthorizationResponseArrived;
         public event Action<bool?> RegistartionResponseArrived;
-        private readonly HubConnection connection;
+        private readonly HubConnection _connection;
 
         public MainHubService(HubConnection connection)
         {
-            this.connection = connection;
+            this._connection = connection;
         }
 
         public async Task Connect()
         {
-            await connection.StartAsync();
+            await _connection.StartAsync();
         }
 
         public void ReceiveAuthorizeMessage()
         {
-            connection.On<bool>("ReceiveAuthorize", (isAuthorized) =>
+            _connection.On<bool>("ReceiveAuthorize", (isAuthorized) =>
             {
                 AuthorizationResponseArrived?.Invoke(isAuthorized);
             });
@@ -29,7 +29,7 @@ namespace Quizzify.Client.Services
 
         public void ReceiveRegistrationMessage()
         {
-            connection.On<bool>("ReceiveRegistration", (isRegistered) =>
+            _connection.On<bool>("ReceiveRegistration", (isRegistered) =>
             {
                 RegistartionResponseArrived.Invoke(isRegistered);
             });
@@ -37,12 +37,12 @@ namespace Quizzify.Client.Services
 
         public async Task SendAuthorizeMessage(AuthorizationModel user)
         {
-            await connection.SendAsync("SendAuthorize", user);
+            await _connection.SendAsync("SendAuthorize", user);
         }
 
         public async Task SendRegistrationMessage(RegistrationModel newUser)
         {
-            await connection.SendAsync("SendRegistration", newUser);
+            await _connection.SendAsync("SendRegistration", newUser);
         }
     }
 }

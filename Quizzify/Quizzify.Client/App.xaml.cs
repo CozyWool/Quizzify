@@ -13,7 +13,7 @@ namespace Quizzify.Client;
 
 public partial class App : Application
 {
-    private IConfiguration configuration;
+    private IConfiguration _configuration;
 
     private const string AppDataFolder = "AppData";
     private const string LocalFolder = "Local";
@@ -35,10 +35,10 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         ApplyCultureFromSettingsFile();
-        configuration = BuildConfiguration();
+        _configuration = BuildConfiguration();
         base.OnStartup(e);
         
-        var registrationViewModel = new RegistrationViewModel(configuration);
+        var registrationViewModel = new RegistrationViewModel(_configuration);
         var registrationView = new RegistrationView(registrationViewModel);
         registrationView.Show();
     }

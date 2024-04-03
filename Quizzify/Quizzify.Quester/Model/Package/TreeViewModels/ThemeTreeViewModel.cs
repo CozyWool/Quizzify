@@ -1,4 +1,4 @@
-﻿namespace Quizzify.Quester.Model.Package.ViewModels;
+﻿namespace Quizzify.Quester.Model.Package.TreeViewModels;
 
 public class ThemeTreeViewModel
 {

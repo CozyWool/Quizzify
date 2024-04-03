@@ -9,7 +9,7 @@
     <Grid>
         <StackPanel Margin="5">
             <TextBlock Text="Введите IP:" />
-            <TextBox Text="{Binding IP}"/>
+            <TextBox Text="{Binding Ip}"/>
             <TextBlock Text="Введите порт:" />
             <TextBox Text="{Binding Port}"/>
             <Button Content="Подключиться" Command="{Binding ConnectToGameCommand}"/>

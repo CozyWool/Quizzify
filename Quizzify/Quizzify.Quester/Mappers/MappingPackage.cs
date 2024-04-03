@@ -13,9 +13,11 @@ public class MappingPackage : Profile
             .ForMember(dest => dest.Rounds, opt => opt.MapFrom(src => src.Rounds));
 
         CreateMap<RoundTreeViewModel, RoundModel>()
+            .ForMember(dest => dest.RoundName, opt => opt.MapFrom(src => src.RoundName))
             .ForMember(dest => dest.Themes, opt => opt.MapFrom(src => src.Themes));
 
         CreateMap<ThemeTreeViewModel, ThemeModel>()
+            .ForMember(dest => dest.ThemeName, opt => opt.MapFrom(src => src.ThemeName))
             .ForMember(dest => dest.Questions, opt => opt.MapFrom(src => src.Questions));
 
         CreateMap<QuestionTreeViewModel, QuestionModel>()

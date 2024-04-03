@@ -6,6 +6,7 @@ namespace Quizzify.Quester.Mappers;
 
 public class MappingPackage : Profile
 {
+    // TODO:  Переписать. У нас появилась отдельная таблица "Тема"
     public MappingPackage()
     {
         CreateMap<PackageTreeViewModel, PackageModel>()

@@ -92,24 +92,29 @@ public class QuesterViewModel : INotifyPropertyChanged
         }
     }
 
-    // TODO:  Это дерево переедет во View Quster. Оно тут временно
-    //    <TreeView x:Name="TreeView">
-    //      <TreeView.ItemTemplate>
-    //        <HierarchicalDataTemplate ItemsSource = "{Binding Rounds}" >
-    //            < TextBlock Text="{Binding PackageName}"/>
-    //            <HierarchicalDataTemplate.ItemTemplate>
-    //                <HierarchicalDataTemplate ItemsSource = "{Binding Questions}" >
-    //                    < TextBlock Text="{Binding RoundName}"/>
-    //                    <HierarchicalDataTemplate.ItemTemplate>
-    //                        <DataTemplate>
-    //                            <TextBlock Text = "{Binding QuestionText}"/>
-    //                        </ DataTemplate >
-    //                    </ HierarchicalDataTemplate.ItemTemplate >
-    //                </ HierarchicalDataTemplate >
-    //            </ HierarchicalDataTemplate.ItemTemplate >
-    //        </ HierarchicalDataTemplate >
-    //    </ TreeView.ItemTemplate >
-    //</ TreeView >
+        // TODO:  Это дерево переедет во View Quster. Оно тут временно
+        //<TreeView x:Name="TreeView">
+        //    <TreeView.ItemTemplate>
+        //        <HierarchicalDataTemplate ItemsSource="{Binding Rounds}">
+        //            <TextBlock Text="{Binding PackageName}"/>
+        //            <HierarchicalDataTemplate.ItemTemplate>
+        //                <HierarchicalDataTemplate ItemsSource="{Binding Themes}" >
+        //                    <TextBlock Text="{Binding RoundName}"/>
+        //                    <HierarchicalDataTemplate.ItemTemplate>
+        //                        <HierarchicalDataTemplate ItemsSource="{Binding Questions}" >
+        //                            <TextBlock Text="{Binding ThemeName}"/>
+        //                            <HierarchicalDataTemplate.ItemTemplate>
+        //                                <DataTemplate>
+        //                                    <TextBlock Text="{Binding QuestionText}"/>
+        //                                </DataTemplate>
+        //                            </HierarchicalDataTemplate.ItemTemplate>
+        //                        </HierarchicalDataTemplate>
+        //                    </HierarchicalDataTemplate.ItemTemplate>
+        //                </HierarchicalDataTemplate>
+        //            </HierarchicalDataTemplate.ItemTemplate>
+        //        </HierarchicalDataTemplate>
+        //    </TreeView.ItemTemplate>
+        //</TreeView>
 
     public event PropertyChangedEventHandler PropertyChanged;
 

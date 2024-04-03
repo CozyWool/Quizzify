@@ -10,7 +10,7 @@ using AutoMapper;
 using Quizzify.Quester.Mappers;
 using System.Windows.Controls;
 using System.ComponentModel;
-using Quizzify.Quester.Command;
+using Quizzify.Infrastructure.WPF.Command;
 
 namespace Quizzify.Quester.ViewModel;
 

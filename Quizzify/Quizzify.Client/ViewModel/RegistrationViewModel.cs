@@ -16,9 +16,9 @@ namespace Quizzify.Client.ViewModel;
 
 public class RegistrationViewModel : INotifyPropertyChanged
 {
-    private readonly IConfiguration configuration;
+    private readonly IConfiguration _configuration;
     private readonly IMapper _mapper;
-    private bool? isRegistered = null!;
+    private bool? _isRegistered = null!;
     public ICommand RegistrationUserCommand { get; }
 
     private string _userLogin;
@@ -95,13 +95,13 @@ public class RegistrationViewModel : INotifyPropertyChanged
     {
         var config = new MapperConfiguration(cfg => cfg.AddProfile<MappingUser>());
         _mapper = config.CreateMapper();
-        this.configuration = configuration;
+        this._configuration = configuration;
         RegistrationUserCommand = new GenericCommand<object>(RegistrationUser);
     }
 
     private void SetRegistration(bool? b)
     {
-        isRegistered = b;
+        _isRegistered = b;
     }
 
     private async void RegistrationUser(object obj)
@@ -136,13 +136,13 @@ public class RegistrationViewModel : INotifyPropertyChanged
         Stopwatch stopwatch = Stopwatch.StartNew();
         while (true)
         {
-            if (isRegistered != null || stopwatch.Elapsed.TotalSeconds >= waitingTime) break;
+            if (_isRegistered != null || stopwatch.Elapsed.TotalSeconds >= waitingTime) break;
             Task.Delay(100).Wait();
         }
         stopwatch.Stop();
 
-        if (isRegistered == null) MessageBox.Show("Превышено время ожидания");
-        else if (isRegistered == true) MessageBox.Show("Пользователь зарегистрирован!");
+        if (_isRegistered == null) MessageBox.Show("Превышено время ожидания");
+        else if (_isRegistered == true) MessageBox.Show("Пользователь зарегистрирован!");
         else MessageBox.Show("Ошибка");
         signal.RegistartionResponseArrived -= SetRegistration;
     }

@@ -11,14 +11,14 @@ namespace Quizzify.MainServer.Hubs
 {
     public class MainHub:Hub
     {
-        private readonly IConfiguration configuration;
+        private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
 
         public MainHub()
         {
             var config = new MapperConfiguration(cfg => cfg.AddProfile<MappingUser>());
             _mapper = config.CreateMapper();
-            configuration= new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory).AddJsonFile("appsettings.json").Build();
+            _configuration= new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory).AddJsonFile("appsettings.json").Build();
         }
 
         public async Task SendAuthorize(AuthorizationModel user)
@@ -33,7 +33,7 @@ namespace Quizzify.MainServer.Hubs
 
         private bool LoginVerification(AuthorizationModel user)
         {
-            var context = new DbQuizzifyContext(configuration);
+            var context = new DbQuizzifyContext(_configuration);
             foreach (var userItem in context.Users)
             {
                 if (userItem.Email==user.LoginOrEmail)
@@ -53,7 +53,7 @@ namespace Quizzify.MainServer.Hubs
         private bool RegistrationVerification(RegistrationModel newUser)
         {
             var userEntity = _mapper.Map<UserEntity>(newUser);
-            using var context = new DbQuizzifyContext(configuration);
+            using var context = new DbQuizzifyContext(_configuration);
             context.AddUser(userEntity);
             return true;
         }

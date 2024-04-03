@@ -14,5 +14,18 @@ public class MappingPlayer : Profile
             .ForMember(dest => dest.UserProfilePicture, opt => opt.MapFrom(src => src.UserProfilePicture))
             .ForMember(dest => dest.About, opt => opt.MapFrom(src => src.About))
             .ReverseMap();
+
+        CreateMap<PackageEntity, PackageModel>()
+            .ForMember(dest => dest.PackageId, opt => opt.MapFrom(src => src.PackageId))
+            .ForMember(dest => dest.PackageName, opt => opt.MapFrom(src => src.PackageName))
+            .ForMember(dest => dest.Difficulty, opt => opt.MapFrom(src => src.Difficulty))
+            .ForMember(dest => dest.Rounds, opt => opt.MapFrom(src => src.Rounds))
+            .ReverseMap();
+
+        CreateMap<RoundEntity, RoundModel>()
+            .ForMember(dest => dest.RoundId, opt => opt.MapFrom(src => src.RoundId))
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+            .ForMember(dest => dest.Themes, opt => opt.MapFrom(src => src.Themes))
+            .ReverseMap();
     }
 }

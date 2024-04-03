@@ -4,12 +4,9 @@ public class QuestionEntity
 {
     public int QuestionId { get; set; }
 
-    public int RoundId { get; set; }
+    public int ThemeId { get; set; }
 
     public string QuestionText { get; set; }
-
-    public string QuestionTheme { get; set; }
-
     public byte[] QuestionImageUrl { get; set; }
 
     public int QuestionCost { get; set; }
@@ -20,5 +17,5 @@ public class QuestionEntity
 
     public byte[] AnswerImageUrl { get; set; }
 
-    public virtual RoundEntity Round { get; set; }
+    public virtual ThemeEntity Theme { get; set; }
 }

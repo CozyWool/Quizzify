@@ -8,6 +8,7 @@ namespace Quizzify.DataAccess.Contexts;
 public partial class DbQuizzifyContext : DbContext
 {
     private readonly IConfiguration _configuration;
+
     public DbQuizzifyContext(IConfiguration configuration)
     {
         _configuration = configuration;
@@ -17,6 +18,7 @@ public partial class DbQuizzifyContext : DbContext
         : base(options)
     {
     }
+
     public virtual DbSet<PackageEntity> Packages { get; set; }
 
     public virtual DbSet<PlayerEntity> Players { get; set; }
@@ -47,6 +49,8 @@ public partial class DbQuizzifyContext : DbContext
         modelBuilder.ApplyConfiguration(new PlayerConfiguration());
 
         modelBuilder.ApplyConfiguration(new QuestionConfiguration());
+        
+        modelBuilder.ApplyConfiguration(new ThemeConfiguration());
 
         modelBuilder.ApplyConfiguration(new RoundConfiguration());
 

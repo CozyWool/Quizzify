@@ -95,6 +95,11 @@ public class ClientHostHub : Hub
         }
     }
 
+    public async Task SendError(string errorMessage)
+    {
+        await Clients.All.SendAsync("ReceiveError", errorMessage);
+    }
+
     public async Task StartGame()
     {
         if (Players.Count < 2) throw new Exception("Недостаточно игроков! Необходимо минимум 2 игрока.");

@@ -2,5 +2,5 @@
 public class RoundTreeViewModel
 {
     public string RoundName { get; set; }
-    public List<QuestionTreeViewModel> Questions { get; set; }
+    public List<ThemeTreeViewModel> Themes { get; set; }
 }

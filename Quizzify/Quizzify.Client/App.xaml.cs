@@ -7,6 +7,7 @@ using Quizzify.Client.Settings.Language;
 using Quizzify.Client.View;
 using Quizzify.Client.ViewModel;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Quizzify.Client;
 
@@ -18,6 +19,18 @@ public partial class App : Application
     private const string LocalFolder = "Local";
     private const string SettingsFile = "appsettings.json";
     private const string LocalesFolder = "Locales";
+
+    public static HubConnection HubConnectionConfiguration(string ip, int port, string route)
+    {
+        return new HubConnectionBuilder()
+        .WithUrl($"http://{ip}:{port}/{route}")
+        .Build();
+    }
+
+    public static HubConnection MainHubConnectionConfiguration()
+    {
+        return HubConnectionConfiguration("localhost", 5234, "mainhub");   
+    }
 
     protected override void OnStartup(StartupEventArgs e)
     {

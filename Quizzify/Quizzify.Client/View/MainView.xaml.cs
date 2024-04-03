@@ -1,19 +1,19 @@
-﻿using System.IO;
-using System.Windows;
-using Microsoft.Extensions.Configuration;
+﻿using System.Windows;
+using Microsoft.AspNetCore.SignalR.Client;
 using Quizzify.Client.ViewModel;
-using Quizzify.DataAccess.Contexts;
 
 namespace Quizzify.Client.View;
 
 public partial class MainView : Window
 {
+    private HubConnection _connection;
+
     public MainView(MainViewModel viewModel)
     {
         InitializeComponent();
         DataContext = viewModel;
     }
-    
+
     // TODO: Выпилить в класс модели
     // private static IConfiguration GetConnectionString()
     // {

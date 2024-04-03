@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Quizzify.Client.Mappers;
-using Quizzify.Client.Model.Users;
-using Quizzify.DataAccess.Contexts;
-using Quizzify.DataAccess.Entities;
 using System.ComponentModel;
 using System.Windows.Input;
-using Quizzify.Client.Command;
-using Quizzify.Client.Security;
+
+using Microsoft.AspNetCore.SignalR.Client;
+using System.Diagnostics;
+using System.Windows;
+using Quizzify.Client.Services;
+using Quizzify.Client.Model.Users;
+using Quizzify.Infrastructure.Security;
+using Quizzify.Infrastructure.WPF.Command;
 
 namespace Quizzify.Client.ViewModel;
 
@@ -15,6 +18,7 @@ public class RegistrationViewModel : INotifyPropertyChanged
 {
     private readonly IConfiguration configuration;
     private readonly IMapper _mapper;
+    private bool? isRegistered = null!;
     public ICommand RegistrationUserCommand { get; }
 
     private string _userLogin;
@@ -95,7 +99,12 @@ public class RegistrationViewModel : INotifyPropertyChanged
         RegistrationUserCommand = new GenericCommand<object>(RegistrationUser);
     }
 
-    private void RegistrationUser(object obj)
+    private void SetRegistration(bool? b)
+    {
+        isRegistered = b;
+    }
+
+    private async void RegistrationUser(object obj)
     {
         var aes = new AESManager();
         Guid guid = Guid.NewGuid();
@@ -115,9 +124,27 @@ public class RegistrationViewModel : INotifyPropertyChanged
             SecretAnswer = UserSecretAnswer
         };
 
-        var userEntity = _mapper.Map<UserEntity>(newUser);
-        using var context = new DbQuizzifyContext(configuration);
-        context.AddUser(userEntity);
+        HubConnection connection = App.MainHubConnectionConfiguration();
+        MainHubService signal = new MainHubService(connection);
+        int waitingTime = 10;
+
+        await signal.Connect();
+        await signal.SendRegistrationMessage(newUser);
+        signal.ReceiveRegistrationMessage();
+        signal.RegistartionResponseArrived += SetRegistration;
+
+        Stopwatch stopwatch = Stopwatch.StartNew();
+        while (true)
+        {
+            if (isRegistered != null || stopwatch.Elapsed.TotalSeconds >= waitingTime) break;
+            Task.Delay(100).Wait();
+        }
+        stopwatch.Stop();
+
+        if (isRegistered == null) MessageBox.Show("Превышено время ожидания");
+        else if (isRegistered == true) MessageBox.Show("Пользователь зарегистрирован!");
+        else MessageBox.Show("Ошибка");
+        signal.RegistartionResponseArrived -= SetRegistration;
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

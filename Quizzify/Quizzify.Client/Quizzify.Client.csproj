@@ -9,6 +9,9 @@
 
     <ItemGroup>
       <PackageReference Include="AutoMapper" Version="13.0.1" />
+      <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.0" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+      <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.3" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.3" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
@@ -41,6 +44,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Quizzify.DataAccess\Quizzify.DataAccess.csproj" />
+      <ProjectReference Include="..\Quizzify.Infrastructure.WPF\Quizzify.Infrastructure.WPF.csproj" />
+      <ProjectReference Include="..\Quizzify.Infrastructure\Quizzify.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>

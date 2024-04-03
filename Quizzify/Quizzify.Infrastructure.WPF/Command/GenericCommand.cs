@@ -1,4 +1,4 @@
-﻿namespace Quizzify.Client.Command;
+﻿namespace Quizzify.Infrastructure.WPF.Command;
 
 public class GenericCommand<T> : CommandBase where T : class
 {

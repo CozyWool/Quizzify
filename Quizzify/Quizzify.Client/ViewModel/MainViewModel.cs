@@ -1,9 +1,9 @@
-﻿using Quizzify.Client.Command;
-using Quizzify.Client.Model.Users;
+﻿using Quizzify.Client.Model.Users;
 using Quizzify.Client.Services;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
+using Quizzify.Infrastructure.WPF.Command;
 
 namespace Quizzify.Client.ViewModel;
 

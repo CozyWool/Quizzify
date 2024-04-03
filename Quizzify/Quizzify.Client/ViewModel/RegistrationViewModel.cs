@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Quizzify.Client.Mappers;
-using Quizzify.Client.Command;
 using System.ComponentModel;
 using System.Windows.Input;
 
-using Quizzify.Client.Security;
 using Microsoft.AspNetCore.SignalR.Client;
 using System.Diagnostics;
 using System.Windows;
 using Quizzify.Client.Services;
 using Quizzify.Client.Model.Users;
+using Quizzify.Infrastructure.Security;
+using Quizzify.Infrastructure.WPF.Command;
 
 namespace Quizzify.Client.ViewModel;
 

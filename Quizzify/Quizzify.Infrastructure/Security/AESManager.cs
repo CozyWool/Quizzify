@@ -1,8 +1,8 @@
-﻿using System.IO;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace Quizzify.Client.Security;
+namespace Quizzify.Infrastructure.Security;
+
 public class AESManager
 {
     private readonly byte[] Key = Encoding.UTF8.GetBytes("$AES256@ENCRYPT$");

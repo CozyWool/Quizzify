@@ -4,6 +4,7 @@ using Quizzify.Client.Host.Enums;
 using Quizzify.Client.Host.Mappers;
 using Quizzify.Client.Host.Model;
 using Quizzify.DataAccess.Entities;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Quizzify.Client.Host;
 
@@ -13,7 +14,7 @@ public class ClientHostHub : Hub
     private string _selectingPlayerConnectionId;
     private readonly IMapper _mapper;
     public List<PlayerModel> Players { get; set; }
-    public PackageEntity SelectedPackage { get; set; }
+    public PackageModel SelectedPackage { get; set; }
     public int CurrentRoundIndex { get; set; }
     private SessionState _sessionState;
 
@@ -22,7 +23,7 @@ public class ClientHostHub : Hub
         var config = new MapperConfiguration(cfg => cfg.AddProfile<MappingPlayer>());
         _mapper = config.CreateMapper();
         Players = new List<PlayerModel>();
-        SelectedPackage = new PackageEntity();
+        SelectedPackage = new PackageModel();
         CurrentRoundIndex = -1;
         _sessionState = SessionState.InLobby;
     }
@@ -35,7 +36,7 @@ public class ClientHostHub : Hub
         //TODO:Подумать оставлять ли условие
         if (package.Rounds.Count == 0) throw new Exception("В пакете не может быть 0 раундов!");
 
-        SelectedPackage = package;
+        SelectedPackage = _mapper.Map<PackageModel>(package);
     }
 
     public async Task RecievePlayer(PlayerEntity player)
@@ -70,18 +71,19 @@ public class ClientHostHub : Hub
         await Clients.All.SendAsync("RecieveSelectedPlayer", playerModel);
     }
 
-    //TODO:Доделать
-    public async Task RecieveSelectedQuestion(QuestionEntity questionEntity)
+    public async Task RecieveSelectedQuestion(int roundId, int themeId, int questionId)
     {
-        //TODO:Получать id вопроса, а не целиком весь вопрос
         if (Context.ConnectionId != _selectingPlayerConnectionId)
             throw new Exception("Только выбранный игрок может выбирать вопрос!");
-        if (SelectedPackage.Rounds)
-        {
-        }
 
-        _selectingPlayerConnectionId = playerModel.ConnectionId;
-        await Clients.All.SendAsync("RecieveSelectedPlayer", playerModel);
+        var selectedQuestion = SelectedPackage.Rounds.FirstOrDefault(p => p.RoundId == roundId).Themes.FirstOrDefault(p => p.ThemeId == themeId).Questions.FirstOrDefault(p => p.QuestionId == questionId);
+
+        if(selectedQuestion == null)
+            throw new Exception($"Вопрос с questionId {questionId} не найден!");
+
+        string questionText = selectedQuestion.QuestionText;
+
+        await Clients.All.SendAsync("RecieveSelectedQuestionText", questionText);
     }
 
 

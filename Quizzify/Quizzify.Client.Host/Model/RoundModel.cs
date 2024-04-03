@@ -11,5 +11,5 @@ public class RoundModel
     [Required(ErrorMessage = "Тип раунда обязателен")]
     public string RoundType { get; set; }
 
-    public List<QuestionModel> Questions { get; set; }
+    public List<ThemeModel> Themes { get; set; }
 }

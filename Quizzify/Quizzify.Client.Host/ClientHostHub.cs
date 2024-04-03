@@ -27,15 +27,13 @@ public class ClientHostHub : Hub
         _sessionState = SessionState.InLobby;
     }
 
-    //TODO:Подумать оставлять ли async
-    public async Task RecievePackage(PackageEntity package)
+    public Task RecievePackage(PackageEntity package)
     {
         if (Context.ConnectionId != _masterConnectionId)
             throw new Exception("Только ведущий может менять пакет с вопросами!");
-        //TODO:Подумать оставлять ли условие
-        if (package.Rounds.Count == 0) throw new Exception("В пакете не может быть 0 раундов!");
 
         SelectedPackage = _mapper.Map<PackageModel>(package);
+        return Task.CompletedTask;
     }
 
     public async Task RecievePlayer(PlayerEntity player)
@@ -75,22 +73,23 @@ public class ClientHostHub : Hub
         if (Context.ConnectionId != _selectingPlayerConnectionId)
             throw new Exception("Только выбранный игрок может выбирать вопрос!");
 
-        var selectedQuestion = SelectedPackage.Rounds.FirstOrDefault(p => p.RoundId == roundId).Themes.FirstOrDefault(p => p.ThemeId == themeId).Questions.FirstOrDefault(p => p.QuestionId == questionId);
+        var selectedQuestion = SelectedPackage.Rounds.FirstOrDefault(p => p.RoundId == roundId)
+            ?.Themes.FirstOrDefault(p => p.ThemeId == themeId)
+            ?.Questions.FirstOrDefault(p => p.QuestionId == questionId);
 
-        if(selectedQuestion == null)
+        if (selectedQuestion == null)
             throw new Exception($"Вопрос с questionId {questionId} не найден!");
 
-        string questionText = selectedQuestion.QuestionText;
+        var questionText = selectedQuestion.QuestionText;
 
         await Clients.All.SendAsync("RecieveSelectedQuestionText", questionText);
     }
 
     public async Task SendPlayersInfo()
     {
-        for (int i = 0; i < Players.Count; i++)
+        foreach (var player in Players)
         {
-            if (Players[i] != null) continue;
-            await Clients.Caller.SendAsync("ReceivePlayerInfo", Players[i]);
+            await Clients.Caller.SendAsync("ReceivePlayerInfo", player);
         }
     }
 
@@ -130,7 +129,6 @@ public class ClientHostHub : Hub
 
     private async Task SendPlayerInfo(PlayerModel player)
     {
-        if (player != null) return;
         await Clients.All.SendAsync("ReceivePlayerInfo", player);
     }
 }

@@ -13,5 +13,6 @@ public class PackageModel
     [Required(ErrorMessage = "Сложность пакета обязательна")]
     public int Difficulty { get; set; }
 
+    [Required(ErrorMessage = "Cписок раундов обязателен")]
     public List<RoundModel> Rounds { get; set; }
 }

@@ -5,34 +5,33 @@ using System.Windows.Input;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using System.Windows;
-using Quizzify.Quester.Model.Package.ViewModels;
 using AutoMapper;
 using Quizzify.Quester.Mappers;
 using System.Windows.Controls;
 using System.ComponentModel;
 using Quizzify.Infrastructure.WPF.Command;
+using Quizzify.Quester.Model.Package.TreeViewModels;
 
 namespace Quizzify.Quester.ViewModel;
 
 public class QuesterViewModel : INotifyPropertyChanged
 {
-    private List<PackageTreeViewModel> packageTreeViews = new List<PackageTreeViewModel>();
+    private List<PackageTreeViewModel> _packageTreeViews = [];
     private readonly IMapper _mapper;
 
     public ICommand SaveToFileSerializedCommand { get; }
     public ICommand UploadFileDeserializeCommand { get; }
 
-    private TreeView treeView;
+    private TreeView _treeView;
     public TreeView TreeView
     {
-        get { return treeView; }
+        get => _treeView;
         set
         {
-            if(treeView != null)
-            {
-                treeView = value;
-                OnPropertyChanged(nameof(treeView));
-            }
+            if (_treeView == null) return;
+            
+            _treeView = value;
+            OnPropertyChanged(nameof(_treeView));
         }
     }
 
@@ -47,7 +46,7 @@ public class QuesterViewModel : INotifyPropertyChanged
 
     private async Task SaveToFile(PackageModel packageModel)
     {
-        string jsonSerialized = JsonConvert.SerializeObject(packageModel, Newtonsoft.Json.Formatting.Indented);
+        var jsonSerialized = JsonConvert.SerializeObject(packageModel, Formatting.Indented);
         var saveFile = new SaveFileDialog();
         if (saveFile.ShowDialog() == true)
         {
@@ -70,9 +69,9 @@ public class QuesterViewModel : INotifyPropertyChanged
                 try
                 {
                     var packageTreeView = _mapper.Map<PackageTreeViewModel>(package);
-                    packageTreeViews.Add(packageTreeView);
+                    _packageTreeViews.Add(packageTreeView);
 
-                    TreeView.ItemsSource = packageTreeViews;
+                    TreeView.ItemsSource = _packageTreeViews;
                 }
                 catch (Exception ex)
                 {

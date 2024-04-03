@@ -6,22 +6,22 @@ namespace Quizzify.Client.Services;
 public class ClientHostHubService
 {
     public event Action<PlayerModel> InfoNewPlayerArrived;
-    public event Action<string> errorArrived;
-    private readonly HubConnection connection;
+    public event Action<string> ErrorArrived;
+    private readonly HubConnection _connection;
 
     public ClientHostHubService(HubConnection connection)
     {
-        this.connection = connection;
+        this._connection = connection;
     }
 
     public async Task Connect()
     {
-        await connection.StartAsync();
+        await _connection.StartAsync();
     }
 
     public void ReceivePlayerInfo()
     {
-        connection.On<PlayerModel>("SendPlayersInfo", (player) =>
+        _connection.On<PlayerModel>("SendPlayersInfo", (player) =>
         {
             InfoNewPlayerArrived.Invoke(player);
         });
@@ -29,15 +29,15 @@ public class ClientHostHubService
 
     public void ReceiveError()
     {
-        connection.On<string>("SendError", (errorMessage) =>
+        _connection.On<string>("SendError", (errorMessage) =>
         {
-            errorArrived?.Invoke(errorMessage);
+            ErrorArrived?.Invoke(errorMessage);
         });
     }
 
     public async Task SendPlayerInfo(PlayerModel player)
     {
         // TODO: пока отправляю модель, сервер прнимает ентити, думаю там нужно сделать прием модели
-        await connection.SendAsync("RecievePlayer", player);
+        await _connection.SendAsync("RecievePlayer", player);
     }
 }

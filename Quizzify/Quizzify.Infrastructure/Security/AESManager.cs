@@ -5,15 +5,15 @@ namespace Quizzify.Infrastructure.Security;
 
 public class AESManager
 {
-    private readonly byte[] Key = Encoding.UTF8.GetBytes("$AES256@ENCRYPT$");
-    private static readonly byte[] IV = Encoding.UTF8.GetBytes("$AES256@DECRYPT$");
+    private readonly byte[] _key = Encoding.UTF8.GetBytes("$AES256@ENCRYPT$");
+    private static readonly byte[] Iv = Encoding.UTF8.GetBytes("$AES256@DECRYPT$");
 
     public string Encrypt(string value, string salt)
     {
         using (Aes aes = Aes.Create())
         {
-            aes.Key = Key;
-            aes.IV = IV;
+            aes.Key = _key;
+            aes.IV = Iv;
 
             ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
 
@@ -42,15 +42,15 @@ public class AESManager
 
         using (Aes aes = Aes.Create())
         {
-            aes.Key = Key;
-            aes.IV = IV;
+            aes.Key = _key;
+            aes.IV = Iv;
 
             ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
 
             using (MemoryStream msDecrypt = new MemoryStream(encryptedData))
             {
-                const ushort SaltBuffer = 36;
-                byte[] saltBytes = new byte[SaltBuffer];
+                const ushort saltBuffer = 36;
+                byte[] saltBytes = new byte[saltBuffer];
                 msDecrypt.Read(saltBytes, 0, saltBytes.Length);
 
                 using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Quizzify.Quester.Model.Package;
-using Quizzify.Quester.Model.Package.ViewModels;
+using Quizzify.Quester.Model.Package.TreeViewModels;
 
 namespace Quizzify.Quester.Mappers;
 

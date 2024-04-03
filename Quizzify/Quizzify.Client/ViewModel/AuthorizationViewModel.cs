@@ -10,7 +10,7 @@ namespace Quizzify.Client.ViewModel;
 
 public class AuthorizationViewModel: INotifyPropertyChanged
 {
-    private bool? isAuthorized = null!;
+    private bool? _isAuthorized = null!;
 
     private string _userLogin;
     public string UserLogin
@@ -42,7 +42,7 @@ public class AuthorizationViewModel: INotifyPropertyChanged
 
     private void SetAuthorization(bool? b)
     {
-        isAuthorized = b;
+        _isAuthorized = b;
     }
 
     private async void AuthorizeUser(object obj)
@@ -60,16 +60,16 @@ public class AuthorizationViewModel: INotifyPropertyChanged
         Stopwatch stopwatch = Stopwatch.StartNew();
         while (true)
         {
-            if (isAuthorized != null || stopwatch.Elapsed.TotalSeconds >= waitingTime) break;
+            if (_isAuthorized != null || stopwatch.Elapsed.TotalSeconds >= waitingTime) break;
             Task.Delay(100).Wait();
         }
         stopwatch.Stop();
         //TODO ответом от сервера должен приходить игрок
-        if (isAuthorized == null)
+        if (_isAuthorized == null)
         {
             MessageBox.Show("Превышено время ожидания");
         }
-        else if (isAuthorized == true)
+        else if (_isAuthorized == true)
         {
             var window = new MainView(new MainViewModel(new PlayerModel()));
             window.Show();

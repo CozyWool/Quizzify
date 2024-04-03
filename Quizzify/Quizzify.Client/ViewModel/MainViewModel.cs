@@ -14,13 +14,13 @@ public class MainViewModel : INotifyPropertyChanged
     private PlayerModel _player;
 
     private string _ip;
-    public string IP
+    public string Ip
     {
         get => _ip;
         set
         {
             _ip = value;
-            OnPropertyChanged(nameof(IP));
+            OnPropertyChanged(nameof(Ip));
         }
     }
 

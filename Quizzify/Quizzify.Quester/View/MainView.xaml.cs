@@ -5,9 +5,9 @@ namespace Quizzify.Quester.View;
 
 public partial class MainView : Window
 {
-    public MainView(MainViewModel mainViewModel)
+    public MainView(QuesterViewModel questerViewModel)
     {
         InitializeComponent();
-        DataContext = mainViewModel;
+        DataContext = questerViewModel;
     }
 }

@@ -27,5 +27,27 @@ public class MappingPlayer : Profile
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
             .ForMember(dest => dest.Themes, opt => opt.MapFrom(src => src.Themes))
             .ReverseMap();
+
+        CreateMap<QuestionEntity, QuestionModel>()
+            .ForMember(dest => dest.QuestionId, opt => opt.MapFrom(src => src.QuestionId))
+            .ForMember(dest => dest.ThemeId, opt => opt.MapFrom(src => src.ThemeId))
+            .ForMember(dest => dest.QuestionText, opt => opt.MapFrom(src => src.QuestionText))
+            .ForMember(dest => dest.QuestionImageUrl, opt => opt.MapFrom(src => src.QuestionImageUrl))
+            .ForMember(dest => dest.QuestionCost, opt => opt.MapFrom(src => src.QuestionCost))
+            .ForMember(dest => dest.QuestionComment, opt => opt.MapFrom(src => src.QuestionComment))
+            .ForMember(dest => dest.AnswerText, opt => opt.MapFrom(src => src.AnswerText))
+            .ForMember(dest => dest.AnswerImageUrl, opt => opt.MapFrom(src => src.AnswerImageUrl))
+            .ReverseMap();
+
+        CreateMap<ThemeEntity, ThemeModel>()
+            .ForMember(dest => dest.ThemeId, opt => opt.MapFrom(src => src.ThemeId))
+            .ForMember(dest => dest.ThemeName, opt => opt.MapFrom(src => src.ThemeName))
+            .ForMember(dest => dest.Questions, opt => opt.MapFrom(src => src.Questions))
+            .ReverseMap();
+
+        CreateMap<QuestionModel, AnswerModel>()
+            .ForMember(dest => dest.AnswerText, opt => opt.MapFrom(src => src.AnswerText))
+            .ForMember(dest => dest.AnswerImageUrl, opt => opt.MapFrom(src => src.AnswerImageUrl))
+            .ReverseMap();
     }
 }

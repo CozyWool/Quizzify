@@ -5,6 +5,7 @@ namespace Quizzify.Client.Host.Model;
 public class QuestionModel
 {
     public int QuestionId { get; set; }
+    public int ThemeId { get; set; }
     public string QuestionText { get; set; }
     public string QuestionTheme { get; set; }
     public byte[] QuestionImageUrl { get; set; }

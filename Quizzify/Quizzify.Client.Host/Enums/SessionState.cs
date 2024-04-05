@@ -2,13 +2,12 @@ namespace Quizzify.Client.Host.Enums;
 
 public enum SessionState
 {
-    //TODO:Проработать состояния
     InLobby,
-    InGame,
-    ChoosePlayer,
-    ChooseQuestion,
+    ChoosingPlayer,
+    ChoosingQuestion,
+    ShowingQuestion,
     WaitingAnswers,
-    CheckAnswer,
+    WaitingMasterVerdict,
     ShowingCorrectAnswer,
     SwitchingRound,
     GameEndingScreen,

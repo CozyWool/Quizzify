@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddNewQuestionButtonResources" xml:space="preserve">
+    <value>Добавить вопрос</value>
+    <comment>Button для добавления нового вопроса</comment>
+  </data>
+  <data name="AddNewRoundButtonResources" xml:space="preserve">
+    <value>Добавить раунд</value>
+    <comment>Button для добавления нового раунда</comment>
+  </data>
+  <data name="AddNewThemeButtonResources" xml:space="preserve">
+    <value>Добавить тему</value>
+    <comment>Button для добавления новой темы</comment>
+  </data>
   <data name="AnswerTextBlockResources" xml:space="preserve">
     <value>Ответ</value>
     <comment>TextBlock заголовок "Ответ"</comment>
@@ -193,8 +205,8 @@
     <value>Тип раунда:</value>
     <comment>TextBlock для поля с выбором типа раунда</comment>
   </data>
-  <data name="UploadButtonResources" xml:space="preserve">
-    <value>Загрузить</value>
+  <data name="UploadMediaButtonResources" xml:space="preserve">
+    <value>Медиафайл</value>
     <comment>Button для загрузки медиа к вопросу или ответу</comment>
   </data>
   <data name="UploadMediaTextBlockResources" xml:space="preserve">

@@ -61,6 +61,33 @@ namespace Quizzify.Quester.Resources.Locales {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Add question.
+        /// </summary>
+        public static string AddNewQuestionButtonResources {
+            get {
+                return ResourceManager.GetString("AddNewQuestionButtonResources", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Add round.
+        /// </summary>
+        public static string AddNewRoundButtonResources {
+            get {
+                return ResourceManager.GetString("AddNewRoundButtonResources", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Add theme.
+        /// </summary>
+        public static string AddNewThemeButtonResources {
+            get {
+                return ResourceManager.GetString("AddNewThemeButtonResources", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Answer.
         /// </summary>
         public static string AnswerTextBlockResources {
@@ -124,7 +151,7 @@ namespace Quizzify.Quester.Resources.Locales {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Question price:.
+        ///   Ищет локализованную строку, похожую на Price.
         /// </summary>
         public static string QuestionPriceTextBlockResources {
             get {
@@ -214,7 +241,7 @@ namespace Quizzify.Quester.Resources.Locales {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Question type:.
+        ///   Ищет локализованную строку, похожую на Type.
         /// </summary>
         public static string TypeQuestionTextBlockResources {
             get {
@@ -232,11 +259,11 @@ namespace Quizzify.Quester.Resources.Locales {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Upload.
+        ///   Ищет локализованную строку, похожую на Mediafile.
         /// </summary>
-        public static string UploadButtonResources {
+        public static string UploadMediaButtonResources {
             get {
-                return ResourceManager.GetString("UploadButtonResources", resourceCulture);
+                return ResourceManager.GetString("UploadMediaButtonResources", resourceCulture);
             }
         }
         

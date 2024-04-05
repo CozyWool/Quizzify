@@ -199,9 +199,15 @@ public class ClientHostHub : Hub
         await base.OnConnectedAsync();
     }
 
-    //TODO: Доделать отключение
     public override async Task OnDisconnectedAsync(Exception? ex)
     {
+        var disconectedPlayer = Players.FirstOrDefault(p => p.ConnectionId == Context.ConnectionId);
+
+        if(disconectedPlayer != null)
+        {
+            Players.Remove(disconectedPlayer);
+            await Clients.All.SendAsync("PlayerDisconnected", disconectedPlayer);
+        }
         var context = Context.GetHttpContext();
         if (context != null)
             Console.WriteLine(

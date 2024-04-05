@@ -46,7 +46,7 @@ public class MainViewModel : INotifyPropertyChanged
         try
         {
             var connection = App.HubConnectionConfiguration("localhost", 5098, "host");
-            var signal = new ClientHostHubService(connection);
+            var signal = new ClientHubService(connection);
             await signal.Connect();
             await signal.SendPlayerInfo(_player);
             signal.ReceivePlayerInfo();

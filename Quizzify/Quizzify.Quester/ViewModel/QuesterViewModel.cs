@@ -14,6 +14,7 @@ using Quizzify.Quester.Model.Package.TreeViewModels;
 using System.IO.Packaging;
 using System.Windows.Documents;
 using System.Windows.Controls.Primitives;
+using Quizzify.Quester.View;
 
 namespace Quizzify.Quester.ViewModel;
 
@@ -31,6 +32,89 @@ public class QuesterViewModel : INotifyPropertyChanged
     public ICommand AddRoundCommand { get; }
     public ICommand AddThemeCommand { get; }
     public ICommand AddQuestionCommand { get; }
+
+    private string _packageNameTextBox;
+    public string PackageNameTextBox
+    {
+        get => _packageNameTextBox;
+        set
+        {
+            if (_packageNameTextBox == null) return;
+            _packageNameTextBox = value;
+            OnPropertyChanged(nameof(_packageNameTextBox));
+        }
+    }
+
+    private int _diffTextBox1;
+    public int DiffTextBox1
+    {
+        get => _diffTextBox1;
+        set
+        {
+            if (_diffTextBox1 == null) return;
+            _diffTextBox1 = value;
+            OnPropertyChanged(nameof(_diffTextBox1));
+        }
+    }
+
+    private int _costQuestionTextBox;
+    public int СostQuestionTextBox
+    {
+        get => _costQuestionTextBox;
+        set
+        {
+            if (_costQuestionTextBox == null) return;
+            _costQuestionTextBox = value;
+            OnPropertyChanged(nameof(_costQuestionTextBox));
+        }
+    }
+    private string _questionTextBox;
+    public string QuestionTextBox
+    {
+        get => _questionTextBox;
+        set
+        {
+            if (_questionTextBox == null) return;
+            _questionTextBox = value;
+            OnPropertyChanged(nameof(_questionTextBox));
+        }
+    }
+
+    private string _answerTextBox;
+    public string AnswerTextBox
+    {
+        get => _answerTextBox;
+        set
+        {
+            if (_answerTextBox == null) return;
+            _answerTextBox = value;
+            OnPropertyChanged(nameof(_answerTextBox));
+        }
+    }
+
+    private ComboBox _roundComboBox;
+    public ComboBox RoundComboBox
+    {
+        get => _roundComboBox;
+        set
+        {
+            if (_roundComboBox == null) return;
+            _roundComboBox = value;
+            OnPropertyChanged(nameof(_roundComboBox));
+        }
+    }
+
+    private ComboBox _themeComboBox;
+    public ComboBox ThemeComboBox
+    {
+        get => _themeComboBox;
+        set
+        {
+            if (_themeComboBox == null) return;
+            _themeComboBox = value;
+            OnPropertyChanged(nameof(_themeComboBox));
+        }
+    }
 
 
     private TreeView _treeView;
@@ -63,6 +147,8 @@ public class QuesterViewModel : INotifyPropertyChanged
 
         package = new PackageModel();
         package.Rounds = new List<RoundModel>();
+        
+        
     }
 
     private async Task SaveToFile(PackageModel packageModel)
@@ -113,128 +199,131 @@ public class QuesterViewModel : INotifyPropertyChanged
     // TODO: Переписать. В самом начале нужно указать имя пакета и его сложность. Нажать "Сохранить"
     private void NewPackage(PackageModel model)
     {
-        //package.PackageId = Guid.NewGuid();
-        //package.PackageName = packageNameTextBox.Text;
+        Random rand = new Random();
+
+        package.PackageId = rand.Next(1,100000);
+        package.PackageName = PackageNameTextBox;
+        package.Difficulty = DiffTextBox1;
     }
 
     // TODO: Переписать. Добавление раунда
     private void AddRound(PackageModel model)
     {
-        //string roundName = Microsoft.VisualBasic.Interaction.InputBox("Введите название раунда", "Добавление раунда", "");
+        string roundName = Microsoft.VisualBasic.Interaction.InputBox("Введите название раунда", "Добавление раунда", "");
 
-        //if (!string.IsNullOrEmpty(roundName))
-        //{
-        //    if (package.PackageName != null)
-        //    {
-        //        var round = new Round
-        //        {
-        //            RoundId = Guid.NewGuid(),
-        //            RoundName = roundName
-        //        };
+        Random rand = new Random();
+        if (!string.IsNullOrEmpty(roundName))
+        {
+            if (package.PackageName != null)
+            {
+                var round = new RoundModel
+                {
+                    RoundId = rand.Next(1, 1000000),
+                    RoundName = roundName
+                };
 
-        //        roundComboBox.Items.Add(round.RoundName);
-        //        package.Rounds.Add(round);
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Пакета не существует");
-        //    }
-        //}
+                RoundComboBox.Items.Add(round.RoundName);
+                package.Rounds.Add(round);
+            }
+            else
+            {
+                MessageBox.Show("Пакета не существует");
+            }
+        }
     }
 
-    // TODO: Переписать. Добавление темы к конкретному раунду
+
     private void AddTheme(PackageModel model)
     {
-        //string themeName = Microsoft.VisualBasic.Interaction.InputBox("Введите название темы", "Добавление темы", "");
+        string themeName = Microsoft.VisualBasic.Interaction.InputBox("Введите название темы", "Добавление темы", "");
 
-        //if (!string.IsNullOrEmpty(themeName))
-        //{
-        //    var selectedRound = package.Rounds.FirstOrDefault(r => r.RoundName == roundComboBox.SelectedItem.ToString());
-        //    if (selectedRound != null)
-        //    {
-        //        if (!selectedRound.Themes.ContainsKey(themeName))
-        //        {
-        //            if (package.PackageName != null)
-        //            {
-        //                var theme = new Theme
-        //                {
-        //                    ThemeId = Guid.NewGuid(),
-        //                    ThemeName = themeName,
-        //                    Questions = new List<Question>()
-        //                };
+        Random rand = new Random();//Костыль
 
-        //                selectedRound.Themes.Add(themeName, theme);
-        //                topicComboBox.Items.Add(themeName);
-        //            }
-        //            else
-        //            {
-        //                MessageBox.Show("Пакета не существует");
-        //            }
-        //        }
-        //        else
-        //        {
-        //            MessageBox.Show("Такая тема уже существует в этом раунде");
-        //        }
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Сначала нужно выбрать раунд");
-        //    }
-        //}
+        if (!string.IsNullOrEmpty(themeName))
+        {
+            var selectedRound = package.Rounds.FirstOrDefault(r => r.RoundName == RoundComboBox.SelectedItem.ToString());
+            if (selectedRound != null)
+            {
+                if (!selectedRound.Themes.ContainsKey(themeName))
+                {
+                    if (package.PackageName != null)
+                    {
+                        var theme = new ThemeModel
+                        {
+                            ThemeId = rand.Next(1,1000000),
+                            ThemeName = themeName,
+                            Questions = new List<QuestionModel>()
+                        };
+
+                        selectedRound.Themes.Add(themeName, theme);
+                        ThemeComboBox.Items.Add(themeName);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Пакета не существует");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Такая тема уже существует в этом раунде");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Сначала нужно выбрать раунд");
+            }
+        }
     }
 
-    // TODO: Переписать. Добавление вопроса к конкрутной теме конкретного раунда
     private void AddQuestion(PackageModel model)
     {
-        //string questionText = questionTextBox.Text;
-        //string answerText = answerTextBox.Text;
+        if (!string.IsNullOrEmpty(QuestionTextBox) && !string.IsNullOrEmpty(AnswerTextBox))
+        {
+            var selectedRound = package.Rounds.FirstOrDefault(r => r.RoundName == RoundComboBox.SelectedItem.ToString());
 
-        //if (!string.IsNullOrEmpty(questionText) && !string.IsNullOrEmpty(answerText))
-        //{
-        //    var selectedRound = package.Rounds.FirstOrDefault(r => r.RoundName == roundComboBox.SelectedItem.ToString());
+            if (selectedRound != null)
+            {
+                string? selectedThemeName = ThemeComboBox.SelectedItem as string;
 
-        //    if (selectedRound != null)
-        //    {
-        //        string? selectedThemeName = topicComboBox.SelectedItem as string;
+                if (!string.IsNullOrEmpty(selectedThemeName) && selectedRound.Themes.ContainsKey(selectedThemeName))
+                {
+                    var selectedTheme = selectedRound.Themes[selectedThemeName];
 
-        //        if (!string.IsNullOrEmpty(selectedThemeName) && selectedRound.Themes.ContainsKey(selectedThemeName))
-        //        {
-        //            var selectedTheme = selectedRound.Themes[selectedThemeName];
+                    if (selectedTheme != null)
+                    {
+                        var question = new QuestionModel
+                        {
+                            QuestionText = QuestionTextBox,
+                            AnswerText = AnswerTextBox,
+                            QuestionCost= СostQuestionTextBox
+                        };
 
-        //            if (selectedTheme != null)
-        //            {
-        //                var question = new Question
-        //                {
-        //                    QuestionText = questionText,
-        //                    AnswerText = answerText
-        //                };
-
-        //                selectedTheme.Questions.Add(question);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            MessageBox.Show("Не выбрана тема");
-        //        }
-        //    }
-        //}
+                        selectedTheme.Questions.Add(question);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Не выбрана тема");
+                }
+            }
+        }
     }
 
     // TODO: Переписать. Очистка выпадающего списка при выборе раунда. Это событие повешенное на комбобокс с раундами.
-    private void roundComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    /*private void roundComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        //topicComboBox.Items.Clear();
+        ThemeComboBox.Items.Clear();
 
-        //var selectedRound = package.Rounds.FirstOrDefault(r => r.RoundName == roundComboBox.SelectedItem.ToString());
+        var selectedRound = package.Rounds.FirstOrDefault(r => r.RoundName == RoundComboBox.SelectedItem.ToString());
 
-        //if (selectedRound != null)
-        //{
-        //    foreach (var themeName in selectedRound.Themes.Keys)
-        //    {
-        //        topicComboBox.Items.Add(themeName);
-        //    }
-        //}
-    }
+        if (selectedRound != null)
+        {
+            foreach (var themeName in selectedRound.Themes.Keys)
+            {
+                ThemeComboBox.Items.Add(themeName);
+            }
+        }
+    }*/
 
     public event PropertyChangedEventHandler PropertyChanged;
 

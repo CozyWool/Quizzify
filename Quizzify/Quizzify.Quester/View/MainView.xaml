@@ -19,7 +19,7 @@
             <TextBox Text="{Binding DiffTextBox1}" Margin="160,62,86,0" VerticalAlignment="Top" Grid.ColumnSpan="2" />
             <Button Content="Сохранить" Margin="24,96,86,0" VerticalAlignment="Top"  Grid.ColumnSpan="2" Command="{Binding NewPackageCommand}" CommandParameter="true"/>
 
-            <ComboBox ItemsSource="{Binding RoundItems}" SelectedItem="{Binding SelectedRound}" Margin="24,192,62,0" VerticalAlignment="Top" />
+            <ComboBox ItemsSource="{Binding RoundItems}" SelectedItem="{Binding SelectedRound}" Margin="24,192,62,0" VerticalAlignment="Top"/>
             <Button Content="Добавить раунд" Margin="24,224,62,0" VerticalAlignment="Top" Command="{Binding AddRoundCommand}"/>
 
             <ComboBox ItemsSource="{Binding ThemeItems}" SelectedItem="{Binding SelectedTheme}" Margin="181,192,87,0" VerticalAlignment="Top" Grid.ColumnSpan="2" />

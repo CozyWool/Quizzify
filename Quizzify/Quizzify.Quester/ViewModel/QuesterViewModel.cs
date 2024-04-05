@@ -15,6 +15,7 @@ using System.IO.Packaging;
 using System.Windows.Documents;
 using System.Windows.Controls.Primitives;
 using Quizzify.Quester.View;
+using System.Collections.ObjectModel;
 
 namespace Quizzify.Quester.ViewModel;
 
@@ -24,7 +25,7 @@ public class QuesterViewModel : INotifyPropertyChanged
     private readonly IMapper _mapper;
 
     private PackageModel package;
-    private ObservableCollection<RoundModel> rounds= new ObservableCollection<RoundModel>();
+    private int count = 0;
 
     public ICommand SaveToFileSerializedCommand { get; set; }
     public ICommand UploadFileDeserializeCommand { get; }
@@ -33,6 +34,8 @@ public class QuesterViewModel : INotifyPropertyChanged
     public ICommand AddRoundCommand { get; set; }
     public ICommand AddThemeCommand { get; set; }
     public ICommand AddQuestionCommand { get; set; }
+
+    public ICommand RoundSelectionChangedCommand { get; set; }
 
     private string _packageNameTextBox;
     public string PackageNameTextBox
@@ -134,8 +137,8 @@ public class QuesterViewModel : INotifyPropertyChanged
         }
     }
 
-    private Dictionary<string, ThemeModel> _themeItems = new Dictionary<string, ThemeModel>();
-    public Dictionary<string, ThemeModel> ThemeItems
+    private ObservableCollection<string> _themeItems = new ObservableCollection<string>();
+    public ObservableCollection<string> ThemeItems
     {
         get => _themeItems;
         set
@@ -178,7 +181,7 @@ public class QuesterViewModel : INotifyPropertyChanged
         AddRoundCommand = new GenericCommand<PackageModel>(AddRound);
         AddThemeCommand = new GenericCommand<PackageModel>(AddTheme);
         AddQuestionCommand = new GenericCommand<PackageModel>(AddQuestion);
-
+        RoundSelectionChangedCommand = new GenericCommand<object>(roundComboBox_SelectionChanged);
 
 
         var config = new MapperConfiguration(cfg => cfg.AddProfile<MappingPackage>());
@@ -278,7 +281,8 @@ public class QuesterViewModel : INotifyPropertyChanged
 
         if (!string.IsNullOrEmpty(themeName))
         {
-            var selectedRound = package.Rounds.FirstOrDefault(r => r.RoundName == RoundItems.FirstOrDefault().ToString());
+            var selectedRound = package.Rounds.FirstOrDefault(r => r.RoundName == RoundItems.FirstOrDefault());
+           
             if (selectedRound != null)
             {
                 if (!selectedRound.Themes.ContainsKey(themeName))
@@ -292,8 +296,18 @@ public class QuesterViewModel : INotifyPropertyChanged
                             Questions = new List<QuestionModel>()
                         };
 
+
                         selectedRound.Themes.Add(themeName, theme);
-                        ThemeComboBox.Items.Add(themeName);
+                        foreach (var item2 in selectedRound.Themes)
+                        {
+                            ThemeItems.Add(item2.Value.ThemeName);
+                        }
+                        foreach (var item in package.Rounds)
+                        {
+                            item.Themes.Add(themeName, theme);
+                        }
+                        
+                        //RoundComboBox.Items.Add(item);
                     }
                     else
                     {
@@ -316,11 +330,11 @@ public class QuesterViewModel : INotifyPropertyChanged
     {
         if (!string.IsNullOrEmpty(QuestionTextBox) && !string.IsNullOrEmpty(AnswerTextBox))
         {
-            var selectedRound = package.Rounds.FirstOrDefault(r => r.RoundName == RoundComboBox.SelectedItem.ToString());
+            var selectedRound = package.Rounds.FirstOrDefault(r => r.RoundName == RoundItems.FirstOrDefault());
 
             if (selectedRound != null)
             {
-                string? selectedThemeName = ThemeComboBox.SelectedItem as string;
+                string? selectedThemeName = SelectedTheme as string;
 
                 if (!string.IsNullOrEmpty(selectedThemeName) && selectedRound.Themes.ContainsKey(selectedThemeName))
                 {
@@ -347,20 +361,20 @@ public class QuesterViewModel : INotifyPropertyChanged
     }
 
     // TODO: Переписать. Очистка выпадающего списка при выборе раунда. Это событие повешенное на комбобокс с раундами.
-    /*private void roundComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void roundComboBox_SelectionChanged(object sender)
     {
-        ThemeComboBox.Items.Clear();
+        ThemeItems.Clear();
 
-        var selectedRound = package.Rounds.FirstOrDefault(r => r.RoundName == RoundComboBox.SelectedItem.ToString());
+        var selectedRound = package.Rounds.FirstOrDefault(r => r.RoundName == RoundItems.FirstOrDefault());
 
         if (selectedRound != null)
         {
             foreach (var themeName in selectedRound.Themes.Keys)
             {
-                ThemeComboBox.Items.Add(themeName);
+                RoundItems.Add(themeName);
             }
         }
-    }*/
+    }
 
     public event PropertyChangedEventHandler PropertyChanged;
 

@@ -17,7 +17,7 @@
             <TextBox Text="{Binding PackageNameTextBox}" Margin="160,29,86,0" VerticalAlignment="Top" Grid.ColumnSpan="2" />
             <TextBlock Text="Сложность пакета" Margin="24,62,62,0" VerticalAlignment="Top" />
             <TextBox Text="{Binding DiffTextBox1}" Margin="160,62,86,0" VerticalAlignment="Top" Grid.ColumnSpan="2" />
-            <Button Content="Сохранить" Margin="24,96,86,0" VerticalAlignment="Top"  Grid.ColumnSpan="2" Command="{Binding NewPackageCommand}"/>
+            <Button Content="Сохранить" Margin="24,96,86,0" VerticalAlignment="Top"  Grid.ColumnSpan="2" Command="{Binding NewPackageCommand}" CommandParameter="true"/>
 
             <ComboBox ItemsSource="{Binding RoundItems}" SelectedItem="{Binding SelectedRound}" Margin="24,192,62,0" VerticalAlignment="Top" />
             <Button Content="Добавить раунд" Margin="24,224,62,0" VerticalAlignment="Top" Command="{Binding AddRoundCommand}"/>

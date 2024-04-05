@@ -14,7 +14,6 @@ using Quizzify.Quester.Model.Package.TreeViewModels;
 using System.IO.Packaging;
 using System.Windows.Documents;
 using System.Windows.Controls.Primitives;
-using Quizzify.Quester.View;
 using System.Collections.ObjectModel;
 
 namespace Quizzify.Quester.ViewModel;
@@ -25,14 +24,15 @@ public class QuesterViewModel : INotifyPropertyChanged
     private readonly IMapper _mapper;
 
     private PackageModel package;
+    private ObservableCollection<RoundModel> rounds= new ObservableCollection<RoundModel>();
 
-    public ICommand SaveToFileSerializedCommand { get; set; }
+    public ICommand SaveToFileSerializedCommand { get; }
     public ICommand UploadFileDeserializeCommand { get; }
 
-    public ICommand NewPackageCommand { get; set; }
-    public ICommand AddRoundCommand { get; set; }
-    public ICommand AddThemeCommand { get; set; }
-    public ICommand AddQuestionCommand { get; set; }
+    public ICommand NewPackageCommand { get; }
+    public ICommand AddRoundCommand { get; }
+    public ICommand AddThemeCommand { get; }
+    public ICommand AddQuestionCommand { get; }
 
     private string _packageNameTextBox;
     public string PackageNameTextBox
@@ -72,6 +72,7 @@ public class QuesterViewModel : INotifyPropertyChanged
         get => _questionTextBox;
         set
         {
+            if (_questionTextBox == null) return;
             _questionTextBox = value;
             OnPropertyChanged(nameof(_questionTextBox));
         }
@@ -83,6 +84,7 @@ public class QuesterViewModel : INotifyPropertyChanged
         get => _answerTextBox;
         set
         {
+            if (_answerTextBox == null) return;
             _answerTextBox = value;
             OnPropertyChanged(nameof(_answerTextBox));
         }
@@ -94,31 +96,9 @@ public class QuesterViewModel : INotifyPropertyChanged
         get => _roundComboBox;
         set
         {
-            if (_themeComboBox == null) return;
+            if (_roundComboBox == null) return;
             _roundComboBox = value;
             OnPropertyChanged(nameof(_roundComboBox));
-        }
-    }
-
-    private ObservableCollection<string> _roundItems = new ObservableCollection<string>();
-    public ObservableCollection<string> RoundItems
-    {
-        get => _roundItems;
-        set
-        {
-            _roundItems = value;
-            OnPropertyChanged(nameof(RoundItems));
-        }
-    }
-
-    private string _selectedRound;
-    public string SelectedRound
-    {
-        get => _selectedRound;
-        set
-        {
-            _selectedRound = value;
-            OnPropertyChanged(nameof(_selectedRound));
         }
     }
 
@@ -130,28 +110,7 @@ public class QuesterViewModel : INotifyPropertyChanged
         {
             if (_themeComboBox == null) return;
             _themeComboBox = value;
-            OnPropertyChanged(nameof(_themeComboBox));
-        }
-    }
-
-    private Dictionary<string, ThemeModel> _themeItems = new Dictionary<string, ThemeModel>();
-    public Dictionary<string, ThemeModel> ThemeItems
-    {
-        get => _themeItems;
-        set
-        {
-            _themeItems = value;
-            OnPropertyChanged(nameof(_themeItems));
-        }
-    }
-    private string _selectedTheme;
-    public string SelectedTheme
-    {
-        get => _selectedTheme;
-        set
-        {
-            _selectedTheme = value;
-            OnPropertyChanged(nameof(_selectedTheme));
+            OnPropertyChanged(nameof(ThemeComboBox));
         }
     }
 
@@ -186,6 +145,8 @@ public class QuesterViewModel : INotifyPropertyChanged
 
         package = new PackageModel();
         package.Rounds = new List<RoundModel>();
+        
+        
     }
 
     private async Task SaveToFile(PackageModel packageModel)
@@ -259,7 +220,7 @@ public class QuesterViewModel : INotifyPropertyChanged
                     RoundName = roundName
                 };
 
-                RoundItems.Add(round.RoundName);
+                RoundComboBox.Items.Add(round.RoundName);
                 package.Rounds.Add(round);
             }
             else
@@ -278,7 +239,7 @@ public class QuesterViewModel : INotifyPropertyChanged
 
         if (!string.IsNullOrEmpty(themeName))
         {
-            var selectedRound = package.Rounds.FirstOrDefault(r => r.RoundName == RoundItems.FirstOrDefault().ToString());
+            var selectedRound = package.Rounds.FirstOrDefault(r => r.RoundName == RoundComboBox.SelectedItem.ToString());
             if (selectedRound != null)
             {
                 if (!selectedRound.Themes.ContainsKey(themeName))
@@ -292,8 +253,9 @@ public class QuesterViewModel : INotifyPropertyChanged
                             Questions = new List<QuestionModel>()
                         };
 
-                        ThemeItems.Add(themeName, theme);
-                        package.Rounds[selectedRound.RoundId].Themes.Add(SelectedRound, theme);
+                        selectedRound.Themes.Add(themeName, theme);
+                        
+                        ThemeComboBox.Items.Add(selectedRound);
                     }
                     else
                     {

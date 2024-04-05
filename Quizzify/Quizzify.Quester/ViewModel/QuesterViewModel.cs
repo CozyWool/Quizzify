@@ -16,6 +16,9 @@ using System.Windows.Documents;
 using System.Windows.Controls.Primitives;
 using Quizzify.Quester.View;
 using System.Collections.ObjectModel;
+using Quizzify.DataAccess.Entities;
+using Quizzify.DataAccess.Contexts;
+using Microsoft.Extensions.Configuration;
 
 namespace Quizzify.Quester.ViewModel;
 
@@ -25,7 +28,8 @@ public class QuesterViewModel : INotifyPropertyChanged
     private readonly IMapper _mapper;
 
     private PackageModel package;
-    private int count = 0;
+
+    private readonly IConfiguration _configuration;
 
     public ICommand SaveToFileSerializedCommand { get; set; }
     public ICommand UploadFileDeserializeCommand { get; }
@@ -35,7 +39,8 @@ public class QuesterViewModel : INotifyPropertyChanged
     public ICommand AddThemeCommand { get; set; }
     public ICommand AddQuestionCommand { get; set; }
 
-    public ICommand RoundSelectionChangedCommand { get; set; }
+
+    public ICommand PublicationToDBCommand { get; set; }
 
     private string _packageNameTextBox;
     public string PackageNameTextBox
@@ -172,7 +177,7 @@ public class QuesterViewModel : INotifyPropertyChanged
         }
     }
 
-    public QuesterViewModel()
+    public QuesterViewModel( IConfiguration configuration)
     {
         SaveToFileSerializedCommand = new GenericCommand<PackageModel>(async (model) => await SaveToFile(model));
         UploadFileDeserializeCommand = new GenericCommand<PackageModel>(async (model) => await UploadFile(model));
@@ -181,15 +186,17 @@ public class QuesterViewModel : INotifyPropertyChanged
         AddRoundCommand = new GenericCommand<PackageModel>(AddRound);
         AddThemeCommand = new GenericCommand<PackageModel>(AddTheme);
         AddQuestionCommand = new GenericCommand<PackageModel>(AddQuestion);
-        RoundSelectionChangedCommand = new GenericCommand<object>(roundComboBox_SelectionChanged);
-
+        PublicationToDBCommand = new GenericCommand<PackageModel>(PublishToDB);
 
         var config = new MapperConfiguration(cfg => cfg.AddProfile<MappingPackage>());
         _mapper = config.CreateMapper();
 
         package = new PackageModel();
         package.Rounds = new List<RoundModel>();
+        _configuration=configuration;
     }
+
+
 
     private async Task SaveToFile(PackageModel packageModel)
     {
@@ -199,6 +206,13 @@ public class QuesterViewModel : INotifyPropertyChanged
         {
             await File.WriteAllTextAsync(saveFile.FileName, jsonSerialized, Encoding.UTF8);
         }
+    }
+
+    private void PublishToDB(PackageModel packageModel)
+    {
+        var packageEntity= _mapper.Map<PackageEntity>(packageModel);
+        using var context = new DbQuizzifyContext(_configuration);
+        context.AddPackage(packageEntity);
     }
 
     private async Task UploadFile(PackageModel packageModel)

@@ -35,6 +35,8 @@
             <TextBox Text="{Binding CostQuestionTextBox}" Margin="90,273,86,0" VerticalAlignment="Top" Grid.ColumnSpan="2" />
 
             <Button Content="Добавить вопрос" Margin="24,374,86,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Command="{Binding AddQuestionCommand}" />
+
+            <Button Content="Сохранить" Margin="24,450,86,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Command="{Binding PublicationToDBCommand}" />
         </Grid>
     </Grid>
 </Window>

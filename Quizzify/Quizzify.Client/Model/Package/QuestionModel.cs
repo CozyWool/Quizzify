@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Quizzify.Client.Host.Model;
+namespace Quizzify.Client.Model;
 
 public class QuestionModel
 {

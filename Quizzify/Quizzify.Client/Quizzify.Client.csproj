@@ -56,4 +56,8 @@
       </Page>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Model\Package\" />
+    </ItemGroup>
+
 </Project>

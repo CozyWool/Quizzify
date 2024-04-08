@@ -1,4 +1,4 @@
-namespace Quizzify.Client.Host.Enums;
+namespace Quizzify.Client.Enums;
 
 public enum SessionState
 {

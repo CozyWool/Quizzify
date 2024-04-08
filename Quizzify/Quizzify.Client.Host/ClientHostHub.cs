@@ -12,10 +12,12 @@ public class ClientHostHub : Hub
     private string _masterConnectionId;
     private string _selectingPlayerConnectionId;
     private readonly IMapper _mapper;
-    public List<PlayerModel> Players { get; set; }
-    public PackageModel SelectedPackage { get; set; }
-    public int CurrentRoundIndex { get; set; }
+    private List<PlayerModel> Players { get; set; }
+    private PackageModel SelectedPackage { get; set; }
+    private int CurrentRoundIndex { get; set; }
     private SessionState _sessionState;
+    private bool _isPlayerAnswering;
+    private QuestionModel _selectedQuestion;
 
     public ClientHostHub()
     {
@@ -27,8 +29,9 @@ public class ClientHostHub : Hub
         _sessionState = SessionState.InLobby;
     }
 
-    public Task RecievePackage(PackageEntity package)
+    public Task ReceivePackage(PackageEntity package)
     {
+        if (_sessionState != SessionState.InLobby) throw new Exception("Неподходящее состояние сессии!");
         if (Context.ConnectionId != _masterConnectionId)
             throw new Exception("Только ведущий может менять пакет с вопросами!");
 
@@ -36,8 +39,10 @@ public class ClientHostHub : Hub
         return Task.CompletedTask;
     }
 
-    public async Task RecievePlayer(PlayerEntity player)
+    public async Task ReceivePlayer(PlayerEntity player)
     {
+        if (_sessionState != SessionState.InLobby) throw new Exception("Неподходящее состояние сессии!");
+
         var playerModel = _mapper.Map<PlayerModel>(player);
         playerModel.ConnectionId = Context.ConnectionId;
         if (Players.Contains(playerModel)) throw new Exception("Такой игрок уже существует!");
@@ -48,41 +53,114 @@ public class ClientHostHub : Hub
         await SendPlayerInfo(playerModel);
     }
 
-    public async Task RecieveSessionState(SessionState sessionState)
+    public async Task ReceiveSessionState(SessionState sessionState)
     {
         if (Context.ConnectionId != _masterConnectionId)
             throw new Exception("Только ведущий может менять состояние сессии!");
 
         _sessionState = sessionState;
-        await Clients.All.SendAsync("RecieveSessionState", sessionState);
+        await Clients.All.SendAsync("ReceiveSessionState", sessionState);
     }
 
-    public async Task RecieveSelectedPlayer(string connectionId)
+    public async Task ReceiveSelectedPlayer(string connectionId)
     {
+        if (_sessionState != SessionState.ChoosingPlayer) throw new Exception("Неподходящее состояние сессии!");
+
         if (Context.ConnectionId != _masterConnectionId)
             throw new Exception("Только ведущий может менять состояние сессии!");
 
         var playerModel = Players.Find(p => p.ConnectionId == connectionId) ??
                           throw new Exception($"Игрок с connectionId {connectionId} не найден!");
         _selectingPlayerConnectionId = playerModel.ConnectionId;
-        await Clients.All.SendAsync("RecieveSelectedPlayer", playerModel);
+        await Clients.All.SendAsync("ReceiveSelectedPlayer", playerModel);
     }
 
-    public async Task RecieveSelectedQuestion(int roundId, int themeId, int questionId)
+    public async Task ReceiveSelectedQuestion(int themeId, int questionId)
     {
+        if (_sessionState != SessionState.ChoosingQuestion) throw new Exception("Неподходящее состояние сессии!");
+
         if (Context.ConnectionId != _selectingPlayerConnectionId)
             throw new Exception("Только выбранный игрок может выбирать вопрос!");
 
-        var selectedQuestion = SelectedPackage.Rounds.FirstOrDefault(p => p.RoundId == roundId)
-            ?.Themes.FirstOrDefault(p => p.ThemeId == themeId)
+        var selectedQuestion = SelectedPackage.Rounds[CurrentRoundIndex]
+            .Themes.FirstOrDefault(p => p.ThemeId == themeId)
             ?.Questions.FirstOrDefault(p => p.QuestionId == questionId);
 
-        if (selectedQuestion == null)
-            throw new Exception($"Вопрос с questionId {questionId} не найден!");
+        _selectedQuestion = selectedQuestion ?? throw new Exception($"Вопрос с questionId {questionId} не найден!");
+        var questionText = _selectedQuestion.QuestionText;
 
-        var questionText = selectedQuestion.QuestionText;
+        await Clients.All.SendAsync("ReceiveSelectedQuestionText", questionText);
+    }
 
-        await Clients.All.SendAsync("RecieveSelectedQuestionText", questionText);
+    public async Task ReceiveAnsweringPlayer()
+    {
+        if (_sessionState != SessionState.WaitingAnswers) throw new Exception("Неподходящее состояние сессии!");
+
+        if (_isPlayerAnswering) return;
+
+        var connectionId = Context.ConnectionId;
+        var playerModel = Players.Find(model => model.ConnectionId == connectionId);
+        if (playerModel == null) throw new NullReferenceException("Игрок был null");
+
+        playerModel.IsAnswering = true;
+        _isPlayerAnswering = true;
+        await Clients.All.SendAsync("ReceiveAnsweringPlayer", playerModel.ConnectionId);
+    }
+
+    public async Task ReceiveMasterVerdict(bool isAnswerCorrect)
+    {
+        if (_sessionState != SessionState.WaitingMasterVerdict) throw new Exception("Неподходящее состояние сессии!");
+
+        if (Context.ConnectionId != _masterConnectionId)
+            throw new Exception("Только ведущий может выносить вердикт!");
+
+        var playerModel = Players.FirstOrDefault(model => model.IsAnswering);
+        if (playerModel == null) throw new NullReferenceException("Игрок был null");
+
+        if (isAnswerCorrect)
+        {
+            playerModel.Points += _selectedQuestion.QuestionCost;
+        }
+        else
+        {
+            playerModel.Points -= -_selectedQuestion.QuestionCost;
+        }
+
+        playerModel.IsAnswering = false;
+        await Clients.All.SendAsync("RecieveAnswerResult", isAnswerCorrect, playerModel);
+    }
+
+    public async Task RecieveCorrectAnswer()
+    {
+        if (_sessionState != SessionState.ShowingCorrectAnswer) throw new Exception("Неподходящее состояние сессии!");
+
+        if (Context.ConnectionId != _masterConnectionId)
+            throw new Exception("Только ведущий может выносить вердикт!");
+
+        var answerModel = _mapper.Map<AnswerModel>(_selectedQuestion) ??
+                          throw new NullReferenceException("Ответ был null");
+        await Clients.All.SendAsync("ReceiveCorrectAnswer", answerModel, _selectedQuestion);
+        SelectedPackage
+            .Rounds[CurrentRoundIndex]
+            .Themes.FirstOrDefault(model => model.ThemeId == _selectedQuestion.ThemeId)
+            ?.Questions.Remove(_selectedQuestion);
+        var isRoundEnded = SelectedPackage.Rounds[CurrentRoundIndex].Themes.Select(themes => themes.Questions.Count > 0)
+            .Contains(true);
+        if (!isRoundEnded) return;
+
+        if (CurrentRoundIndex + 1 < SelectedPackage.Rounds.Count)
+        {
+            CurrentRoundIndex++;
+            await Clients.All.SendAsync("RecieveSwitchRound", _sessionState, CurrentRoundIndex);
+            return;
+        }
+        
+        await EndGame();
+    }
+
+    private async Task SendPlayerInfo(PlayerModel player)
+    {
+        await Clients.All.SendAsync("ReceivePlayerInfo", player);
     }
 
     public async Task SendPlayersInfo()
@@ -102,33 +180,38 @@ public class ClientHostHub : Hub
     {
         if (Players.Count < 2) throw new Exception("Недостаточно игроков! Необходимо минимум 2 игрока.");
         CurrentRoundIndex = 0;
-        //TODO: Передавать номер раунда и сделать переключение раундов в целом
-        await Clients.All.SendAsync("RecievePackage", SelectedPackage, Players, _sessionState);
-        _sessionState = SessionState.InGame;
+        await Clients.All.SendAsync("ReceivePackage", SelectedPackage, Players, _sessionState);
     }
 
-    //TODO: Сделать функцию получения всех игроков
+    private async Task EndGame()
+    {
+        _sessionState = SessionState.GameEndingScreen;
+        var winner = Players.OrderBy(model => model.Points).Last();
+        await Clients.All.SendAsync("RecieveWinner", winner, _sessionState);
+    }
+
     public override async Task OnConnectedAsync()
     {
         var context = Context.GetHttpContext();
         if (context != null)
             Console.WriteLine(
                 $"[JOIN] {context.Connection.RemoteIpAddress?.ToString()} joined with connection id: {Context.ConnectionId}");
-
         await base.OnConnectedAsync();
     }
 
     public override async Task OnDisconnectedAsync(Exception? ex)
     {
+        var disconectedPlayer = Players.FirstOrDefault(p => p.ConnectionId == Context.ConnectionId);
+
+        if(disconectedPlayer != null)
+        {
+            Players.Remove(disconectedPlayer);
+            await Clients.All.SendAsync("PlayerDisconnected", disconectedPlayer);
+        }
         var context = Context.GetHttpContext();
         if (context != null)
             Console.WriteLine(
                 $"[LEAVE] {context.Connection.RemoteIpAddress?.ToString()} left with connection id: {Context.ConnectionId}");
         await base.OnDisconnectedAsync(ex);
-    }
-
-    private async Task SendPlayerInfo(PlayerModel player)
-    {
-        await Clients.All.SendAsync("ReceivePlayerInfo", player);
     }
 }

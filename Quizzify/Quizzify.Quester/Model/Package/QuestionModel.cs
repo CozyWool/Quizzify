@@ -2,7 +2,7 @@
 
 public class QuestionModel
 {
-    public int QuestionId { get; set; }
+    public Guid QuestionId { get; set; }
     public string QuestionText { get; set; }
     public byte[] QuestionImageUrl { get; set; }
     public int QuestionCost { get; set; }

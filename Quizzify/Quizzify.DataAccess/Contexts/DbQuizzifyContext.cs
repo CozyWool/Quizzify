@@ -42,6 +42,12 @@ public partial class DbQuizzifyContext : DbContext
         SaveChanges();
     }
 
+    public void AddPackage(PackageEntity newPackage)
+    {
+        Packages.Add(newPackage);
+        SaveChanges();
+    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new PackageConfiguration());

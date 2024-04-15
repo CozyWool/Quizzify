@@ -43,17 +43,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Quizzify.Client.Host\Quizzify.Client.Host.csproj" />
       <ProjectReference Include="..\Quizzify.DataAccess\Quizzify.DataAccess.csproj" />
       <ProjectReference Include="..\Quizzify.Infrastructure.WPF\Quizzify.Infrastructure.WPF.csproj" />
       <ProjectReference Include="..\Quizzify.Infrastructure\Quizzify.Infrastructure.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Page Update="View\MainView.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
-      </Page>
     </ItemGroup>
 
 </Project>

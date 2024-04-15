@@ -1,18 +1,18 @@
-﻿<Window x:Class="Quizzify.Client.View.MainView"
+﻿<Window x:Class="Quizzify.Client.View.GameView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:resource="clr-namespace:Quizzify.Client.Resources.Locales"
+        xmlns:local="clr-namespace:Quizzify.Client.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="GameView" Height="450" Width="800">
     <Grid>
         <StackPanel Margin="5">
             <TextBlock Text="Введите IP:" />
-            <TextBox Text="{Binding Ip}"/>
+            <TextBox Text="{Binding IpTextBox, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text="Введите порт:" />
-            <TextBox Text="{Binding Port}"/>
-            <Button Content="Подключиться" Command="{Binding ConnectToGameCommand}"/>
+            <TextBox Text="{Binding PortTextBox, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Content="Подключиться" Command="{Binding ConnectToGameLobbyCommand}"/>
         </StackPanel>
     </Grid>
 </Window>

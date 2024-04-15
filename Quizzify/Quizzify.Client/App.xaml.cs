@@ -38,9 +38,9 @@ public partial class App : Application
         _configuration = BuildConfiguration();
         base.OnStartup(e);
         
-        var registrationViewModel = new RegistrationViewModel(_configuration);
-        var registrationView = new RegistrationView(registrationViewModel);
-        registrationView.Show();
+        var viewModel = new GameViewModel();
+        var view = new GameView(viewModel);
+        view.Show();
     }
 
     private IConfiguration BuildConfiguration()

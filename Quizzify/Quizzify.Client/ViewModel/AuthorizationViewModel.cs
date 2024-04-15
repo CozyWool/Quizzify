@@ -64,6 +64,7 @@ public class AuthorizationViewModel: INotifyPropertyChanged
             Task.Delay(100).Wait();
         }
         stopwatch.Stop();
+
         //TODO ответом от сервера должен приходить игрок
         if (_isAuthorized == null)
         {
@@ -71,7 +72,7 @@ public class AuthorizationViewModel: INotifyPropertyChanged
         }
         else if (_isAuthorized == true)
         {
-            var window = new MainView(new MainViewModel(new PlayerModel()));
+            var window = new GameView(new GameViewModel(new PlayerModel()));
             window.Show();
         }
         else

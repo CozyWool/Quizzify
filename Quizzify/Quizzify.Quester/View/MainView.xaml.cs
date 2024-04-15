@@ -14,6 +14,4 @@ public partial class MainView : Window
         InitializeComponent();
         DataContext = mainViewModel;
     }
-
-  
 }

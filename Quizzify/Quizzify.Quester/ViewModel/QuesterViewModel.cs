@@ -11,10 +11,6 @@ using System.Windows.Controls;
 using System.ComponentModel;
 using Quizzify.Infrastructure.WPF.Command;
 using Quizzify.Quester.Model.Package.TreeViewModels;
-using System.IO.Packaging;
-using System.Windows.Documents;
-using System.Windows.Controls.Primitives;
-using Quizzify.Quester.View;
 using System.Collections.ObjectModel;
 
 namespace Quizzify.Quester.ViewModel;
@@ -23,6 +19,7 @@ public class QuesterViewModel : INotifyPropertyChanged
 {
     private List<PackageTreeViewModel> _packageTreeViews = [];
     private readonly IMapper _mapper;
+    private Guid guid;
 
     private PackageModel package;
     private int count = 0;
@@ -77,6 +74,17 @@ public class QuesterViewModel : INotifyPropertyChanged
         {
             _questionTextBox = value;
             OnPropertyChanged(nameof(_questionTextBox));
+        }
+    }
+
+    private string _questionCommentTextBox;
+    public string QuestionCommentTextBox
+    {
+        get => _questionCommentTextBox;
+        set
+        {
+            _questionCommentTextBox = value;
+            OnPropertyChanged(nameof(_questionCommentTextBox));
         }
     }
 
@@ -174,7 +182,7 @@ public class QuesterViewModel : INotifyPropertyChanged
 
     public QuesterViewModel()
     {
-        SaveToFileSerializedCommand = new GenericCommand<PackageModel>(async (model) => await SaveToFile(model));
+        SaveToFileSerializedCommand = new GenericCommand<object>(async (model) => await SaveToFile(model));
         UploadFileDeserializeCommand = new GenericCommand<PackageModel>(async (model) => await UploadFile(model));
 
         NewPackageCommand = new GenericCommand<PackageModel>(NewPackage);
@@ -191,9 +199,9 @@ public class QuesterViewModel : INotifyPropertyChanged
         package.Rounds = new List<RoundModel>();
     }
 
-    private async Task SaveToFile(PackageModel packageModel)
+    private async Task SaveToFile(object obj)
     {
-        var jsonSerialized = JsonConvert.SerializeObject(packageModel, Formatting.Indented);
+        var jsonSerialized = JsonConvert.SerializeObject(package, Formatting.Indented);
         var saveFile = new SaveFileDialog();
         if (saveFile.ShowDialog() == true)
         {
@@ -236,29 +244,28 @@ public class QuesterViewModel : INotifyPropertyChanged
         }
     }
 
-    // TODO: Переписать. В самом начале нужно указать имя пакета и его сложность. Нажать "Сохранить"
     private void NewPackage(PackageModel model)
     {
-        Random rand = new Random();
+        guid = Guid.NewGuid();
 
-        package.PackageId = rand.Next(1,100000);
+        package.PackageId = guid;
         package.PackageName = PackageNameTextBox;
         package.Difficulty = DiffTextBox1;
     }
 
-    // TODO: Переписать. Добавление раунда
     private void AddRound(PackageModel model)
     {
         string roundName = Microsoft.VisualBasic.Interaction.InputBox("Введите название раунда", "Добавление раунда", "");
 
-        Random rand = new Random();
+        guid = Guid.NewGuid();
+
         if (!string.IsNullOrEmpty(roundName))
         {
             if (package.PackageName != null)
             {
                 var round = new RoundModel
                 {
-                    RoundId = rand.Next(1, 1000000),
+                    RoundId = guid,
                     RoundName = roundName
                 };
 
@@ -272,17 +279,16 @@ public class QuesterViewModel : INotifyPropertyChanged
         }
     }
 
-
     private void AddTheme(PackageModel model)
     {
         string themeName = Microsoft.VisualBasic.Interaction.InputBox("Введите название темы", "Добавление темы", "");
 
-        Random rand = new Random();//Костыль
+        guid = Guid.NewGuid();
 
         if (!string.IsNullOrEmpty(themeName))
         {
-            var selectedRound = package.Rounds.FirstOrDefault(r => r.RoundName == RoundItems.FirstOrDefault());
-           
+            var selectedRound = package.Rounds.FirstOrDefault(r => r.RoundName == SelectedRound);
+
             if (selectedRound != null)
             {
                 if (!selectedRound.Themes.ContainsKey(themeName))
@@ -291,23 +297,13 @@ public class QuesterViewModel : INotifyPropertyChanged
                     {
                         var theme = new ThemeModel
                         {
-                            ThemeId = rand.Next(1,1000000),
+                            ThemeId = guid,
                             ThemeName = themeName,
                             Questions = new List<QuestionModel>()
                         };
 
-
                         selectedRound.Themes.Add(themeName, theme);
-                        foreach (var item2 in selectedRound.Themes)
-                        {
-                            ThemeItems.Add(item2.Value.ThemeName);
-                        }
-                        foreach (var item in package.Rounds)
-                        {
-                            item.Themes.Add(themeName, theme);
-                        }
-                        
-                        //RoundComboBox.Items.Add(item);
+                        ThemeItems.Add(theme.ThemeName);
                     }
                     else
                     {
@@ -330,32 +326,40 @@ public class QuesterViewModel : INotifyPropertyChanged
     {
         if (!string.IsNullOrEmpty(QuestionTextBox) && !string.IsNullOrEmpty(AnswerTextBox))
         {
-            var selectedRound = package.Rounds.FirstOrDefault(r => r.RoundName == RoundItems.FirstOrDefault());
+            var selectedRound = package.Rounds.FirstOrDefault(r => r.RoundName == SelectedRound);
+            string selectedThemeName = SelectedTheme;
 
-            if (selectedRound != null)
+            if (selectedRound != null && !string.IsNullOrEmpty(selectedThemeName) && selectedRound.Themes.ContainsKey(selectedThemeName))
             {
-                string? selectedThemeName = SelectedTheme as string;
+                var selectedTheme = selectedRound.Themes[selectedThemeName];
 
-                if (!string.IsNullOrEmpty(selectedThemeName) && selectedRound.Themes.ContainsKey(selectedThemeName))
+                if (selectedTheme != null)
                 {
-                    var selectedTheme = selectedRound.Themes[selectedThemeName];
-
-                    if (selectedTheme != null)
+                    var question = new QuestionModel
                     {
-                        var question = new QuestionModel
-                        {
-                            QuestionText = QuestionTextBox,
-                            AnswerText = AnswerTextBox,
-                            QuestionCost= СostQuestionTextBox
-                        };
+                        QuestionCost = СostQuestionTextBox,
+                        QuestionText = QuestionTextBox,
+                        QuestionComment = QuestionCommentTextBox,
+                        AnswerText = AnswerTextBox
+                    };
 
-                        selectedTheme.Questions.Add(question);
-                    }
+                    selectedTheme.Questions.Add(question);
+
+                    СostQuestionTextBox = 0;
+                    QuestionTextBox = string.Empty;
+                    QuestionCommentTextBox = string.Empty;
+                    AnswerTextBox = string.Empty;
+
+                    OnPropertyChanged(nameof(СostQuestionTextBox));
+                    OnPropertyChanged(nameof(QuestionTextBox));
+                    OnPropertyChanged(nameof(QuestionCommentTextBox));
+                    OnPropertyChanged(nameof(AnswerTextBox));
+
                 }
-                else
-                {
-                    MessageBox.Show("Не выбрана тема");
-                }
+            }
+            else
+            {
+                MessageBox.Show("Не выбран раунд или тема, или выбранная тема не существует в выбранном раунде");
             }
         }
     }
